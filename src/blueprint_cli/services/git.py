@@ -16,7 +16,7 @@ def check_tool(tool: str, tracker: 'StepTracker' = None) -> bool:
     Returns:
         True if tool is found, False otherwise
     """
-    from .core.agent_config import AGENT_CONFIG  # Import here to avoid circular dependencies
+    from ..core.agent_config import AGENT_CONFIG  # Import here to avoid circular dependencies
     CLAUDE_LOCAL_PATH = Path.home() / ".claude" / "local" / "claude"
     
     # Special handling for Claude CLI after `claude migrate-installer`
