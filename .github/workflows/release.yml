@@ -2,12 +2,7 @@ name: Create Release
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - 'memory/**'
-      - 'scripts/**'
-      - 'templates/**'
-      - '.github/workflows/**'
+    tags: [ 'v*' ]
   workflow_dispatch:
 
 jobs:
