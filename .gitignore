@@ -137,3 +137,7 @@ dmypy.json
 
 # spec kit used for guidance
 speck-kit
+
+# goal kit used for guidance
+.goalkit
+QWEN.md
