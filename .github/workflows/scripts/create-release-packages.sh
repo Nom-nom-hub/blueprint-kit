@@ -88,7 +88,11 @@ generate_commands() {
     ')
     
     # Apply other substitutions
-    body=$(printf '%s\n' "$body" | sed "s/{ARGS}/$arg_format/g" | sed "s/__AGENT__/$agent/g" | rewrite_paths)
+    # First, escape the variables to ensure safe sed usage
+    local escaped_arg_format=$(printf '%s\n' "$arg_format" | sed 's/[/&]/\\&/g')
+    local escaped_agent=$(printf '%s\n' "$agent" | sed 's/[/&]/\\&/g')
+    
+    body=$(printf '%s\n' "$body" | sed "s/{ARGS}/$escaped_arg_format/g" | sed "s/__AGENT__/$escaped_agent/g" | rewrite_paths)
     
     case $ext in
       toml)
