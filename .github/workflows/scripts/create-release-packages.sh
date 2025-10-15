@@ -31,22 +31,23 @@ mkdir -p "$GENRELEASES_DIR"
 rm -rf "$GENRELEASES_DIR"/* || true
 
 rewrite_paths() {
-  # Safe replacement function that avoids sed delimiter issues
   # Read the entire input
   local input
   input=$(cat)
   
-  # Perform replacements using awk which doesn't have delimiter issues
-  echo "$input" | awk '
-  {
-    # Replace memory references
-    gsub(/(\/?)memory\//, "&.blueprint/memory/")
-    # Replace scripts references  
-    gsub(/(\/?)scripts\//, "&.blueprint/scripts/")
-    # Replace templates references
-    gsub(/(\/?)templates\//, "&.blueprint/templates/")
-    print
-  }'
+  # Perform replacements using shell parameter expansion, which is safest
+  # First replace paths that start with a slash
+  input="${input//\/memory\//.blueprint\/memory\/}"
+  input="${input//\/scripts\//.blueprint\/scripts\/}"
+  input="${input//\/templates\//.blueprint\/templates\/}"
+  
+  # Then replace paths that might appear without a leading slash  
+  input="${input//memory\//.blueprint\/memory\/}"
+  input="${input//scripts\//.blueprint\/scripts\/}"
+  input="${input//templates\//.blueprint\/templates\/}"
+  
+  # Output the modified content
+  printf '%s' "$input"
 }
 
 generate_commands() {
