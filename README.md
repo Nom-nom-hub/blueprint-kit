@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./media/logo_small.webp"/>
+    <img src="./media/logo.png"/>
     <h1>🏗️ Blueprint Kit</h1>
     <h3><em>Build high-quality software faster with Blueprint-Driven Development.</em></h3>
 </div>
