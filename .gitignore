@@ -134,3 +134,6 @@ dmypy.json
 /.codebuddy/
 /.roo/
 /.amazonq/
+
+# spec kit used for guidance
+speck-kit

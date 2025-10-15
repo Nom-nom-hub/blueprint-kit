@@ -1071,6 +1071,9 @@ def init(
     steps_lines.append("   2.6 [cyan]/blueprintkit.tasks[/] - Generate actionable tasks")
     steps_lines.append("   2.7 [cyan]/blueprintkit.implement[/] - Execute implementation")
 
+    steps_lines.append("\n[cyan]Note: These slash commands are available in your project after initialization[/cyan]")
+    steps_lines.append("[cyan]and are recognized by supported AI agents when working in the project directory.[/cyan]")
+
     steps_panel = Panel("\n".join(steps_lines), title="Next Steps", border_style="cyan", padding=(1,2))
     console.print()
     console.print(steps_panel)
