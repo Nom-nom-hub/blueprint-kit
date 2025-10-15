@@ -104,7 +104,7 @@ generate_commands() {
     
     case $ext in
       toml)
-        body=$(printf '%s\n' "$body" | sed 's/\\\/\\\\\\\\/g')
+        body=$(printf '%s\n' "$body" | sed 's/\\/\\\\/g')
         { echo "description = \\\"$description\\"; echo; echo "prompt = \\\"\\\"\\\""; echo "$body"; echo "\\\"\\\"\\\""; } > "$output_dir/blueprintkit.$name.$ext" ;;
       md)
         echo "$body" > "$output_dir/blueprintkit.$name.$ext" ;;
