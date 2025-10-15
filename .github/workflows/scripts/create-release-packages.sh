@@ -31,10 +31,11 @@ mkdir -p "$GENRELEASES_DIR"
 rm -rf "$GENRELEASES_DIR"/* || true
 
 rewrite_paths() {
+  # Using | as delimiter to avoid conflicts with @ or / in the content
   sed -E \
-    -e 's@(/?)memory/@.blueprint/memory/@g' \
-    -e 's@(/?)scripts/@.blueprint/scripts/@g' \
-    -e 's@(/?)templates/@.blueprint/templates/@g'
+    -e 's|(/?)memory/|.blueprint/memory/|g' \
+    -e 's|(/?)scripts/|.blueprint/scripts/|g' \
+    -e 's|(/?)templates/|.blueprint/templates/|g'
 }
 
 generate_commands() {
