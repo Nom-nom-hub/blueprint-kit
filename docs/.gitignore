@@ -1,0 +1,19 @@
+# DocFX build output
+_site/
+.sitemap/
+api/
+obj/
+
+# Generated files
+*.log
+*.tmp
+
+# User-specific files
+.vs/
+.vscode/
+.idea/
+
+# Ignore local docfx build artifacts
+*.zip
+*.tar
+*.tar.gz
