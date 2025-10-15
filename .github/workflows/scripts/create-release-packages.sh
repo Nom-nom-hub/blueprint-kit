@@ -31,11 +31,10 @@ mkdir -p "$GENRELEASES_DIR"
 rm -rf "$GENRELEASES_DIR"/* || true
 
 rewrite_paths() {
-  # Using | as delimiter to avoid conflicts with @ or / in the content
   sed -E \
-    -e 's|(/?)memory/|.blueprint/memory/|g' \
-    -e 's|(/?)scripts/|.blueprint/scripts/|g' \
-    -e 's|(/?)templates/|.blueprint/templates/|g'
+    -e 's§(/?)memory/§.blueprint/memory/§g' \
+    -e 's§(/?)scripts/§.blueprint/scripts/§g' \
+    -e 's§(/?)templates/§.blueprint/templates/§g'
 }
 
 generate_commands() {
@@ -88,11 +87,7 @@ generate_commands() {
     ')
     
     # Apply other substitutions
-    # First, escape the variables to ensure safe sed usage
-    local escaped_arg_format=$(printf '%s\n' "$arg_format" | sed 's/[/&]/\\&/g')
-    local escaped_agent=$(printf '%s\n' "$agent" | sed 's/[/&]/\\&/g')
-    
-    body=$(printf '%s\n' "$body" | sed "s/{ARGS}/$escaped_arg_format/g" | sed "s/__AGENT__/$escaped_agent/g" | rewrite_paths)
+    body=$(printf '%s\n' "$body" | sed "s/{ARGS}/$arg_format/g" | sed "s/__AGENT__/$agent/g" | rewrite_paths)
     
     case $ext in
       toml)
