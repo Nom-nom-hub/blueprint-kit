@@ -23,6 +23,9 @@ import readchar
 import ssl
 import truststore
 
+# Define SSL context for secure connections
+ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+
 from ..core.step_tracker import StepTracker
 from ..core.agent_config import AGENT_CONFIG
 from ..core.cli import SCRIPT_TYPE_CHOICES, CLAUDE_LOCAL_PATH, BANNER, TAGLINE
