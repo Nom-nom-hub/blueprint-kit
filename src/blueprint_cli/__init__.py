@@ -786,6 +786,482 @@ def ensure_executable_scripts(project_path: Path, tracker: StepTracker | None = 
             for f in failures:
                 console.print(f"  - {f}")
 
+def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: StepTracker = None):
+    """
+    Generate agent-specific command files in the project after initialization.
+    
+    Args:
+        project_path: Path to the project directory
+        agent: The selected AI agent
+        tracker: Optional StepTracker to update with progress
+    """
+    import re
+    import shutil
+    from pathlib import Path
+    
+    # Define agent configurations
+    agents = {
+        'claude': {'dir': '.claude/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'gemini': {'dir': '.gemini/commands', 'ext': 'toml', 'arg_format': '{{args}}', 'script_variants': ['sh', 'ps']},
+        'copilot': {'dir': '.github/prompts', 'ext': 'prompt.md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'cursor-agent': {'dir': '.cursor/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'qwen': {'dir': '.qwen/commands', 'ext': 'toml', 'arg_format': '{{args}}', 'script_variants': ['sh', 'ps']},
+        'opencode': {'dir': '.opencode/command', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'windsurf': {'dir': '.windsurf/workflows', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'codex': {'dir': '.codex/prompts', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'kilocode': {'dir': '.kilocode/workflows', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'auggie': {'dir': '.augment/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'roo': {'dir': '.roo/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'codebuddy': {'dir': '.codebuddy/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'q': {'dir': '.amazonq/prompts', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+    }
+    
+    if agent not in agents:
+        if tracker:
+            tracker.error(f"agent-{agent}", f"Unsupported agent: {agent}")
+        else:
+            console.print(f"[red]Error:[/red] Unsupported agent: {agent}")
+        return
+    
+    agent_config = agents[agent]
+    
+    # Get the template command files from the project
+    templates_commands_dir = project_path / ".blueprint" / "templates" / "commands"
+    if not templates_commands_dir.exists():
+        # Fallback: try relative to current file location
+        import os
+        import sys
+        cli_dir = Path(__file__).parent
+        templates_commands_dir = cli_dir.parent.parent / "templates" / "commands"
+        
+        if not templates_commands_dir.exists():
+            if tracker:
+                tracker.error(f"agent-{agent}", "Command templates not found")
+            else:
+                console.print("[red]Error:[/red] Command templates not found")
+            return
+    
+    # Create the agent-specific directory
+    agent_dir = project_path / agent_config['dir']
+    agent_dir.mkdir(parents=True, exist_ok=True)
+    
+    if tracker:
+        tracker.add(f"agent-{agent}", f"Generate {agent} commands")
+        tracker.start(f"agent-{agent}", f"Creating {agent_config['dir']} directory")
+    
+    # Process each command template
+    command_files = list(templates_commands_dir.glob('*.md'))
+    for cmd_file in command_files:
+        try:
+            # Read the template
+            content = cmd_file.read_text(encoding='utf-8')
+            
+            # Extract YAML frontmatter
+            yaml_match = re.match(r'^---\n(.*?)\n---\n(.*)', content, re.DOTALL)
+            if not yaml_match:
+                continue  # Skip if invalid frontmatter
+            
+            yaml_content = yaml_match.group(1)
+            body_content = yaml_match.group(2)
+            
+            # Parse description from YAML
+            description_match = re.search(r'^description:\s*(.*)
+    project_name: str = typer.Argument(None, help="Name for your new project directory (optional if using --here, or use '.' for current directory)"),
+    ai_assistant: str = typer.Option(None, "--ai", help="AI assistant to use: claude, gemini, copilot, cursor-agent, qwen, opencode, codex, windsurf, kilocode, auggie, codebuddy, or q"),
+    script_type: str = typer.Option(None, "--script", help="Script type to use: sh or ps"),
+    ignore_agent_tools: bool = typer.Option(False, "--ignore-agent-tools", help="Skip checks for AI agent tools like Claude Code"),
+    no_git: bool = typer.Option(False, "--no-git", help="Skip git repository initialization"),
+    here: bool = typer.Option(False, "--here", help="Initialize project in the current directory instead of creating a new one"),
+    force: bool = typer.Option(False, "--force", help="Force merge/overwrite when using --here (skip confirmation)"),
+    skip_tls: bool = typer.Option(False, "--skip-tls", help="Skip SSL/TLS verification (not recommended)"),
+    debug: bool = typer.Option(False, "--debug", help="Show verbose diagnostic output for network and extraction failures"),
+    github_token: str = typer.Option(None, "--github-token", help="GitHub token to use for API requests (or set GH_TOKEN or GITHUB_TOKEN environment variable)"),
+):
+    """
+    Initialize a new Blueprint project from the latest template.
+    
+    This command will:
+    1. Check that required tools are installed (git is optional)
+    2. Let you choose your AI assistant
+    3. Download the appropriate template from GitHub
+    4. Extract the template to a new project directory or current directory
+    5. Initialize a fresh git repository (if not --no-git and no existing repo)
+    6. Optionally set up AI assistant commands
+    
+    Examples:
+        blueprint init my-project
+        blueprint init my-project --ai claude
+        blueprint init my-project --ai copilot --no-git
+        blueprint init --ignore-agent-tools my-project
+        blueprint init . --ai claude         # Initialize in current directory
+        blueprint init .                     # Initialize in current directory (interactive AI selection)
+        blueprint init --here --ai claude    # Alternative syntax for current directory
+        blueprint init --here --ai codex
+        blueprint init --here --ai codebuddy
+        blueprint init --here
+        blueprint init --here --force  # Skip confirmation when current directory not empty
+    """
+
+    show_banner()
+
+    if project_name == ".":
+        here = True
+        project_name = None  # Clear project_name to use existing validation logic
+
+    if here and project_name:
+        console.print("[red]Error:[/red] Cannot specify both project name and --here flag")
+        raise typer.Exit(1)
+
+    if not here and not project_name:
+        console.print("[red]Error:[/red] Must specify either a project name, use '.' for current directory, or use --here flag")
+        raise typer.Exit(1)
+
+    if here:
+        project_name = Path.cwd().name
+        project_path = Path.cwd()
+
+        existing_items = list(project_path.iterdir())
+        if existing_items:
+            console.print(f"[yellow]Warning:[/yellow] Current directory is not empty ({len(existing_items)} items)")
+            console.print("[yellow]Template files will be merged with existing content and may overwrite existing files[/yellow]")
+            if force:
+                console.print("[cyan]--force supplied: skipping confirmation and proceeding with merge[/cyan]")
+            else:
+                response = typer.confirm("Do you want to continue?")
+                if not response:
+                    console.print("[yellow]Operation cancelled[/yellow]")
+                    raise typer.Exit(0)
+    else:
+        project_path = Path(project_name).resolve()
+        if project_path.exists():
+            error_panel = Panel(
+                f"Directory '[cyan]{project_name}[/cyan]' already exists\n"
+                "Please choose a different project name or remove the existing directory.",
+                title="[red]Directory Conflict[/red]",
+                border_style="red",
+                padding=(1, 2)
+            )
+            console.print()
+            console.print(error_panel)
+            raise typer.Exit(1)
+
+    current_dir = Path.cwd()
+
+    setup_lines = [
+        "[cyan]Blueprint Project Setup[/cyan]",
+        "",
+        f"{'Project':<15} [green]{project_path.name}[/green]",
+        f"{'Working Path':<15} [dim]{current_dir}[/dim]",
+    ]
+
+    if not here:
+        setup_lines.append(f"{'Target Path':<15} [dim]{project_path}[/dim]")
+
+    console.print(Panel("\n".join(setup_lines), border_style="cyan", padding=(1, 2)))
+
+    should_init_git = False
+    if not no_git:
+        should_init_git = check_tool("git")
+        if not should_init_git:
+            console.print("[yellow]Git not found - will skip repository initialization[/yellow]")
+
+    if ai_assistant:
+        if ai_assistant not in AGENT_CONFIG:
+            console.print(f"[red]Error:[/red] Invalid AI assistant '{ai_assistant}'. Choose from: {', '.join(AGENT_CONFIG.keys())}")
+            raise typer.Exit(1)
+        selected_ai = ai_assistant
+    else:
+        # Create options dict for selection (agent_key: display_name)
+        ai_choices = {key: config["name"] for key, config in AGENT_CONFIG.items()}
+        selected_ai = select_with_arrows(
+            ai_choices, 
+            "Choose your AI assistant:", 
+            "copilot"
+        )
+
+    if not ignore_agent_tools:
+        agent_config = AGENT_CONFIG.get(selected_ai)
+        if agent_config and agent_config["requires_cli"]:
+            install_url = agent_config["install_url"]
+            if not check_tool(selected_ai):
+                error_panel = Panel(
+                    f"[cyan]{selected_ai}[/cyan] not found\n"
+                    f"Install from: [cyan]{install_url}[/cyan]\n"
+                    f"{agent_config['name']} is required to continue with this project type.\n\n"
+                    "Tip: Use [cyan]--ignore-agent-tools[/cyan] to skip this check",
+                    title="[red]Agent Detection Error[/red]",
+                    border_style="red",
+                    padding=(1, 2)
+                )
+                console.print()
+                console.print(error_panel)
+                raise typer.Exit(1)
+
+    if script_type:
+        if script_type not in SCRIPT_TYPE_CHOICES:
+            console.print(f"[red]Error:[/red] Invalid script type '{script_type}'. Choose from: {', '.join(SCRIPT_TYPE_CHOICES.keys())}")
+            raise typer.Exit(1)
+        selected_script = script_type
+    else:
+        default_script = "ps" if os.name == "nt" else "sh"
+
+        if sys.stdin.isatty():
+            selected_script = select_with_arrows(SCRIPT_TYPE_CHOICES, "Choose script type (or press Enter)", default_script)
+        else:
+            selected_script = default_script
+
+    console.print(f"[cyan]Selected AI assistant:[/cyan] {selected_ai}")
+    console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
+
+    tracker = StepTracker("Initialize Blueprint Project")
+
+    sys._specify_tracker_active = True
+
+    tracker.add("precheck", "Check required tools")
+    tracker.complete("precheck", "ok")
+    tracker.add("ai-select", "Select AI assistant")
+    tracker.complete("ai-select", f"{selected_ai}")
+    tracker.add("script-select", "Select script type")
+    tracker.complete("script-select", selected_script)
+    for key, label in [
+        ("fetch", "Fetch latest release"),
+        ("download", "Download template"),
+        ("extract", "Extract template"),
+        ("zip-list", "Archive contents"),
+        ("extracted-summary", "Extraction summary"),
+        ("chmod", "Ensure scripts executable"),
+        ("cleanup", "Cleanup"),
+        ("git", "Initialize git repository"),
+        ("final", "Finalize")
+    ]:
+        tracker.add(key, label)
+
+    # Track git error message outside Live context so it persists
+    git_error_message = None
+
+    with Live(tracker.render(), console=console, refresh_per_second=8, transient=True) as live:
+        tracker.attach_refresh(lambda: live.update(tracker.render()))
+        try:
+            verify = not skip_tls
+            local_ssl_context = ssl_context if verify else False
+            local_client = httpx.Client(verify=local_ssl_context)
+
+            download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
+
+            # Generate agent-specific command files for the selected AI assistant
+            generate_agent_commands_in_project(project_path, selected_ai, tracker=tracker)
+
+            ensure_executable_scripts(project_path, tracker=tracker)
+
+            if not no_git:
+                tracker.start("git")
+                if is_git_repo(project_path):
+                    tracker.complete("git", "existing repo detected")
+                elif should_init_git:
+                    success, error_msg = init_git_repo(project_path, quiet=True)
+                    if success:
+                        tracker.complete("git", "initialized")
+                    else:
+                        tracker.error("git", "init failed")
+                        git_error_message = error_msg
+                else:
+                    tracker.skip("git", "git not available")
+            else:
+                tracker.skip("git", "--no-git flag")
+
+            tracker.complete("final", "project ready")
+        except Exception as e:
+            tracker.error("final", str(e))
+            console.print(Panel(f"Initialization failed: {e}", title="Failure", border_style="red"))
+            if debug:
+                _env_pairs = [
+                    ("Python", sys.version.split()[0]),
+                    ("Platform", sys.platform),
+                    ("CWD", str(Path.cwd())),
+                ]
+                _label_width = max(len(k) for k, _ in _env_pairs)
+                env_lines = [f"{k.ljust(_label_width)} → [bright_black]{v}[/bright_black]" for k, v in _env_pairs]
+                console.print(Panel("\n".join(env_lines), title="Debug Environment", border_style="magenta"))
+            if not here and project_path.exists():
+                shutil.rmtree(project_path)
+            raise typer.Exit(1)
+        finally:
+            pass
+
+    console.print(tracker.render())
+    console.print("\n[bold green]Project ready.[/bold green]")
+    
+    # Show git error details if initialization failed
+    if git_error_message:
+        console.print()
+        git_error_panel = Panel(
+            f"[yellow]Warning:[/yellow] Git repository initialization failed\n\n"
+            f"{git_error_message}\n\n"
+            f"[dim]You can initialize git manually later with:[/dim]\n"
+            f"[cyan]cd {project_path if not here else '.'}[/cyan]\n"
+            f"[cyan]git init[/cyan]\n"
+            f"[cyan]git add .[/cyan]\n"
+            f"[cyan]git commit -m \"Initial commit\"[/cyan]",
+            title="[red]Git Initialization Failed[/red]",
+            border_style="red",
+            padding=(1, 2)
+        )
+        console.print(git_error_panel)
+
+    # Agent folder security notice
+    agent_config = AGENT_CONFIG.get(selected_ai)
+    if agent_config:
+        agent_folder = agent_config["folder"]
+        security_notice = Panel(
+            f"Some agents may store credentials, auth tokens, or other identifying and private artifacts in the agent folder within your project.\n"
+            f"Consider adding [cyan]{agent_folder}[/cyan] (or parts of it) to [cyan].gitignore[/cyan] to prevent accidental credential leakage.",
+            title="[yellow]Agent Folder Security[/yellow]",
+            border_style="yellow",
+            padding=(1, 2)
+        )
+        console.print()
+        console.print(security_notice)
+
+    steps_lines = []
+    if not here:
+        steps_lines.append(f"1. Go to the project folder: [cyan]cd {project_name}[/cyan]")
+        step_num = 2
+    else:
+        steps_lines.append("1. You're already in the project directory!")
+        step_num = 2
+
+    # Add Codex-specific setup step if needed
+    if selected_ai == "codex":
+        codex_path = project_path / ".codex"
+        quoted_path = shlex.quote(str(codex_path))
+        if os.name == "nt":  # Windows
+            cmd = f"setx CODEX_HOME {quoted_path}"
+        else:  # Unix-like systems
+            cmd = f"export CODEX_HOME={quoted_path}"
+        
+        steps_lines.append(f"{step_num}. Set [cyan]CODEX_HOME[/cyan] environment variable before running Codex: [cyan]{cmd}[/cyan]")
+        step_num += 1
+
+    steps_lines.append(f"{step_num}. Start using slash commands with your AI agent:")
+
+    steps_lines.append("   2.1 [cyan]/blueprintkit.constitution[/] - Establish project principles")
+    steps_lines.append("   2.2 [cyan]/blueprintkit.specify[/] - Create baseline specification")
+    steps_lines.append("   2.3 [cyan]/blueprintkit.goal[/] - Define measurable goals")
+    steps_lines.append("   2.4 [cyan]/blueprintkit.blueprint[/] - Create architectural blueprints")
+    steps_lines.append("   2.5 [cyan]/blueprintkit.plan[/] - Create implementation plan")
+    steps_lines.append("   2.6 [cyan]/blueprintkit.tasks[/] - Generate actionable tasks")
+    steps_lines.append("   2.7 [cyan]/blueprintkit.implement[/] - Execute implementation")
+
+    steps_lines.append("\n[cyan]Note: These slash commands are available in your project after initialization[/cyan]")
+    steps_lines.append("[cyan]and are recognized by supported AI agents when working in the project directory.[/cyan]")
+
+    steps_panel = Panel("\n".join(steps_lines), title="Next Steps", border_style="cyan", padding=(1,2))
+    console.print()
+    console.print(steps_panel)
+
+    enhancement_lines = [
+        "Optional commands that you can use for your specs [bright_black](improve quality & confidence)[/bright_black]",
+        "",
+        f"○ [cyan]/blueprintkit.clarify[/] [bright_black](optional)[/bright_black] - Ask structured questions to de-risk ambiguous areas before planning (run before [cyan]/blueprintkit.plan[/] if used)",
+        f"○ [cyan]/blueprintkit.analyze[/] [bright_black](optional)[/bright_black] - Cross-artifact consistency & alignment report (after [cyan]/blueprintkit.tasks[/], before [cyan]/blueprintkit.implement[/])",
+        f"○ [cyan]/blueprintkit.checklist[/] [bright_black](optional)[/bright_black] - Generate quality checklists to validate requirements completeness, clarity, and consistency (after [cyan]/blueprintkit.plan[/])"
+    ]
+    enhancements_panel = Panel("\n".join(enhancement_lines), title="Enhancement Commands", border_style="cyan", padding=(1,2))
+    console.print()
+    console.print(enhancements_panel)
+
+@app.command()
+def check():
+    """Check that all required tools are installed."""
+    show_banner()
+    console.print("[bold]Checking for installed tools...[/bold]\n")
+
+    tracker = StepTracker("Check Available Tools")
+
+    tracker.add("git", "Git version control")
+    git_ok = check_tool("git", tracker=tracker)
+    
+    agent_results = {}
+    for agent_key, agent_config in AGENT_CONFIG.items():
+        agent_name = agent_config["name"]
+        
+        tracker.add(agent_key, agent_name)
+        agent_results[agent_key] = check_tool(agent_key, tracker=tracker)
+    
+    # Check VS Code variants (not in agent config)
+    tracker.add("code", "Visual Studio Code")
+    code_ok = check_tool("code", tracker=tracker)
+    
+    tracker.add("code-insiders", "Visual Studio Code Insiders")
+    code_insiders_ok = check_tool("code-insiders", tracker=tracker)
+
+    console.print(tracker.render())
+
+    console.print("\n[bold green]Blueprint CLI is ready to use![/bold green]")
+
+    if not git_ok:
+        console.print("[dim]Tip: Install git for repository management[/dim]")
+
+    if not any(agent_results.values()):
+        console.print("[dim]Tip: Install an AI assistant for the best experience[/dim]")
+
+def main():
+    app()
+
+if __name__ == "__main__":
+    main(), yaml_content, re.MULTILINE)
+            description = description_match.group(1).strip().strip('"\'') if description_match else ""
+            
+            # Extract scripts dictionary
+            scripts_match = re.search(r'^scripts:\s*\n((?:\s+[a-z_]+:.*)+)', yaml_content, re.MULTILINE)
+            scripts_dict = {}
+            if scripts_match:
+                script_content = scripts_match.group(1)
+                for line in script_content.split('\n'):
+                    line = line.strip()
+                    if ':' in line:
+                        key, value = line.split(':', 1)
+                        scripts_dict[key.strip()] = value.strip().strip('"\'')
+            
+            # Process for each script variant
+            for variant in agent_config['script_variants']:
+                # Replace {SCRIPT} placeholder with the appropriate script command
+                script_command = scripts_dict.get(variant, "(Missing script command)")
+                replaced_content = body_content.replace('{SCRIPT}', script_command)
+                
+                # Replace {ARGS} placeholder with the appropriate argument format
+                replaced_content = replaced_content.replace('{ARGS}', agent_config['arg_format'])
+                
+                # Replace $ARGUMENTS with the actual argument format
+                replaced_content = replaced_content.replace('$ARGUMENTS', agent_config['arg_format'])
+                
+                # Apply path rewrites (change paths to use .blueprint instead of /)
+                replaced_content = re.sub(r'(/?)memory/', r'.blueprint/memory/', replaced_content)
+                replaced_content = re.sub(r'(/?)scripts/', r'.blueprint/scripts/', replaced_content)
+                replaced_content = re.sub(r'(/?)templates/', r'.blueprint/templates/', replaced_content)
+                
+                # Create the output file
+                output_filename = f"blueprintkit.{cmd_file.stem}.{agent_config['ext']}"
+                output_path = agent_dir / output_filename
+                
+                # For TOML files, wrap content in proper TOML structure
+                if agent_config['ext'] == 'toml':
+                    toml_content = f'description = """{description}"""\n\nprompt = """{replaced_content}"""'
+                    output_path.write_text(toml_content, encoding='utf-8')
+                else:
+                    output_path.write_text(replaced_content, encoding='utf-8')
+        
+        except Exception as e:
+            if tracker:
+                tracker.error(f"cmd-{cmd_file.stem}", f"Error: {str(e)}")
+            else:
+                console.print(f"[red]Error processing {cmd_file}:[/red] {e}")
+    
+    if tracker:
+        tracker.complete(f"agent-{agent}", f"Created {len(command_files)} commands for {agent}")
+    else:
+        console.print(f"[green]Created {len(command_files)} command files for {agent} agent in {agent_config['dir']}[/green]")
+
 @app.command()
 def init(
     project_name: str = typer.Argument(None, help="Name for your new project directory (optional if using --here, or use '.' for current directory)"),
@@ -969,6 +1445,9 @@ def init(
             local_client = httpx.Client(verify=local_ssl_context)
 
             download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
+
+            # Generate agent-specific command files for the selected AI assistant
+            generate_agent_commands_in_project(project_path, selected_ai, tracker=tracker)
 
             ensure_executable_scripts(project_path, tracker=tracker)
 
