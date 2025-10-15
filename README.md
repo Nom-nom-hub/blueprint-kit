@@ -9,6 +9,10 @@
 </p>
 
 <p align="center">
+    <em>Inspired by the concepts and methodology from <a href="https://github.com/github/spec-kit">Spec-Kit</a>.</em>
+</p>
+
+<p align="center">
     <a href="#"><img src="https://img.shields.io/badge/docs-GitHub_Pages-blue" alt="Documentation"/></a>
     <a href="#"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License"/></a>
 </p>
