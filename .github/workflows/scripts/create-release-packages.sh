@@ -31,10 +31,22 @@ mkdir -p "$GENRELEASES_DIR"
 rm -rf "$GENRELEASES_DIR"/* || true
 
 rewrite_paths() {
-  sed -E \
-    -e 's|(/?)memory/|.blueprint/memory/|g' \
-    -e 's|(/?)scripts/|.blueprint/scripts/|g' \
-    -e 's|(/?)templates/|.blueprint/templates/|g'
+  # Safe replacement function that avoids sed delimiter issues
+  # Read the entire input
+  local input
+  input=$(cat)
+  
+  # Perform replacements using awk which doesn't have delimiter issues
+  echo "$input" | awk '
+  {
+    # Replace memory references
+    gsub(/(\/?)memory\//, "&.blueprint/memory/")
+    # Replace scripts references  
+    gsub(/(\/?)scripts\//, "&.blueprint/scripts/")
+    # Replace templates references
+    gsub(/(\/?)templates\//, "&.blueprint/templates/")
+    print
+  }'
 }
 
 generate_commands() {
