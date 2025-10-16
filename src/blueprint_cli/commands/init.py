@@ -503,13 +503,10 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
                 # Replace $ARGUMENTS with the actual argument format
                 replaced_content = replaced_content.replace('$ARGUMENTS', agent_config['arg_format'])
                 
-                # Apply path rewrites carefully to avoid duplication
-                # First, fix any existing .blueprint prefixes that might get duplicated
-                replaced_content = re.sub(r'\.blueprint/\.blueprint/(memory|scripts|templates)/', r'.blueprint/\1/', replaced_content)
-                # Then handle the original root paths
+                # Apply path rewrites, being careful not to duplicate .blueprint prefixes
+                # The original regex (/?memory/) would match both /memory/ and memory/, causing duplication
+                # We should only match root paths that start with /
                 replaced_content = re.sub(r'/(memory|scripts|templates)/', r'.blueprint/\1/', replaced_content)
-                # Handle relative paths at word boundaries that don't already have .blueprint prefix
-                replaced_content = re.sub(r'(?<!\.blueprint/)(?<=^|\s)(memory|scripts|templates)(?=/)', r'.blueprint/\1', replaced_content)
                 
                 # Create the output file - use just the command name for slash command recognition
                 output_filename = f"{cmd_file.stem}.{agent_config['ext']}"
