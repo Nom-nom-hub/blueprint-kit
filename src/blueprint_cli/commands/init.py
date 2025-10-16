@@ -520,23 +520,23 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
 
         if not templates_root_dir.exists():
             error_msg = f"Templates not found at {templates_root_dir}"
-            print(f"DEBUG: {error_msg}")
             if tracker:
                 tracker.error(f"agent-md-{agent}", error_msg)
+            else:
+                console.print(f"[red]Error:[/red] {error_msg}")
             return
 
         # Read the agent template
         agent_template_path = templates_root_dir / "agent-file-template.md"
         if not agent_template_path.exists():
             error_msg = f"Agent template not found: {agent_template_path}"
-            print(f"DEBUG: {error_msg}")
             if tracker:
                 tracker.error(f"agent-md-{agent}", error_msg)
+            else:
+                console.print(f"[red]Error:[/red] {error_msg}")
             return
 
-        print(f"DEBUG: Reading template from {agent_template_path}")
         template_content = agent_template_path.read_text(encoding='utf-8')
-        print(f"DEBUG: Template content length: {len(template_content)}")
 
         # Create agent-specific filename based on agent name
         # Map agent names to appropriate file names
@@ -558,13 +558,10 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
 
         # Use the mapping or default to a generic format based on agent name
         filename = agent_name_mapping.get(agent, f"{agent.upper()}.md")
-        print(f"DEBUG: Creating file {filename} for agent {agent}")
 
         # Create the agent-specific MD file in the project root
         output_path = project_path / filename
-        print(f"DEBUG: Writing file to {output_path}")
         output_path.write_text(template_content, encoding='utf-8')
-        print(f"DEBUG: Successfully wrote file {output_path}")
 
         success_msg = f"Created {filename} with agent-specific configuration in project root"
         if tracker:
@@ -572,10 +569,12 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
             tracker.complete(f"agent-md-{agent}", f"Created {filename} in project root")
 
     except Exception as e:
-        error_msg = f"Error: {str(e)}\nTraceback: {traceback.format_exc()}"
-        print(f"DEBUG: {error_msg}")
+        error_msg = f"Error creating agent-specific MD file: {str(e)}"
         if tracker:
             tracker.error(f"agent-md-{agent}", error_msg)
+        else:
+            console.print(f"[red]Error:[/red] {error_msg}")
+        raise  # Re-raise to ensure the error is properly handled by the main init function
 
 
 def init(
@@ -773,15 +772,7 @@ def init(
                 raise  # Re-raise to maintain original behavior
 
             # Create agent-specific MD file for the selected AI assistant
-            print(f"DEBUG: About to create agent-specific MD file for {selected_ai}")
-            try:
-                create_agent_specific_md_file(project_path, selected_ai, tracker=tracker)
-                print(f"DEBUG: Agent-specific MD file creation completed for {selected_ai}")
-            except Exception as e:
-                print(f"ERROR in create_agent_specific_md_file: {e}")
-                import traceback
-                traceback.print_exc()
-                raise  # Re-raise to maintain original behavior
+            create_agent_specific_md_file(project_path, selected_ai, tracker=tracker)
 
             ensure_executable_scripts(project_path, tracker=tracker)
             console.print(f"[cyan]Debug:[/cyan] Executable scripts step completed")
