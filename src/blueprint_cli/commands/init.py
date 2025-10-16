@@ -407,27 +407,37 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
     # Try multiple methods to find the templates directory
     templates_commands_dir = None
 
-    # Method 1: Try importlib.resources (for installed packages)
+    # Method 1: Try importlib.resources.files (modern approach)
     try:
-        with importlib.resources.path('blueprint_cli', '__init__.py') as cli_path:
-            potential_dir = cli_path.parent.parent / "templates" / "commands"
-            if potential_dir.exists():
-                templates_commands_dir = potential_dir
-    except:
-        pass
+        templates_pkg = importlib.resources.files('blueprint_cli').parent
+        templates_commands_dir = templates_pkg / "templates" / "commands"
+        if templates_commands_dir.exists():
+            print(f"DEBUG: Found templates/commands using importlib.resources.files at {templates_commands_dir}")
+        else:
+            print(f"DEBUG: Templates/commands path from importlib.resources.files does not exist: {templates_commands_dir}")
+            templates_commands_dir = None
+    except Exception as e:
+        print(f"DEBUG: Error using importlib.resources.files for commands: {e}")
+        templates_commands_dir = None
 
-    # Method 2: Try relative to current file location
+    # Method 2: Try relative to current file location (for development)
     if templates_commands_dir is None:
-        cli_dir = Path(__file__).parent
-        potential_dir = cli_dir.parent.parent / "templates" / "commands"
+        cli_dir = Path(__file__).parent.parent.parent  # Go up one more level to src/
+        potential_dir = cli_dir / "templates" / "commands"
         if potential_dir.exists():
             templates_commands_dir = potential_dir
+            print(f"DEBUG: Found templates/commands relative to src location at {templates_commands_dir}")
+        else:
+            print(f"DEBUG: Templates/commands path from src location does not exist: {potential_dir}")
 
-    # Method 3: Try absolute path from current working directory
+    # Method 3: Try absolute path from current working directory (for development)
     if templates_commands_dir is None:
         potential_dir = Path.cwd() / "templates" / "commands"
         if potential_dir.exists():
             templates_commands_dir = potential_dir
+            print(f"DEBUG: Found templates/commands in current working directory at {templates_commands_dir}")
+        else:
+            print(f"DEBUG: Templates/commands path from current working directory does not exist: {potential_dir}")
 
     if templates_commands_dir is None or not templates_commands_dir.exists():
         if tracker:
@@ -493,10 +503,13 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
                 # Replace $ARGUMENTS with the actual argument format
                 replaced_content = replaced_content.replace('$ARGUMENTS', agent_config['arg_format'])
                 
-                # Apply path rewrites (change paths to use .blueprint instead of /)
-                replaced_content = re.sub(r'(/?)memory/', r'.blueprint/memory/', replaced_content)
-                replaced_content = re.sub(r'(/?)scripts/', r'.blueprint/scripts/', replaced_content)
-                replaced_content = re.sub(r'(/?)templates/', r'.blueprint/templates/', replaced_content)
+                # Apply path rewrites carefully to avoid duplication
+                # First, fix any existing .blueprint prefixes that might get duplicated
+                replaced_content = re.sub(r'\.blueprint/\.blueprint/(memory|scripts|templates)/', r'.blueprint/\1/', replaced_content)
+                # Then handle the original root paths
+                replaced_content = re.sub(r'/(memory|scripts|templates)/', r'.blueprint/\1/', replaced_content)
+                # Handle relative paths at word boundaries that don't already have .blueprint prefix
+                replaced_content = re.sub(r'(?<!\.blueprint/)(?<=^|\s)(memory|scripts|templates)(?=/)', r'.blueprint/\1', replaced_content)
                 
                 # Create the output file - use just the command name for slash command recognition
                 output_filename = f"{cmd_file.stem}.{agent_config['ext']}"
@@ -546,7 +559,7 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
         # Get the agent file template
         templates_root_dir = None
 
-        # Method 1: Try importlib.resources (for installed packages)
+        # Method 1: Try importlib.resources.files (modern approach)
         try:
             # Use importlib.resources.files to get the templates directory
             templates_pkg = importlib.resources.files('blueprint_cli').parent
@@ -560,17 +573,17 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
             print(f"DEBUG: Error using importlib.resources.files: {e}")
             templates_root_dir = None
 
-        # Method 2: Try relative to current file location
+        # Method 2: Try relative to current file location (for development)
         if templates_root_dir is None:
-            cli_dir = Path(__file__).parent.parent
+            cli_dir = Path(__file__).parent.parent.parent  # Go up one more level to src/
             potential_dir = cli_dir / "templates"
             if potential_dir.exists():
                 templates_root_dir = potential_dir
-                print(f"DEBUG: Found templates relative to file location at {templates_root_dir}")
+                print(f"DEBUG: Found templates relative to src location at {templates_root_dir}")
             else:
-                print(f"DEBUG: Templates path from file location does not exist: {potential_dir}")
+                print(f"DEBUG: Templates path from src location does not exist: {potential_dir}")
 
-        # Method 3: Try absolute path from current working directory
+        # Method 3: Try absolute path from current working directory (for development)
         if templates_root_dir is None:
             potential_dir = Path.cwd() / "templates"
             if potential_dir.exists():
