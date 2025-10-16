@@ -505,8 +505,8 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
                 
                 # Apply path rewrites, being careful not to duplicate .blueprint prefixes
                 # The original regex (/?memory/) would match both /memory/ and memory/, causing duplication
-                # We should only match root paths that start with /
-                replaced_content = re.sub(r'/(memory|scripts|templates)/', r'.blueprint/\1/', replaced_content)
+                # We should only match root paths that start with / but are not already prefixed with .blueprint/
+                replaced_content = re.sub(r'(?<!\.blueprint)/(memory|scripts|templates)/', r'.blueprint/\1/', replaced_content)
                 
                 # Create the output file - use just the command name for slash command recognition
                 output_filename = f"{cmd_file.stem}.{agent_config['ext']}"
