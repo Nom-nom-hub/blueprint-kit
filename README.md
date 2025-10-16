@@ -657,3 +657,7 @@ rm gcm-linux_amd64.2.6.1.deb
 ## 📄 License
 
 This project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) file for the full terms.
+
+## ℹ️ TOML File Compatibility Fix
+
+This project now includes a fix for an issue where TOML files were being created with backslashes (`\`) instead of forward slashes (`/`) on Windows systems, which was preventing AI agents from recognizing them properly. The issue has been resolved at the source - any backslashes in content that would be placed in TOML files are now automatically converted to forward slashes when generating agent command files.
