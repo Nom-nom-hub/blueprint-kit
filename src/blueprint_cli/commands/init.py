@@ -401,53 +401,15 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
     
     agent_config = agents[agent]
     
-    # Get the template command files from the package installation
-    import importlib.resources
+    # Get the template command files - use current working directory as primary method
+    templates_commands_dir = Path.cwd() / "templates" / "commands"
 
-    # Try multiple methods to find the templates directory
-    templates_commands_dir = None
-
-    # Method 1: Try importlib.resources.files (modern approach)
-    try:
-        templates_pkg = importlib.resources.files('blueprint_cli').parent
-        templates_commands_dir = templates_pkg / "templates" / "commands"
-        if templates_commands_dir.exists():
-            print(f"DEBUG: Found templates/commands using importlib.resources.files at {templates_commands_dir}")
-        else:
-            print(f"DEBUG: Templates/commands path from importlib.resources.files does not exist: {templates_commands_dir}")
-            templates_commands_dir = None
-    except Exception as e:
-        print(f"DEBUG: Error using importlib.resources.files for commands: {e}")
-        templates_commands_dir = None
-
-    # Method 2: Try relative to current file location (for development)
-    if templates_commands_dir is None:
-        cli_dir = Path(__file__).parent.parent.parent  # Go up one more level to src/
-        potential_dir = cli_dir / "templates" / "commands"
-        if potential_dir.exists():
-            templates_commands_dir = potential_dir
-            print(f"DEBUG: Found templates/commands relative to src location at {templates_commands_dir}")
-        else:
-            print(f"DEBUG: Templates/commands path from src location does not exist: {potential_dir}")
-
-    # Method 3: Try absolute path from current working directory (for development)
-    if templates_commands_dir is None:
-        potential_dir = Path.cwd() / "templates" / "commands"
-        if potential_dir.exists():
-            templates_commands_dir = potential_dir
-            print(f"DEBUG: Found templates/commands in current working directory at {templates_commands_dir}")
-        else:
-            print(f"DEBUG: Templates/commands path from current working directory does not exist: {potential_dir}")
-
-    if templates_commands_dir is None or not templates_commands_dir.exists():
+    if not templates_commands_dir.exists():
         if tracker:
-            tracker.error(f"agent-{agent}", f"Command templates not found (searched in multiple locations)")
+            tracker.error(f"agent-{agent}", f"Command templates not found at {templates_commands_dir}")
         else:
             console.print("[red]Error:[/red] Command templates not found")
-            console.print(f"[yellow]Debug:[/yellow] Searched for templates in:")
-            console.print(f"  - Package installation directory")
-            console.print(f"  - Relative to CLI source: {Path(__file__).parent.parent.parent / 'templates' / 'commands'}")
-            console.print(f"  - Current working directory: {Path.cwd() / 'templates' / 'commands'}")
+            console.print(f"[yellow]Expected location:[/yellow] {templates_commands_dir}")
         return
     
     # Create the agent-specific directory
@@ -553,44 +515,11 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
     from pathlib import Path
     
     try:
-        # Get the agent file template
-        templates_root_dir = None
+        # Get the agent file template - use current working directory
+        templates_root_dir = Path.cwd() / "templates"
 
-        # Method 1: Try importlib.resources.files (modern approach)
-        try:
-            # Use importlib.resources.files to get the templates directory
-            templates_pkg = importlib.resources.files('blueprint_cli').parent
-            templates_root_dir = templates_pkg / "templates"
-            if templates_root_dir.exists():
-                print(f"DEBUG: Found templates using importlib.resources.files at {templates_root_dir}")
-            else:
-                print(f"DEBUG: Templates path from importlib.resources.files does not exist: {templates_root_dir}")
-                templates_root_dir = None
-        except Exception as e:
-            print(f"DEBUG: Error using importlib.resources.files: {e}")
-            templates_root_dir = None
-
-        # Method 2: Try relative to current file location (for development)
-        if templates_root_dir is None:
-            cli_dir = Path(__file__).parent.parent.parent  # Go up one more level to src/
-            potential_dir = cli_dir / "templates"
-            if potential_dir.exists():
-                templates_root_dir = potential_dir
-                print(f"DEBUG: Found templates relative to src location at {templates_root_dir}")
-            else:
-                print(f"DEBUG: Templates path from src location does not exist: {potential_dir}")
-
-        # Method 3: Try absolute path from current working directory (for development)
-        if templates_root_dir is None:
-            potential_dir = Path.cwd() / "templates"
-            if potential_dir.exists():
-                templates_root_dir = potential_dir
-                print(f"DEBUG: Found templates in current working directory at {templates_root_dir}")
-            else:
-                print(f"DEBUG: Templates path from current working directory does not exist: {potential_dir}")
-
-        if templates_root_dir is None or not templates_root_dir.exists():
-            error_msg = f"Templates not found (searched in multiple locations)"
+        if not templates_root_dir.exists():
+            error_msg = f"Templates not found at {templates_root_dir}"
             print(f"DEBUG: {error_msg}")
             if tracker:
                 tracker.error(f"agent-md-{agent}", error_msg)
