@@ -143,6 +143,27 @@ Given that synchronization directive, do this:
 - **TRACE** relationships between related elements.
 - Written for maintaining cross-artifact consistency during development.
 
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When synchronization decisions are unclear, use this hierarchy to make decisions:
+
+1. **Default to constitution principles** - When conflicts exist between artifacts, prioritize adherence to the project constitution.md
+
+2. **Preserve latest intentional changes** - When artifacts conflict, favor the most recent intentional change over older content
+
+3. **Prioritize goal achievement** - When conflicts exist, choose updates that better support measurable goals
+
+4. **Maintain architectural integrity** - Favor changes that preserve the architectural blueprint integrity
+
+5. **Document assumptions** - Clearly mark any synchronization decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before synchronization**: Verify all required artifacts exist and are accessible
+2. **During synchronization**: Validate that updates maintain cross-artifact consistency
+3. **After synchronization**: Confirm all artifacts remain properly formatted and aligned
+4. **File operations**: Always update the specified artifact files (never create new files) and validate files exist before updating
+
 ### Synchronization Requirements
 
 - **Comprehensive Coverage**: Review all artifacts for needed updates

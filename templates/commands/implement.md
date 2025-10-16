@@ -165,6 +165,27 @@ Given that implementation directive, do this:
 - Written for developers executing the implementation.
 - DO NOT skip validation steps - ensure implementation meets all requirements.
 
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When user input is unclear or missing, use this hierarchy to make decisions:
+
+1. **Default to task specification** - When implementation details are ambiguous, follow the exact specifications in tasks.md
+
+2. **Preserve architectural integrity** - When implementation approaches conflict, prioritize solutions that maintain the architectural blueprint
+
+3. **Prioritize goal achievement** - Choose implementations that best achieve the measurable outcomes in goals.md
+
+4. **Follow specification requirements** - Ensure all functionality meets requirements in spec.md
+
+5. **Document assumptions** - Clearly mark any decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before implementation**: Verify all prerequisites exist and are accessible
+2. **During implementation**: Validate each completed task against specification requirements
+3. **After implementation**: Confirm all functionality works as specified and goals are achievable
+4. **File operations**: Always update the specified file paths in tasks.md (never create files with different names) and validate files exist before modifying
+
 ### Implementation Requirements
 
 - **Constitution Compliance**: All implementation must follow constitution.md principles

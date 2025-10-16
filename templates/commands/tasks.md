@@ -176,6 +176,27 @@ Given that task generation directive, do this:
 - Written for developers executing the implementation
 - DO NOT create any checklists that are embedded in the tasks. That will be a separate command.
 
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When user input is unclear or missing, use this hierarchy to make decisions:
+
+1. **Default to plan alignment** - When task details are ambiguous, follow the implementation approach defined in plan.md
+
+2. **Preserve requirement implementation** - When specific implementation is unclear, ensure tasks address the functional requirements in spec.md
+
+3. **Prioritize parallel execution** - Identify and mark tasks that can be executed in parallel [P] to accelerate development
+
+4. **Follow persona assignments** - Assign tasks to appropriate roles based on complexity and required expertise
+
+5. **Document assumptions** - Clearly mark any decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before generating tasks**: Verify all prerequisites (spec, goals, blueprint, plan) exist and are accessible
+2. **During generation**: Validate that all requirements have corresponding implementation tasks
+3. **After generation**: Confirm file is properly formatted and all tasks have specific file paths
+4. **File operations**: Always update tasks file (never create new files) and validate file exists before writing
+
 ### Section Requirements
 
 - **Mandatory sections**: Must be completed for every task breakdown

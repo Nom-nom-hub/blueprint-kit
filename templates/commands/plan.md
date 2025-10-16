@@ -199,6 +199,27 @@ Given that implementation planning directive, do this:
 - Written for developers and technical stakeholders.
 - DO NOT create any checklists that are embedded in the plan. That will be a separate command.
 
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When user input is unclear or missing, use this hierarchy to make decisions:
+
+1. **Default to technology alignment** - When implementation approaches are ambiguous, choose approaches that best align with the architectural blueprint
+
+2. **Preserve goal achievement** - When implementation details are unclear, choose the approach most likely to achieve defined goals
+
+3. **Prioritize test-driven development** - Implement with testing in mind, following the test-first imperative
+
+4. **Follow phased approach** - Structure implementation in logical, progressive phases
+
+5. **Document assumptions** - Clearly mark any decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before generating plan**: Verify all prerequisites (spec, goals, blueprint) exist and are accessible
+2. **During generation**: Validate that all implementation steps align with architectural blueprint
+3. **After generation**: Confirm file is properly formatted and all phases are achievable
+4. **File operations**: Always update plan file (never create new files) and validate file exists before writing
+
 ### Section Requirements
 
 - **Mandatory sections**: Must be completed for every implementation plan

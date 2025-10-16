@@ -332,6 +332,27 @@ Given that checklist generation directive, do this:
 - Written for quality assurance and validation purposes.
 - Enable **SYSTEMATIC VALIDATION** before proceeding to next phases.
 
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When quality criteria are unclear, use this hierarchy to make decisions:
+
+1. **Default to constitution principles** - When quality standards are ambiguous, prioritize adherence to the project constitution.md principles
+
+2. **Preserve requirement satisfaction** - When checklist items are unclear, focus on ensuring requirements can be met
+
+3. **Prioritize critical validation** - Include checks for items that would block successful implementation or achievement of goals
+
+4. **Follow industry standards** - When specific quality measures are ambiguous, apply common industry quality standards
+
+5. **Document assumptions** - Clearly mark any assessment criteria made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before generating checklists**: Verify all required artifacts exist and are accessible
+2. **During generation**: Validate that checklist items are specific and measurable
+3. **After generation**: Confirm all checklists are properly formatted and actionable
+4. **File operations**: Always create or overwrite checklist files at specified paths (never create in alternative locations) and validate files exist after creation
+
 ### Checklist Requirements
 
 - **Artifact-Specific Checklists**: Generate checklists tailored to each artifact type

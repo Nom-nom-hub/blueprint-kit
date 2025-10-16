@@ -130,6 +130,27 @@ Given that clarification directive, do this:
 - Written for stakeholders who need to provide clarification.
 - Limit to maximum 3 questions per artifact to avoid overwhelming user.
 
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When determining what needs clarification, use this hierarchy to make decisions:
+
+1. **Default to risk mitigation** - When ambiguity exists, prioritize clarification of areas that pose the highest project risk
+
+2. **Preserve project scope** - Focus on clarifications that prevent scope creep or ensure scope clarity
+
+3. **Prioritize implementation blockers** - Address ambiguities that would prevent implementation first
+
+4. **Follow stakeholder impact** - Clarify items that have the greatest impact on success metrics
+
+5. **Document assumptions** - Clearly mark any decisions made using default options with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before identifying clarifications**: Verify all required artifacts exist and are accessible
+2. **During identification**: Validate that each clarification request addresses a genuine ambiguity or risk
+3. **After generating questions**: Confirm questions are specific and actionable
+4. **File operations**: Always update the appropriate artifact files after receiving user responses (never create new files) and validate files exist before updating
+
 ### Clarification Requirements
 
 - **Scope Impact**: Clarify areas that significantly impact feature scope

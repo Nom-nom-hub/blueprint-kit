@@ -253,6 +253,27 @@ Given that analysis directive, do this:
 - Focus on **RISK IDENTIFICATION** before implementation.
 - Written for project stakeholders and technical leads.
 
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When artifacts are unclear or missing information, use this hierarchy to make decisions:
+
+1. **Default to constitution principles** - When evaluating alignment, prioritize adherence to the project constitution.md
+
+2. **Preserve intended functionality** - When identifying gaps, focus on maintaining the original feature intent
+
+3. **Prioritize critical inconsistencies** - Address contradictions that would block implementation before minor issues
+
+4. **Follow impact assessment** - Rank recommendations by their potential impact on project success
+
+5. **Document assumptions** - Clearly mark any assessments made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before analysis**: Verify all required artifacts exist and are accessible
+2. **During analysis**: Cross-check findings across multiple artifacts to confirm validity
+3. **After analysis**: Validate that recommendations are actionable and specific
+4. **File operations**: Always create or overwrite analysis report at specified path (never create in alternative location) and validate the file exists after creation
+
 ### Analysis Requirements
 
 - **Comprehensive Coverage**: Analyze all artifacts against each other
