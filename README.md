@@ -51,7 +51,7 @@ Choose your preferred installation method:
 Install once and use everywhere:
 
 ```bash
-uv tool install blueprint-cli --from git+https://github.com/nom-nom-hub/blueprint-kit.git
+uv tool install blueprint-kit --from git+https://github.com/nom-nom-hub/blueprint-kit.git
 ```
 
 Then use the tool directly:
@@ -64,7 +64,7 @@ blueprint check
 To upgrade blueprint run:
 
 ```bash
-uv tool install blueprint-cli --force --from git+https://github.com/nom-nom-hub/blueprint-kit.git
+uv tool install blueprint-kit --force --from git+https://github.com/nom-nom-hub/blueprint-kit.git
 ```
 
 #### Option 2: One-time Usage

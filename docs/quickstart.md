@@ -8,16 +8,22 @@ This guide will help you get started with Blueprint-Driven Development using Blu
 
 ### 1. Install Blueprint
 
-Initialize your project depending on the coding agent you're using:
+Install the blueprint-kit tool using uv:
 
 ```bash
-uvx --from git+https://github.com/nom-nom-hub/blueprint-kit.git blueprint init <PROJECT_NAME>
+uv tool install blueprint-kit --from git+https://github.com/nom-nom-hub/blueprint-kit.git
+```
+
+Then initialize your project depending on the coding agent you're using:
+
+```bash
+blueprint init <PROJECT_NAME>
 ```
 
 Pick script type explicitly (optional):
 ```bash
-uvx --from git+https://github.com/nom-nom-hub/blueprint-kit.git blueprint init <PROJECT_NAME> --script ps  # Force PowerShell
-uvx --from git+https://github.com/nom-nom-hub/blueprint-kit.git blueprint init <PROJECT_NAME> --script sh  # Force POSIX shell
+blueprint init <PROJECT_NAME> --script ps  # Force PowerShell
+blueprint init <PROJECT_NAME> --script sh  # Force POSIX shell
 ```
 
 ### 2. Create the Blueprint
