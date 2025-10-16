@@ -1,6 +1,6 @@
 [project]
 name = "blueprint-cli"
-version = "1.0.32"
+version = "1.0.51"
 description = "Blueprint CLI, part of Blueprint Kit. A tool to bootstrap your projects for Blueprint-Driven Development (BDD)."
 requires-python = ">=3.10"
 dependencies = [
