@@ -27,36 +27,36 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.tasks` in the triggering message **is** the task generation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.tasks` in the triggering message **is** the task generation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that task generation directive, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for FEATURE_DIR. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-2. Load `.blueprintkit/memory/constitution.md` to understand project principles.
+2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `templates/tasks-template.md` to understand required sections.
+3. Load `.blueprint/templates/tasks-template.md` to understand required sections.
 
-4. Load `specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-5. Load `specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-6. Load `specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-7. Load `specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+7. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
 8. If any required file is missing, provide helpful guidance:
-   - If `.blueprintkit/memory/constitution.md` is missing: 
-     Suggest creating it with `/blueprintkit.constitution` command
-   - If `specs/[FEATURE_DIR]/spec.md` is missing:
-     Suggest creating it with `/blueprintkit.specify` command
-   - If `specs/[FEATURE_DIR]/goals.md` is missing:
-     Suggest creating it with `/blueprintkit.goal` command
-   - If `specs/[FEATURE_DIR]/blueprint.md` is missing:
-     Suggest creating it with `/blueprintkit.blueprint` command
-   - If `specs/[FEATURE_DIR]/plan.md` is missing:
-     Suggest creating it with `/blueprintkit.plan` command
+   - If `.blueprint/memory/constitution.md` is missing: 
+     Suggest creating it with `/blueprint.constitution` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
+     Suggest creating it with `/blueprint.specify` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
+     Suggest creating it with `/blueprint.goal` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
+     Suggest creating it with `/blueprint.blueprint` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
+     Suggest creating it with `/blueprint.plan` command
 
 9. Follow this execution flow:
 
@@ -74,7 +74,7 @@ Given that task generation directive, do this:
        - Ensure dependent tasks come after dependencies
     5. Assign appropriate personas to tasks based on task-persona mapping:
        - Review each task and identify the required skill set and organizational role
-       - Refer to `templates/task-persona-mapping.md` for proper assignment
+       - Refer to `.blueprint/templates/task-persona-mapping.md` for proper assignment
        - Assign strategic tasks to management roles (CTO, EM, PM)
        - Assign design tasks to design roles (UX, UI)
        - Assign Backend Developer (BE) for backend-focused tasks
@@ -95,7 +95,7 @@ Given that task generation directive, do this:
        - Implementation details in plan.md
     7. Return: SUCCESS (tasks ready for implementation)
 
-10. Write the tasks to `specs/[FEATURE_DIR]/tasks.md` using the template structure, replacing placeholders with concrete details derived from the plan, specification, goals and blueprint while preserving section order and headings.
+10. Write the tasks to `.blueprint/specsprint/specs/[FEATURE_DIR]/tasks.md` using the template structure, replacing placeholders with concrete details derived from the plan, specification, goals and blueprint while preserving section order and headings.
 
 11. **Tasks Quality Validation**: After writing the initial task list, validate it against quality criteria:
 
@@ -141,7 +141,7 @@ Given that task generation directive, do this:
       
       ## Notes
       
-      - Items marked incomplete require task updates before `/blueprintkit.implement`
+      - Items marked incomplete require task updates before `/blueprint.implement`
       ```
    
    b. **Run Validation Check**: Review the tasks against each checklist item:
@@ -160,7 +160,7 @@ Given that task generation directive, do this:
    
    d. **Update Checklist**: After validation, update the checklist file with current pass/fail status
 
-12. Report completion with tasks file path, checklist results, and readiness for the next phase (`/blueprintkit.implement`).
+12. Report completion with tasks file path, checklist results, and readiness for the next phase (`/blueprint.implement`).
 
 **NOTE:** The script validates that all prerequisite files exist before generating tasks.
 

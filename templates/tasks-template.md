@@ -69,8 +69,8 @@
 - [ ] Cross-artifact consistency maintained (per constitution Article VI)
 
 ## Prerequisites
-- [ ] `.blueprintkit/memory/constitution.md` exists and is current
-- [ ] `specs/[FEATURE_DIR]/spec.md` exists and is approved
-- [ ] `specs/[FEATURE_DIR]/goals.md` exists and is approved
-- [ ] `specs/[FEATURE_DIR]/blueprint.md` exists and is approved
-- [ ] `specs/[FEATURE_DIR]/plan.md` exists and is approved
+- [ ] `.blueprint/memory/constitution.md` exists and is current
+- [ ] `.blueprint/specs/[FEATURE_DIR]/spec.md` exists and is approved
+- [ ] `.blueprint/specs/[FEATURE_DIR]/goals.md` exists and is approved
+- [ ] `.blueprint/specs/[FEATURE_DIR]/blueprint.md` exists and is approved
+- [ ] `.blueprint/specs/[FEATURE_DIR]/plan.md` exists and is approved

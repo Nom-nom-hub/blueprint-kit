@@ -27,25 +27,25 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.plan` in the triggering message **is** the implementation planning directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.plan` in the triggering message **is** the implementation planning directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that implementation planning directive, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for FEATURE_DIR. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-2. Load `.blueprintkit/memory/constitution.md` to understand project principles.
+2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `templates/plan-template.md` to understand required sections.
+3. Load `.blueprint/templates/plan-template.md` to understand required sections.
 
-4. Load `specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
-   If missing: Suggest creating it with `/blueprintkit.specify` command
+4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+   If missing: Suggest creating it with `/blueprint.specify` command
 
-5. Load `specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
-   If missing: Suggest creating it with `/blueprintkit.goal` command
+5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+   If missing: Suggest creating it with `/blueprint.goal` command
 
-6. Load `specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
-   If missing: Suggest creating it with `/blueprintkit.blueprint` command
+6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+   If missing: Suggest creating it with `/blueprint.blueprint` command
 
 7. Validate alignment between spec, goals, blueprint, and plan:
    - [ ] Implementation plan aligns with feature specification
@@ -79,7 +79,7 @@ Given that implementation planning directive, do this:
        Each test type must validate requirements, goals, or architecture
     8. Return: SUCCESS (plan ready for task breakdown)
 
-9. Write the implementation plan to `specs/[FEATURE_DIR]/plan.md` using the template structure, replacing placeholders with concrete details derived from the implementation planning directive (arguments) while preserving section order and headings.
+9. Write the implementation plan to `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` using the template structure, replacing placeholders with concrete details derived from the implementation planning directive (arguments) while preserving section order and headings.
 
 10. **Plan Quality Validation**: After writing the initial plan, validate it against quality criteria:
 
@@ -124,7 +124,7 @@ Given that implementation planning directive, do this:
       
       ## Notes
       
-      - Items marked incomplete require plan updates before `/blueprintkit.tasks`
+      - Items marked incomplete require plan updates before `/blueprint.tasks`
       ```
    
    b. **Run Validation Check**: Review the plan against each checklist item:
@@ -179,13 +179,13 @@ Given that implementation planning directive, do this:
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 
 11. Generate supporting implementation documents:
-   - Create `specs/[FEATURE_DIR]/contracts/` directory if not exists
+   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/contracts/` directory if not exists
    - For each API endpoint identified in plan, create contract in `contracts/` directory
-   - Create `specs/[FEATURE_DIR]/data-model.md` with all data models identified in plan
-   - Create `specs/[FEATURE_DIR]/research.md` with detailed research for complex technical decisions
-   - Create `specs/[FEATURE_DIR]/quickstart.md` with validation scenarios for key functionality
+   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/data-model.md` with all data models identified in plan
+   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/research.md` with detailed research for complex technical decisions
+   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/quickstart.md` with validation scenarios for key functionality
 
-12. Report completion with plan file path, checklist results, and readiness for the next phase (`/blueprintkit.tasks`).
+12. Report completion with plan file path, checklist results, and readiness for the next phase (`/blueprint.tasks`).
 
 **NOTE:** The script creates the feature directory structure and validates prerequisites before writing the plan.
 

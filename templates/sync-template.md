@@ -79,7 +79,7 @@ Before marking any implementation task as complete, verify:
 - [ ] Cross-artifact dependencies are still valid
 
 ## Tools and Commands
-- Use `/blueprintkit.analyze` regularly to check for consistency between artifacts
+- Use `/blueprint.analyze` regularly to check for consistency between artifacts
 - Review all related artifacts before making significant changes
 - Keep all documents open during implementation to reference and update as needed
 

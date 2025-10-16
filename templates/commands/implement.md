@@ -27,45 +27,45 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.implement` in the triggering message **is** the implementation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.implement` in the triggering message **is** the implementation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that implementation directive, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for FEATURE_DIR. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-2. Load `.blueprintkit/memory/constitution.md` to understand project principles.
+2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+3. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-4. Load `specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-5. Load `specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-6. Load `specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
-7. Load `specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
+7. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
 
 8. Validate prerequisites:
-   - [ ] `.blueprintkit/memory/constitution.md` exists and is current
-   - [ ] `specs/[FEATURE_DIR]/spec.md` exists and is approved
-   - [ ] `specs/[FEATURE_DIR]/goals.md` exists and is approved
-   - [ ] `specs/[FEATURE_DIR]/blueprint.md` exists and is approved
-   - [ ] `specs/[FEATURE_DIR]/plan.md` exists and is approved
-   - [ ] `specs/[FEATURE_DIR]/tasks.md` exists and is approved
+   - [ ] `.blueprint/memory/constitution.md` exists and is current
+   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` exists and is approved
+   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` exists and is approved
+   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` exists and is approved
+   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` exists and is approved
+   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` exists and is approved
    If any check fails, provide helpful guidance with examples:
-   - If `.blueprintkit/memory/constitution.md` is missing: 
-     Suggest creating it with `/blueprintkit.constitution` command
-   - If `specs/[FEATURE_DIR]/spec.md` is missing:
-     Suggest creating it with `/blueprintkit.specify` command
-   - If `specs/[FEATURE_DIR]/goals.md` is missing:
-     Suggest creating it with `/blueprintkit.goal` command
-   - If `specs/[FEATURE_DIR]/blueprint.md` is missing:
-     Suggest creating it with `/blueprintkit.blueprint` command
-   - If `specs/[FEATURE_DIR]/plan.md` is missing:
-     Suggest creating it with `/blueprintkit.plan` command
-   - If `specs/[FEATURE_DIR]/tasks.md` is missing:
-     Suggest creating it with `/blueprintkit.tasks` command
+   - If `.blueprint/memory/constitution.md` is missing: 
+     Suggest creating it with `/blueprint.constitution` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
+     Suggest creating it with `/blueprint.specify` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
+     Suggest creating it with `/blueprint.goal` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
+     Suggest creating it with `/blueprint.blueprint` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
+     Suggest creating it with `/blueprint.plan` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` is missing:
+     Suggest creating it with `/blueprint.tasks` command
 
 9. Follow this execution flow:
 
@@ -87,7 +87,7 @@ Given that implementation directive, do this:
     5. Validate implementation against spec.md requirements
     6. Return: SUCCESS (implementation complete and validated)
 
-10. Execute implementation by following the task list in `specs/[FEATURE_DIR]/tasks.md`:
+10. Execute implementation by following the task list in `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md`:
 
    a. **Implementation Process**:
    
@@ -105,18 +105,18 @@ Given that implementation directive, do this:
    b. **Artifact Update Process**:
    
       - After completing implementation tasks, update related artifacts as needed:
-        1. Update `specs/[FEATURE_DIR]/spec.md` if implementation details reveal needed specification adjustments
-        2. Update `specs/[FEATURE_DIR]/goals.md` if measurable outcomes need refinement based on implementation
-        3. Update `specs/[FEATURE_DIR]/blueprint.md` if architectural decisions change during implementation
-        4. Update `specs/[FEATURE_DIR]/plan.md` if implementation plan needs adjustments based on discovered requirements
-        5. Update `specs/[FEATURE_DIR]/tasks.md` if new tasks emerge or existing tasks need modification
+        1. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` if implementation details reveal needed specification adjustments
+        2. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` if measurable outcomes need refinement based on implementation
+        3. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` if architectural decisions change during implementation
+        4. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` if implementation plan needs adjustments based on discovered requirements
+        5. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` if new tasks emerge or existing tasks need modification
       - Ensure all artifacts remain consistent with each other per constitution Article VI
       - Document all changes with reasoning for future reference
 
    c. **Persona Assignment Validation**:
    
       - Verify that tasks are assigned to appropriate personas based on skill requirements and organizational roles:
-        1. Review `templates/task-persona-mapping.md` for proper task-persona alignment
+        1. Review `.blueprint/templates/task-persona-mapping.md` for proper task-persona alignment
         2. Confirm that strategic/management tasks are assigned to appropriate management roles (CTO, EM, PM)
         3. Confirm that design tasks are assigned to appropriate design roles (UX, UI)
         4. Confirm that backend tasks are assigned to Backend or Full-Stack developers

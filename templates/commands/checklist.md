@@ -15,22 +15,22 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.checklist` in the triggering message **is** the checklist generation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.checklist` in the triggering message **is** the checklist generation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that checklist generation directive, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for FEATURE_DIR. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-2. Load `.blueprintkit/memory/constitution.md` to understand project principles.
+2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+3. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-4. Load `specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-5. Load `specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-6. Load `specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
 7. If any required file is missing, ERROR with specific file name that's missing.
 
@@ -48,7 +48,7 @@ Given that checklist generation directive, do this:
 
 9. Generate quality checklists for each artifact:
 
-   a. **Specification Quality Checklist** (`specs/[FEATURE_DIR]/checklists/spec.md`):
+   a. **Specification Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/spec.md`):
    
       ```markdown
       # Specification Quality Checklist: [FEATURE NAME]
@@ -91,10 +91,10 @@ Given that checklist generation directive, do this:
       
       ## Notes
       
-      - Items marked incomplete require spec updates before `/blueprintkit.plan`
+      - Items marked incomplete require spec updates before `/blueprint.plan`
       ```
    
-   b. **Goals Quality Checklist** (`specs/[FEATURE_DIR]/checklists/goals.md`):
+   b. **Goals Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/goals.md`):
    
       ```markdown
       # Goals Quality Checklist: [FEATURE NAME]
@@ -136,10 +136,10 @@ Given that checklist generation directive, do this:
       
       ## Notes
       
-      - Items marked incomplete require goal updates before `/blueprintkit.blueprint`
+      - Items marked incomplete require goal updates before `/blueprint.blueprint`
       ```
    
-   c. **Blueprint Quality Checklist** (`specs/[FEATURE_DIR]/checklists/blueprint.md`):
+   c. **Blueprint Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/blueprint.md`):
    
       ```markdown
       # Blueprint Quality Checklist: [FEATURE NAME]
@@ -186,10 +186,10 @@ Given that checklist generation directive, do this:
       
       ## Notes
       
-      - Items marked incomplete require blueprint updates before `/blueprintkit.plan`
+      - Items marked incomplete require blueprint updates before `/blueprint.plan`
       ```
    
-   d. **Plan Quality Checklist** (`specs/[FEATURE_DIR]/checklists/plan.md`):
+   d. **Plan Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/plan.md`):
    
       ```markdown
       # Plan Quality Checklist: [FEATURE NAME]
@@ -239,10 +239,10 @@ Given that checklist generation directive, do this:
       
       ## Notes
       
-      - Items marked incomplete require plan updates before `/blueprintkit.tasks`
+      - Items marked incomplete require plan updates before `/blueprint.tasks`
       ```
    
-   e. **Overall Integration Checklist** (`specs/[FEATURE_DIR]/checklists/integration.md`):
+   e. **Overall Integration Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/integration.md`):
    
       ```markdown
       # Cross-Artifact Integration Checklist: [FEATURE NAME]
@@ -297,7 +297,7 @@ Given that checklist generation directive, do this:
       
       ## Notes
       
-      - Items marked incomplete require updates before `/blueprintkit.tasks`
+      - Items marked incomplete require updates before `/blueprint.tasks`
       ```
 
 10. Apply constitution.md principles as quality criteria across all checklists:
@@ -312,7 +312,7 @@ Given that checklist generation directive, do this:
    - Anti-Abstraction Principle: Verify unnecessary abstractions are avoided
    - Integration-First Testing: Ensure real-world testing is prioritized
 
-11. Save all checklists to the `specs/[FEATURE_DIR]/checklists/` directory.
+11. Save all checklists to the `.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/` directory.
 
 12. Report completion with:
    - Paths to all generated checklists

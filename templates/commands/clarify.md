@@ -26,18 +26,18 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.clarify` in the triggering message **is** the clarification directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.clarify` in the triggering message **is** the clarification directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that clarification directive, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for FEATURE_DIR. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-2. Load `specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+2. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-3. Load `specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+3. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-4. Load `specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
 5. If any required file is missing, ERROR with specific file name that's missing.
 
@@ -112,11 +112,11 @@ Given that clarification directive, do this:
    - Number questions sequentially (Q1, Q2, etc.)
 
 10. Wait for user responses and update the relevant artifacts:
-    - Update `specs/[FEATURE_DIR]/spec.md` with resolved clarifications
-    - Update `specs/[FEATURE_DIR]/goals.md` with clarified metrics
-    - Update `specs/[FEATURE_DIR]/blueprint.md` with architectural decisions
+    - Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` with resolved clarifications
+    - Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` with clarified metrics
+    - Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` with architectural decisions
 
-11. Report completion with updated artifacts and readiness for the next phase (`/blueprintkit.plan`).
+11. Report completion with updated artifacts and readiness for the next phase (`/blueprint.plan`).
 
 **NOTE:** The script validates that spec.md, goals.md and blueprint.md exist before starting clarification.
 

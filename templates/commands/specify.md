@@ -27,14 +27,14 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that feature description, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\\''m Groot' (or double-quote if possible: "I'm Groot").
 
-2. Load `templates/spec-template.md` to understand required sections.
+2. Load `.blueprint/templates/spec-template.md` to understand required sections.
 
 3. Follow this execution flow:
 
@@ -102,7 +102,7 @@ Given that feature description, do this:
       
       ## Notes
       
-      - Items marked incomplete require spec updates before `/blueprintkit.clarify` or `/blueprintkit.plan`
+      - Items marked incomplete require spec updates before `/blueprint.clarify` or `/blueprint.plan`
       ```
    
    b. **Run Validation Check**: Review the spec against each checklist item:
@@ -156,7 +156,7 @@ Given that feature description, do this:
    
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 
-6. Report completion with branch name, spec file path, checklist results, and readiness for the next phase (`/blueprintkit.clarify` or `/blueprintkit.goal`).
+6. Report completion with branch name, spec file path, checklist results, and readiness for the next phase (`/blueprint.clarify` or `/blueprint.goal`).
 
 **NOTE:** The script creates and checks out the new branch and initializes the spec file before writing.
 

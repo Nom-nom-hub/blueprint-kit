@@ -26,24 +26,24 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.sync` in the triggering message **is** the synchronization directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.sync` in the triggering message **is** the synchronization directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that synchronization directive, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for FEATURE_DIR. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-2. Load `.blueprintkit/memory/constitution.md` to understand project principles.
+2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+3. Load `.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-4. Load `specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+4. Load `.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-5. Load `specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+5. Load `.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-6. Load `specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+6. Load `.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
-7. Load `specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
+7. Load `.blueprint/specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
 
 8. If any required file is missing, ERROR with specific file name that's missing.
 
@@ -125,7 +125,7 @@ Given that synchronization directive, do this:
 12. Ensure all updates follow the principles in constitution.md, particularly Article VI (Cross-Artifact Consistency).
 
 13. Report synchronization results with:
-   - Complete synchronization report saved to `specs/[FEATURE_DIR]/synchronization.md`
+   - Complete synchronization report saved to `.blueprint/specs/[FEATURE_DIR]/synchronization.md`
    - Summary of key changes made
    - Confirmation of consistency between all artifacts
    - Recommendations for maintaining synchronization going forward

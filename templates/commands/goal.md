@@ -27,14 +27,14 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.goal` in the triggering message **is** the goals description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.goal` in the triggering message **is** the goals description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that goals description, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\\''m Groot' (or double-quote if possible: "I'm Groot").
 
-2. Load `templates/goal-template.md` to understand required sections.
+2. Load `.blueprint/templates/goal-template.md` to understand required sections.
 
 3. Follow this execution flow:
 
@@ -100,7 +100,7 @@ Given that goals description, do this:
       
       ## Notes
       
-      - Items marked incomplete require goal updates before `/blueprintkit.blueprint`
+      - Items marked incomplete require goal updates before `/blueprint.blueprint`
       ```
    
    b. **Run Validation Check**: Review the goals against each checklist item:
@@ -154,7 +154,7 @@ Given that goals description, do this:
    
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 
-6. Report completion with branch name, goals file path, checklist results, and readiness for the next phase (`/blueprintkit.blueprint`).
+6. Report completion with branch name, goals file path, checklist results, and readiness for the next phase (`/blueprint.blueprint`).
 
 **NOTE:** The script creates and checks out the new branch and initializes the goals file before writing.
 

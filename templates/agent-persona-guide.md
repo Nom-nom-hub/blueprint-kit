@@ -36,8 +36,8 @@ This guide provides agents with the knowledge needed to properly match advanced 
 6. Determine the level of expertise required for successful completion
 
 ### Step 2: Map to Advanced Persona Capabilities
-1. Refer to `templates/personas.md` for detailed advanced persona capabilities
-2. Consult `templates/task-persona-mapping.md` for guidelines
+1. Refer to `.blueprint/templates/personas.md` for detailed advanced persona capabilities
+2. Consult `.blueprint/templates/task-persona-mapping.md` for guidelines
 3. Match task requirements to persona specializations and organizational roles
 4. Consider the advanced expertise level required for the task
 5. Consider secondary advanced skills when appropriate
@@ -229,7 +229,7 @@ Before finalizing persona assignments, ensure:
 - Note: Requires expert-level knowledge in data systems, not basic database operations
 
 ## References
-- `templates/personas.md` - Detailed advanced persona definitions
-- `templates/task-persona-mapping.md` - Task-to-advanced-persona mapping guidelines
-- `specs/[FEATURE_DIR]/blueprint.md` - Architecture requirements that may affect assignments
-- `specs/[FEATURE_DIR]/plan.md` - Implementation approach details
+- `.blueprint/templates/personas.md` - Detailed advanced persona definitions
+- `.blueprint/templates/task-persona-mapping.md` - Task-to-advanced-persona mapping guidelines
+- `.blueprint/specsprint/specs/[FEATURE_DIR]/blueprint.md` - Architecture requirements that may affect assignments
+- `.blueprint/specsprint/specs/[FEATURE_DIR]/plan.md` - Implementation approach details

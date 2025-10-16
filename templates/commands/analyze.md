@@ -26,38 +26,38 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.analyze` in the triggering message **is** the analysis directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.analyze` in the triggering message **is** the analysis directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that analysis directive, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for FEATURE_DIR. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-2. Load `.blueprintkit/memory/constitution.md` to understand project principles.
+2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+3. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-4. Load `specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-5. Load `specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-6. Load `specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
-7. Load `specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
+7. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
 
 8. If any required file is missing, provide helpful guidance:
-   - If `.blueprintkit/memory/constitution.md` is missing: 
-     Suggest creating it with `/blueprintkit.constitution` command
-   - If `specs/[FEATURE_DIR]/spec.md` is missing:
-     Suggest creating it with `/blueprintkit.specify` command
-   - If `specs/[FEATURE_DIR]/goals.md` is missing:
-     Suggest creating it with `/blueprintkit.goal` command
-   - If `specs/[FEATURE_DIR]/blueprint.md` is missing:
-     Suggest creating it with `/blueprintkit.blueprint` command
-   - If `specs/[FEATURE_DIR]/plan.md` is missing:
-     Suggest creating it with `/blueprintkit.plan` command
-   - If `specs/[FEATURE_DIR]/tasks.md` is missing:
-     Suggest creating it with `/blueprintkit.tasks` command
+   - If `.blueprint/memory/constitution.md` is missing: 
+     Suggest creating it with `/blueprint.constitution` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
+     Suggest creating it with `/blueprint.specify` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
+     Suggest creating it with `/blueprint.goal` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
+     Suggest creating it with `/blueprint.blueprint` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
+     Suggest creating it with `/blueprint.plan` command
+   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` is missing:
+     Suggest creating it with `/blueprint.tasks` command
 
 9. Follow this execution flow:
 
@@ -234,7 +234,7 @@ Given that analysis directive, do this:
    - Integration-First Testing compliance
 
 14. Report analysis results with:
-   - Complete analysis report saved to `specs/[FEATURE_DIR]/analysis.md`
+   - Complete analysis report saved to `.blueprint/.blueprint/specs/[FEATURE_DIR]/analysis.md`
    - Summary of key findings
    - Priority recommendations for addressing issues
    - Readiness assessment for next phase

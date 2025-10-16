@@ -27,11 +27,11 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/blueprintkit.constitution` in the triggering message **is** the constitutional principles description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/blueprint.constitution` in the triggering message **is** the constitutional principles description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that description, do this:
 
-1. Load the `.blueprintkit/memory/constitution.md` file if it exists, otherwise use the template below
+1. Load the `.blueprint/memory/constitution.md` file if it exists, otherwise use the template below
 2. Update the constitution with the new principles described by the user
 3. Ensure all principles align with the Blueprint-Driven Development methodology
 4. Focus on principles that guide architectural decisions, code quality, testing standards, and user experience consistency
@@ -138,7 +138,7 @@ Tests MUST use realistic environments:
 1. Read the current constitution if it exists
 2. Incorporate the user's principles while maintaining the core Blueprint-Driven Development approach
 3. Update the template sections as appropriate
-4. Save to `.blueprintkit/memory/constitution.md`
+4. Save to `.blueprint/memory/constitution.md`
 
 ## General Guidelines
 

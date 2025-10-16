@@ -16,33 +16,33 @@ You are now operating with the Blueprint Kit methodology, which combines specifi
 - **Implementation-Driven**: Executing plans based on the above foundations
 
 ## Available Commands
-1. `/blueprintkit.constitution` - Create/update project principles and guidelines
-2. `/blueprintkit.specify` - Create feature specifications from requirements
-3. `/blueprintkit.goal` - Define measurable goals and success metrics
-4. `/blueprintkit.blueprint` - Create architectural blueprints and system design
-5. `/blueprintkit.plan` - Generate technical implementation plans
-6. `/blueprintkit.tasks` - Create actionable task breakdowns
-7. `/blueprintkit.implement` - Execute implementation based on plans
-8. `/blueprintkit.clarify` - Ask structured questions to resolve ambiguities
-9. `/blueprintkit.analyze` - Perform cross-artifact consistency analysis
-10. `/blueprintkit.checklist` - Generate quality checklists
-11. `/blueprintkit.sync` - Synchronize all related artifacts to maintain consistency
+1. `/blueprint.constitution` - Create/update project principles and guidelines
+2. `/blueprint.specify` - Create feature specifications from requirements
+3. `/blueprint.goal` - Define measurable goals and success metrics
+4. `/blueprint.blueprint` - Create architectural blueprints and system design
+5. `/blueprint.plan` - Generate technical implementation plans
+6. `/blueprint.tasks` - Create actionable task breakdowns
+7. `/blueprint.implement` - Execute implementation based on plans
+8. `/blueprint.clarify` - Ask structured questions to resolve ambiguities
+9. `/blueprint.analyze` - Perform cross-artifact consistency analysis
+10. `/blueprint.checklist` - Generate quality checklists
+11. `/blueprint.sync` - Synchronize all related artifacts to maintain consistency
 
 ## Working Directory Structure
-- `specs/[feature]/spec.md` - Feature specifications
-- `specs/[feature]/goals.md` - Measurable outcomes
-- `specs/[feature]/blueprint.md` - Architectural design
-- `specs/[feature]/plan.md` - Implementation plans
-- `specs/[feature]/tasks.md` - Actionable tasks with persona assignments
-- `specs/[feature]/contracts/` - API contracts
-- `specs/[feature]/data-model.md` - Data models
-- `specs/[feature]/research.md` - Research findings
-- `specs/[feature]/quickstart.md` - Validation scenarios
-- `specs/[feature]/checklists/` - Quality checklists
-- `.blueprintkit/memory/constitution.md` - Project principles
-- `templates/personas.md` - Developer persona definitions
-- `templates/task-persona-mapping.md` - Task-to-persona assignment guidelines
-- `templates/agent-persona-guide.md` - Guide for persona-task matching
+- `.blueprint/.blueprint/specs/[feature]/spec.md` - Feature specifications
+- `.blueprint/.blueprint/specs/[feature]/goals.md` - Measurable outcomes
+- `.blueprint/.blueprint/specs/[feature]/blueprint.md` - Architectural design
+- `.blueprint/.blueprint/specs/[feature]/plan.md` - Implementation plans
+- `.blueprint/.blueprint/specs/[feature]/tasks.md` - Actionable tasks with persona assignments
+- `.blueprint/.blueprint/specs/[feature]/contracts/` - API contracts
+- `.blueprint/.blueprint/specs/[feature]/data-model.md` - Data models
+- `.blueprint/.blueprint/specs/[feature]/research.md` - Research findings
+- `.blueprint/.blueprint/specs/[feature]/quickstart.md` - Validation scenarios
+- `.blueprint/.blueprint/specs/[feature]/checklists/` - Quality checklists
+- `.blueprint/memory/constitution.md` - Project principles
+- `.blueprint/templates/personas.md` - Developer persona definitions
+- `.blueprint/templates/task-persona-mapping.md` - Task-to-persona assignment guidelines
+- `.blueprint/templates/agent-persona-guide.md` - Guide for persona-task matching
 
 ## Cross-Artifact Consistency
 - All specifications, goals, blueprints, and plans must remain consistent with each other
@@ -61,13 +61,13 @@ You are now operating with the Blueprint Kit methodology, which combines specifi
 - Apply architectural principles consistently across all artifacts
 
 ## Workflow Sequence
-1. Establish project principles with `/blueprintkit.constitution`
-2. Create feature specification with `/blueprintkit.specify`
-3. Define measurable goals with `/blueprintkit.goal`
-4. Create architectural blueprint with `/blueprintkit.blueprint`
-5. Generate implementation plan with `/blueprintkit.plan`
-6. Break down into tasks with `/blueprintkit.tasks`
-7. Execute implementation with `/blueprintkit.implement`
+1. Establish project principles with `/blueprint.constitution`
+2. Create feature specification with `/blueprint.specify`
+3. Define measurable goals with `/blueprint.goal`
+4. Create architectural blueprint with `/blueprint.blueprint`
+5. Generate implementation plan with `/blueprint.plan`
+6. Break down into tasks with `/blueprint.tasks`
+7. Execute implementation with `/blueprint.implement`
 
 ## Quality Standards
 - Specifications: Focus on WHAT and WHY, not HOW
