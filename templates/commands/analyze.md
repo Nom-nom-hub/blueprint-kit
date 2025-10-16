@@ -35,28 +35,28 @@ Given that analysis directive, do this:
 
 2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+3. Load `.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+4. Load `.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+5. Load `.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+6. Load `.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
-7. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
+7. Load `.blueprint/specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
 
 8. If any required file is missing, provide helpful guidance:
    - If `.blueprint/memory/constitution.md` is missing: 
      Suggest creating it with `/blueprint.constitution` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
      Suggest creating it with `/blueprint.specify` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
      Suggest creating it with `/blueprint.goal` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
      Suggest creating it with `/blueprint.blueprint` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
      Suggest creating it with `/blueprint.plan` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/tasks.md` is missing:
      Suggest creating it with `/blueprint.tasks` command
 
 9. Follow this execution flow:
@@ -234,7 +234,7 @@ Given that analysis directive, do this:
    - Integration-First Testing compliance
 
 14. Report analysis results with:
-   - Complete analysis report saved to `.blueprint/.blueprint/specs/[FEATURE_DIR]/analysis.md`
+   - CREATE OR OVERWRITE complete analysis report at `.blueprint/specs/[FEATURE_DIR]/analysis.md`
    - Summary of key findings
    - Priority recommendations for addressing issues
    - Readiness assessment for next phase

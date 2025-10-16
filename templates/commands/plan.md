@@ -38,13 +38,13 @@ Given that implementation planning directive, do this:
 
 3. Load `.blueprint/templates/plan-template.md` to understand required sections.
 
-4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+4. Load `.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
    If missing: Suggest creating it with `/blueprint.specify` command
 
-5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+5. Load `.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
    If missing: Suggest creating it with `/blueprint.goal` command
 
-6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+6. Load `.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
    If missing: Suggest creating it with `/blueprint.blueprint` command
 
 7. Validate alignment between spec, goals, blueprint, and plan:
@@ -79,7 +79,7 @@ Given that implementation planning directive, do this:
        Each test type must validate requirements, goals, or architecture
     8. Return: SUCCESS (plan ready for task breakdown)
 
-9. Write the implementation plan to `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` using the template structure, replacing placeholders with concrete details derived from the implementation planning directive (arguments) while preserving section order and headings.
+9. OVERWRITE the content of `.blueprint/specs/[FEATURE_DIR]/plan.md` using the template structure, replacing placeholders with concrete details derived from the implementation planning directive (arguments) while preserving section order and headings.
 
 10. **Plan Quality Validation**: After writing the initial plan, validate it against quality criteria:
 
@@ -179,11 +179,11 @@ Given that implementation planning directive, do this:
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 
 11. Generate supporting implementation documents:
-   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/contracts/` directory if not exists
+   - Create `.blueprint/specs/[FEATURE_DIR]/contracts/` directory if not exists
    - For each API endpoint identified in plan, create contract in `contracts/` directory
-   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/data-model.md` with all data models identified in plan
-   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/research.md` with detailed research for complex technical decisions
-   - Create `.blueprint/.blueprint/specs/[FEATURE_DIR]/quickstart.md` with validation scenarios for key functionality
+   - Create `.blueprint/specs/[FEATURE_DIR]/data-model.md` with all data models identified in plan
+   - Create `.blueprint/specs/[FEATURE_DIR]/research.md` with detailed research for complex technical decisions
+   - Create `.blueprint/specs/[FEATURE_DIR]/quickstart.md` with validation scenarios for key functionality
 
 12. Report completion with plan file path, checklist results, and readiness for the next phase (`/blueprint.tasks`).
 

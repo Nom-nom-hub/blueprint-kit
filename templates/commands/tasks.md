@@ -38,24 +38,24 @@ Given that task generation directive, do this:
 
 3. Load `.blueprint/templates/tasks-template.md` to understand required sections.
 
-4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+4. Load `.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+5. Load `.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+6. Load `.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-7. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+7. Load `.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
 8. If any required file is missing, provide helpful guidance:
    - If `.blueprint/memory/constitution.md` is missing: 
      Suggest creating it with `/blueprint.constitution` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
      Suggest creating it with `/blueprint.specify` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
      Suggest creating it with `/blueprint.goal` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
      Suggest creating it with `/blueprint.blueprint` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
      Suggest creating it with `/blueprint.plan` command
 
 9. Follow this execution flow:
@@ -95,7 +95,7 @@ Given that task generation directive, do this:
        - Implementation details in plan.md
     7. Return: SUCCESS (tasks ready for implementation)
 
-10. Write the tasks to `.blueprint/specsprint/specs/[FEATURE_DIR]/tasks.md` using the template structure, replacing placeholders with concrete details derived from the plan, specification, goals and blueprint while preserving section order and headings.
+10. OVERWRITE the content of `.blueprint/specsprint/specs/[FEATURE_DIR]/tasks.md` using the template structure, replacing placeholders with concrete details derived from the plan, specification, goals and blueprint while preserving section order and headings.
 
 11. **Tasks Quality Validation**: After writing the initial task list, validate it against quality criteria:
 

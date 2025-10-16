@@ -69,7 +69,7 @@ if ([string]::IsNullOrEmpty($branchName)) {
 }
 
 # Create the feature directory
-$featureDir = "specs\$branchName"
+$featureDir = ".blueprint\specs\$branchName"
 New-Item -ItemType Directory -Path $featureDir -Force | Out-Null
 
 # Create spec file

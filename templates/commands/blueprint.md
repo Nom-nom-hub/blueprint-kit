@@ -61,7 +61,7 @@ Given that blueprint description, do this:
     7. Identify quality attributes (performance, security, etc.)
     8. Return: SUCCESS (blueprint ready for planning)
 
-4. Write the blueprint to BLUEPRINT_FILE using the template structure, replacing placeholders with concrete details derived from the blueprint description (arguments) while preserving section order and headings.
+4. OVERWRITE the content of BLUEPRINT_FILE using the template structure, replacing placeholders with concrete details derived from the blueprint description (arguments) while preserving section order and headings.
 
 5. **Blueprint Quality Validation**: After writing the initial blueprint, validate it against quality criteria:
 
@@ -169,6 +169,27 @@ Given that blueprint description, do this:
 - Avoid low-level implementation details (specific code structure).
 - Written for architects and technical stakeholders.
 - DO NOT create any checklists that are embedded in the blueprint. That will be a separate command.
+
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When user input is unclear or missing, use this hierarchy to make decisions:
+
+1. **Default to proven architectural patterns** - When architecture decisions are ambiguous, choose well-established patterns for the context (e.g., microservices for scalable systems, event-driven for decoupled systems)
+
+2. **Preserve performance and security** - When technology choices are unclear, prioritize options that maintain performance and security
+
+3. **Prioritize maintainability** - Choose solutions that will be easier to maintain and extend over time
+
+4. **Follow platform conventions** - Use standard approaches for the chosen technology stack
+
+5. **Document assumptions** - Clearly mark any decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before generating blueprint**: Verify prerequisites exist and are accessible
+2. **During generation**: Validate that all architectural components have clear responsibilities
+3. **After generation**: Confirm file is properly formatted and all quality attributes are defined
+4. **File operations**: Always update BLUEPRINT_FILE (never create new files) and validate file exists before writing
 
 ### Section Requirements
 

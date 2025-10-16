@@ -61,7 +61,7 @@ Given that goals description, do this:
     7. Identify stakeholders (if involved)
     8. Return: SUCCESS (goals ready for blueprint creation)
 
-4. Write the goals to GOALS_FILE using the template structure, replacing placeholders with concrete details derived from the goals description (arguments) while preserving section order and headings.
+4. OVERWRITE the content of GOALS_FILE using the template structure, replacing placeholders with concrete details derived from the goals description (arguments) while preserving section order and headings.
 
 5. **Goals Quality Validation**: After writing the initial goals, validate them against quality criteria:
 
@@ -166,6 +166,27 @@ Given that goals description, do this:
 - Avoid HOW to achieve goals (no implementation details).
 - Written for stakeholders, not developers.
 - DO NOT create any checklists that are embedded in the goals. That will be a separate command.
+
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When user input is unclear or missing, use this hierarchy to make decisions:
+
+1. **Default to industry standard metrics** - When success metrics are ambiguous, choose common benchmarks for the domain (e.g., 99.9% uptime, <100ms response time, 90% user satisfaction)
+
+2. **Preserve business value** - When goal priorities are unclear, focus on outcomes that deliver the most business value
+
+3. **Prioritize achievable targets** - Choose realistic, attainable goals based on similar projects
+
+4. **Follow SMART criteria** - Ensure all goals are Specific, Measurable, Achievable, Relevant, and Time-bound
+
+5. **Document assumptions** - Clearly mark any decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before generating goals**: Verify prerequisites exist and are accessible
+2. **During generation**: Validate that all goals have specific, measurable criteria
+3. **After generation**: Confirm file is properly formatted and all success metrics are quantifiable
+4. **File operations**: Always update GOALS_FILE (never create new files) and validate file exists before writing
 
 ### Section Requirements
 

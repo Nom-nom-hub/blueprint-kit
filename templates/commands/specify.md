@@ -62,7 +62,7 @@ Given that feature description, do this:
     7. Identify Key Entities (if data involved)
     8. Return: SUCCESS (spec ready for planning)
 
-4. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
+4. OVERWRITE the content of SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
 
 5. **Specification Quality Validation**: After writing the initial spec, validate it against quality criteria:
 
@@ -168,6 +168,27 @@ Given that feature description, do this:
 - Avoid HOW to implement (no tech stack, APIs, code structure).
 - Written for business stakeholders, not developers.
 - DO NOT create any checklists that are embedded in the spec. That will be a separate command.
+
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When user input is unclear or missing, use this hierarchy to make decisions:
+
+1. **Default to industry best practices** - When user scenarios are ambiguous, choose the most common user flow for the given context (e.g., login for authentication, search for data discovery)
+
+2. **Preserve user intent** - When requirements are unclear, choose the option that best serves the user's apparent goal
+
+3. **Prioritize core functionality** - Focus on the primary user journey before adding advanced features
+
+4. **Follow progressive enhancement** - Define basic functionality first, then enhanced experiences
+
+5. **Document assumptions** - Clearly mark any decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before generating spec**: Verify prerequisites exist and are accessible
+2. **During generation**: Validate that all functional requirements are testable and unambiguous
+3. **After generation**: Confirm file is properly formatted and all sections are complete
+4. **File operations**: Always update SPEC_FILE (never create new files) and validate file exists before writing
 
 ### Section Requirements
 

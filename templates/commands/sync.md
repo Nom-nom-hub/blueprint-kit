@@ -125,7 +125,7 @@ Given that synchronization directive, do this:
 12. Ensure all updates follow the principles in constitution.md, particularly Article VI (Cross-Artifact Consistency).
 
 13. Report synchronization results with:
-   - Complete synchronization report saved to `.blueprint/specs/[FEATURE_DIR]/synchronization.md`
+   - CREATE OR OVERWRITE complete synchronization report at `.blueprint/specs/[FEATURE_DIR]/synchronization.md`
    - Summary of key changes made
    - Confirmation of consistency between all artifacts
    - Recommendations for maintaining synchronization going forward

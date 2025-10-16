@@ -24,13 +24,13 @@ Given that checklist generation directive, do this:
 
 2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+3. Load `.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+4. Load `.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+5. Load `.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+6. Load `.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
 7. If any required file is missing, ERROR with specific file name that's missing.
 
@@ -48,7 +48,7 @@ Given that checklist generation directive, do this:
 
 9. Generate quality checklists for each artifact:
 
-   a. **Specification Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/spec.md`):
+   a. **Specification Quality Checklist** (`.blueprint/specs/[FEATURE_DIR]/checklists/spec.md`):
    
       ```markdown
       # Specification Quality Checklist: [FEATURE NAME]
@@ -94,7 +94,7 @@ Given that checklist generation directive, do this:
       - Items marked incomplete require spec updates before `/blueprint.plan`
       ```
    
-   b. **Goals Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/goals.md`):
+   b. **Goals Quality Checklist** (`.blueprint/specs/[FEATURE_DIR]/checklists/goals.md`):
    
       ```markdown
       # Goals Quality Checklist: [FEATURE NAME]
@@ -139,7 +139,7 @@ Given that checklist generation directive, do this:
       - Items marked incomplete require goal updates before `/blueprint.blueprint`
       ```
    
-   c. **Blueprint Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/blueprint.md`):
+   c. **Blueprint Quality Checklist** (`.blueprint/specs/[FEATURE_DIR]/checklists/blueprint.md`):
    
       ```markdown
       # Blueprint Quality Checklist: [FEATURE NAME]
@@ -189,7 +189,7 @@ Given that checklist generation directive, do this:
       - Items marked incomplete require blueprint updates before `/blueprint.plan`
       ```
    
-   d. **Plan Quality Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/plan.md`):
+   d. **Plan Quality Checklist** (`.blueprint/specs/[FEATURE_DIR]/checklists/plan.md`):
    
       ```markdown
       # Plan Quality Checklist: [FEATURE NAME]
@@ -242,7 +242,7 @@ Given that checklist generation directive, do this:
       - Items marked incomplete require plan updates before `/blueprint.tasks`
       ```
    
-   e. **Overall Integration Checklist** (`.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/integration.md`):
+   e. **Overall Integration Checklist** (`.blueprint/specs/[FEATURE_DIR]/checklists/integration.md`):
    
       ```markdown
       # Cross-Artifact Integration Checklist: [FEATURE NAME]
@@ -312,7 +312,7 @@ Given that checklist generation directive, do this:
    - Anti-Abstraction Principle: Verify unnecessary abstractions are avoided
    - Integration-First Testing: Ensure real-world testing is prioritized
 
-11. Save all checklists to the `.blueprint/.blueprint/specs/[FEATURE_DIR]/checklists/` directory.
+11. CREATE OR OVERWRITE all checklists in the `.blueprint/specs/[FEATURE_DIR]/checklists/` directory.
 
 12. Report completion with:
    - Paths to all generated checklists

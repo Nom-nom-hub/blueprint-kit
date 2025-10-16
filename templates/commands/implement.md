@@ -36,35 +36,35 @@ Given that implementation directive, do this:
 
 2. Load `.blueprint/memory/constitution.md` to understand project principles.
 
-3. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
+3. Load `.blueprint/specs/[FEATURE_DIR]/spec.md` to understand feature requirements.
 
-4. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
+4. Load `.blueprint/specs/[FEATURE_DIR]/goals.md` to understand measurable outcomes.
 
-5. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
+5. Load `.blueprint/specs/[FEATURE_DIR]/blueprint.md` to understand architectural approach.
 
-6. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
+6. Load `.blueprint/specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
-7. Load `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
+7. Load `.blueprint/specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
 
 8. Validate prerequisites:
    - [ ] `.blueprint/memory/constitution.md` exists and is current
-   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` exists and is approved
-   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` exists and is approved
-   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` exists and is approved
-   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` exists and is approved
-   - [ ] `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` exists and is approved
+   - [ ] `.blueprint/specs/[FEATURE_DIR]/spec.md` exists and is approved
+   - [ ] `.blueprint/specs/[FEATURE_DIR]/goals.md` exists and is approved
+   - [ ] `.blueprint/specs/[FEATURE_DIR]/blueprint.md` exists and is approved
+   - [ ] `.blueprint/specs/[FEATURE_DIR]/plan.md` exists and is approved
+   - [ ] `.blueprint/specs/[FEATURE_DIR]/tasks.md` exists and is approved
    If any check fails, provide helpful guidance with examples:
    - If `.blueprint/memory/constitution.md` is missing: 
      Suggest creating it with `/blueprint.constitution` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/spec.md` is missing:
      Suggest creating it with `/blueprint.specify` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/goals.md` is missing:
      Suggest creating it with `/blueprint.goal` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/blueprint.md` is missing:
      Suggest creating it with `/blueprint.blueprint` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/plan.md` is missing:
      Suggest creating it with `/blueprint.plan` command
-   - If `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` is missing:
+   - If `.blueprint/specs/[FEATURE_DIR]/tasks.md` is missing:
      Suggest creating it with `/blueprint.tasks` command
 
 9. Follow this execution flow:
@@ -87,7 +87,7 @@ Given that implementation directive, do this:
     5. Validate implementation against spec.md requirements
     6. Return: SUCCESS (implementation complete and validated)
 
-10. Execute implementation by following the task list in `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md`:
+10. Execute implementation by following the task list in `.blueprint/specs/[FEATURE_DIR]/tasks.md`:
 
    a. **Implementation Process**:
    
@@ -105,11 +105,11 @@ Given that implementation directive, do this:
    b. **Artifact Update Process**:
    
       - After completing implementation tasks, update related artifacts as needed:
-        1. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/spec.md` if implementation details reveal needed specification adjustments
-        2. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/goals.md` if measurable outcomes need refinement based on implementation
-        3. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/blueprint.md` if architectural decisions change during implementation
-        4. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/plan.md` if implementation plan needs adjustments based on discovered requirements
-        5. Update `.blueprint/.blueprint/specs/[FEATURE_DIR]/tasks.md` if new tasks emerge or existing tasks need modification
+        1. Update `.blueprint/specs/[FEATURE_DIR]/spec.md` if implementation details reveal needed specification adjustments
+        2. Update `.blueprint/specs/[FEATURE_DIR]/goals.md` if measurable outcomes need refinement based on implementation
+        3. Update `.blueprint/specs/[FEATURE_DIR]/blueprint.md` if architectural decisions change during implementation
+        4. Update `.blueprint/specs/[FEATURE_DIR]/plan.md` if implementation plan needs adjustments based on discovered requirements
+        5. Update `.blueprint/specs/[FEATURE_DIR]/tasks.md` if new tasks emerge or existing tasks need modification
       - Ensure all artifacts remain consistent with each other per constitution Article VI
       - Document all changes with reasoning for future reference
 

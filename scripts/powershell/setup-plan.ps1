@@ -30,7 +30,7 @@ function Get-FeatureDir {
         
         # Check if branch name starts with the expected pattern (e.g., "001-", "002-")
         if ($branchName -match '^[0-9]{3,}-') {
-            return ".blueprint\specs\$branchName"
+            return ".blueprint\.blueprint\specs\$branchName"
         }
     }
 

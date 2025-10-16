@@ -31,10 +31,10 @@ The text the user typed after `/blueprint.constitution` in the triggering messag
 
 Given that description, do this:
 
-1. Load the `.blueprint/memory/constitution.md` file if it exists, otherwise use the template below
+1. READ the existing constitution file at `.blueprint/memory/constitution.md` if it exists, otherwise use the template below
 2. Update the constitution with the new principles described by the user
 3. Ensure all principles align with the Blueprint-Driven Development methodology
-4. Focus on principles that guide architectural decisions, code quality, testing standards, and user experience consistency
+4. FOCUS specifically on overwriting the content of `.blueprint/memory/constitution.md` with the updated constitution - this is the PRIMARY task
 
 ## Constitutional Principles Template
 
@@ -135,10 +135,10 @@ Tests MUST use realistic environments:
 
 ## Process
 
-1. Read the current constitution if it exists
+1. Read the current constitution file at `.blueprint/memory/constitution.md` if it exists
 2. Incorporate the user's principles while maintaining the core Blueprint-Driven Development approach
 3. Update the template sections as appropriate
-4. Save to `.blueprint/memory/constitution.md`
+4. OVERWRITE the content of the existing `.blueprint/memory/constitution.md` file with the updated constitution
 
 ## General Guidelines
 
@@ -146,3 +146,23 @@ Tests MUST use realistic environments:
 - Ensure principles support the integration of specifications, goals, and blueprints
 - Maintain the core Blueprint-Driven Development philosophy
 - Document the rationale for each principle
+
+## Decision-Making Hierarchy for Ambiguous Situations
+
+When user input is unclear or missing, use this hierarchy to make decisions:
+
+1. **Default to industry best practices** - When technology decisions are ambiguous, choose the most common industry standard for the given context (e.g., OAuth 2.0 for web authentication, REST for API design)
+
+2. **Preserve existing architecture** - When updating, maintain compatibility with existing components unless specifically instructed otherwise
+
+3. **Prioritize security and performance** - When trade-offs exist, favor more secure and performant options by default
+
+4. **Follow progressive enhancement** - Favor approaches that work for basic requirements first, then enhance
+
+5. **Document assumptions** - Clearly mark any decisions made based on defaults with [ASSUMPTION: brief explanation] markers
+
+## Error Handling and Validation
+
+1. **Before updating constitution**: Verify `.blueprint/memory/constitution.md` exists, if not, create from template
+2. **During update**: Preserve existing structure while incorporating new principles
+3. **After update**: Confirm file is properly formatted and accessible
