@@ -64,7 +64,7 @@ validate_required_files() {
 get_feature_dir() {
     # First, try to get from BLUEPRINT_FEATURE environment variable
     if [[ -n "${BLUEPRINT_FEATURE:-}" ]]; then
-        echo "specs/${BLUEPRINT_FEATURE}"
+        echo ".blueprintkit/specs/${BLUEPRINT_FEATURE}"
         return 0
     fi
 
@@ -75,14 +75,14 @@ get_feature_dir() {
         
         # Check if branch name starts with the expected pattern (e.g., "001-", "002-")
         if [[ $branch_name =~ ^[0-9]{3,}- ]]; then
-            echo "specs/$branch_name"
+            echo ".blueprintkit/specs/$branch_name"
             return 0
         fi
     fi
 
     # If we can't determine the feature from git branch, look for the most recent spec directory
-    if [[ -d "specs" ]]; then
-        for dir in $(ls -1d specs/* 2>/dev/null | sort -r); do
+    if [[ -d ".blueprintkit/specs" ]]; then
+        for dir in $(ls -1d .blueprintkit/specs/* 2>/dev/null | sort -r); do
             if [[ -d "$dir" ]]; then
                 echo "$dir"
                 return 0

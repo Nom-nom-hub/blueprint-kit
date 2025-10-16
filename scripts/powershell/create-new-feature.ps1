@@ -7,15 +7,15 @@
 param(
     [Parameter(Mandatory=$false)]
     [string]$FeatureDescription = "",
-    
+
     [Parameter(Mandatory=$false)]
     [switch]$Json
 )
 
 # Function to create unique feature number
 function Get-FeatureNumber {
-    $basePath = "specs"
-    
+    $basePath = ".blueprintkit\specs"
+
     if (Test-Path $basePath -PathType Container) {
         # Find the highest numbered directory and add 1
         $maxNum = 0
@@ -36,7 +36,7 @@ function Get-FeatureNumber {
                 }
             }
         }
-        
+
         $nextNum = $maxNum + 1
         return $nextNum.ToString("000")
     } else {
@@ -51,9 +51,9 @@ if ([string]::IsNullOrEmpty($FeatureDescription)) {
     exit 1
 }
 
-# Create specs directory if it doesn't exist
-if (!(Test-Path "specs" -PathType Container)) {
-    New-Item -ItemType Directory -Path "specs" -Force | Out-Null
+# Create .blueprintkit/specs directory if it doesn't exist
+if (!(Test-Path ".blueprintkit\specs" -PathType Container)) {
+    New-Item -ItemType Directory -Path ".blueprintkit\specs" -Force | Out-Null
 }
 
 # Get feature number
@@ -80,51 +80,51 @@ $specContent = @'
 # [FEATURE NAME]
 
 ## Feature Overview
-**What**: 
+**What**:
 
-**Why**: 
+**Why**:
 
-**Context**: 
+**Context**:
 
 ## User Scenarios & Testing
 
 ### Primary User Scenarios
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ### Acceptance Scenarios
-- 
-- 
-- 
+-
+-
+-
 
 ### Edge Cases
-- 
+-
 
 ## Functional Requirements
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ### Requirements Rationale
-- 
+-
 
 ## Success Criteria
-- 
-- 
-- 
+-
+-
+-
 
 ## Key Entities
-- 
+-
 
 ## Clarifications
-- 
+-
 
 ## Assumptions
-- 
+-
 
 ## Dependencies
-- 
+-
 
 ## Review & Acceptance Checklist
 - [ ] All user scenarios are clearly defined
@@ -145,7 +145,7 @@ if ($Json) {
         BRANCH_NAME = $branchName
         SPEC_FILE = $specFile
     } | ConvertTo-Json -Compress
-    
+
     Write-Output $jsonOutput
     exit 0
 }
@@ -157,32 +157,32 @@ $goalsContent = @'
 # [GOAL NAME]
 
 ## Goal Definition
-**What**: 
+**What**:
 
-**Why**: 
+**Why**:
 
-**Success Metrics**: 
+**Success Metrics**:
 
 ## Success Criteria
-- 
-- 
-- 
+-
+-
+-
 
 ## Key Stakeholders
-- 
+-
 
 ## Timeline
-- 
+-
 
 ## Constraints & Assumptions
-- 
+-
 
 ## Success Indicators
-- 
-- 
+-
+-
 
 ## Validation Approach
-- 
+-
 
 ## Review Checklist
 - [ ] Goal is specific and clearly defined
@@ -203,51 +203,51 @@ $blueprintContent = @'
 # [ARCHITECTURAL BLUEPRINT NAME]
 
 ## Architecture Overview
-**What**: 
+**What**:
 
-**Why**: 
+**Why**:
 
-**Context**: 
+**Context**:
 
 ## Core Components
-- [Component 1]: 
-- [Component 2]: 
-- [Component 3]: 
+- [Component 1]:
+- [Component 2]:
+- [Component 3]:
 
 ## System Design
 ### Architecture Pattern
-- 
+-
 
 ### Technology Stack
-- [Framework/Platform]: 
-- [Database]: 
-- [Communication]: 
-- [Security]: 
+- [Framework/Platform]:
+- [Database]:
+- [Communication]:
+- [Security]:
 
 ### Data Flow
-- 
+-
 
 ## Interface Design
 ### APIs
-- 
+-
 
 ### External Dependencies
-- 
+-
 
 ## Deployment Architecture
-- 
+-
 
 ## Quality Attributes
-- [Performance]: 
-- [Security]: 
-- [Scalability]: 
-- [Maintainability]: 
+- [Performance]:
+- [Security]:
+- [Scalability]:
+- [Maintainability]:
 
 ## Constraints & Decisions
-- 
+-
 
 ## Risks & Mitigations
-- 
+-
 
 ## Review Checklist
 - [ ] Architecture addresses the feature requirements
@@ -295,12 +295,12 @@ if ($isGitRepo) {
     # Check if the branch already exists
     $branchExists = $false
     try {
-        $result = git show-ref --verify --quiet "refs/heads/$branchName" 2>$null
+        git show-ref --verify --quiet "refs/heads/$branchName" 2>$null
         $branchExists = $LASTEXITCODE -eq 0
     } catch {
         # Branch does not exist
     }
-    
+
     if ($branchExists) {
         Write-Host "Branch $branchName already exists, checking it out"
         git checkout $branchName | Out-Null
