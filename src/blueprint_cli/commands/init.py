@@ -133,17 +133,23 @@ def select_with_arrows(options: dict, prompt_text: str = "Select an option", def
 
 def show_banner():
     """Display the ASCII art banner."""
-    banner_lines = BANNER.strip().split('\n')
-    colors = ["bright_blue", "blue", "cyan", "bright_cyan", "white", "bright_white"]
+    try:
+        banner_lines = BANNER.strip().split('\n')
+        colors = ["bright_blue", "blue", "cyan", "bright_cyan", "white", "bright_white"]
 
-    styled_banner = Text()
-    for i, line in enumerate(banner_lines):
-        color = colors[i % len(colors)]
-        styled_banner.append(line + "\n", style=color)
+        styled_banner = Text()
+        for i, line in enumerate(banner_lines):
+            color = colors[i % len(colors)]
+            styled_banner.append(line + "\n", style=color)
 
-    console.print(Align.center(styled_banner))
-    console.print(Align.center(Text(TAGLINE, style="italic bright_yellow")))
-    console.print()
+        console.print(Align.center(styled_banner))
+        console.print(Align.center(Text(TAGLINE, style="italic bright_yellow")))
+        console.print()
+    except UnicodeEncodeError:
+        # Fallback for systems that can't handle Unicode colors
+        console.print(BANNER)
+        console.print(TAGLINE)
+        console.print()
 
 
 def run_command(cmd: list[str], check_return: bool = True, capture: bool = False, shell: bool = False) -> Optional[str]:
@@ -369,21 +375,21 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
     import shutil
     from pathlib import Path
     
-    # Define agent configurations
+    # Define agent configurations - Updated for correct AI tool formats
     agents = {
         'claude': {'dir': '.claude/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
         'gemini': {'dir': '.gemini/commands', 'ext': 'toml', 'arg_format': '{{args}}', 'script_variants': ['sh', 'ps']},
-        'copilot': {'dir': '.github/prompts', 'ext': 'prompt.md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
-        'cursor-agent': {'dir': '.cursor/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'copilot': {'dir': '.github/copilot-instructions', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'cursor-agent': {'dir': '.cursor/rules', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
         'qwen': {'dir': '.qwen/commands', 'ext': 'toml', 'arg_format': '{{args}}', 'script_variants': ['sh', 'ps']},
-        'opencode': {'dir': '.opencode/command', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'opencode': {'dir': '.opencode/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
         'windsurf': {'dir': '.windsurf/workflows', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
-        'codex': {'dir': '.codex/prompts', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
-        'kilocode': {'dir': '.kilocode/workflows', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'codex': {'dir': '.codex/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'kilocode': {'dir': '.kilocode/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
         'auggie': {'dir': '.augment/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
         'roo': {'dir': '.roo/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
         'codebuddy': {'dir': '.codebuddy/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
-        'q': {'dir': '.amazonq/prompts', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
+        'q': {'dir': '.amazonq/commands', 'ext': 'md', 'arg_format': '$ARGUMENTS', 'script_variants': ['sh', 'ps']},
     }
     
     if agent not in agents:
@@ -395,29 +401,55 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
     
     agent_config = agents[agent]
     
-    # Get the template command files from the project
-    templates_commands_dir = project_path / ".blueprint" / "templates" / "commands"
-    if not templates_commands_dir.exists():
-        # Fallback: try relative to current file location
-        import os
-        import sys
+    # Get the template command files from the package installation
+    import importlib.resources
+
+    # Try multiple methods to find the templates directory
+    templates_commands_dir = None
+
+    # Method 1: Try importlib.resources (for installed packages)
+    try:
+        with importlib.resources.path('blueprint_cli', '__init__.py') as cli_path:
+            potential_dir = cli_path.parent.parent / "templates" / "commands"
+            if potential_dir.exists():
+                templates_commands_dir = potential_dir
+    except:
+        pass
+
+    # Method 2: Try relative to current file location
+    if templates_commands_dir is None:
         cli_dir = Path(__file__).parent
-        templates_commands_dir = cli_dir.parent.parent / "templates" / "commands"
-        
-        if not templates_commands_dir.exists():
-            if tracker:
-                tracker.error(f"agent-{agent}", "Command templates not found")
-            else:
-                console.print("[red]Error:[/red] Command templates not found")
-            return
+        potential_dir = cli_dir.parent.parent / "templates" / "commands"
+        if potential_dir.exists():
+            templates_commands_dir = potential_dir
+
+    # Method 3: Try absolute path from current working directory
+    if templates_commands_dir is None:
+        potential_dir = Path.cwd() / "templates" / "commands"
+        if potential_dir.exists():
+            templates_commands_dir = potential_dir
+
+    if templates_commands_dir is None or not templates_commands_dir.exists():
+        if tracker:
+            tracker.error(f"agent-{agent}", f"Command templates not found (searched in multiple locations)")
+        else:
+            console.print("[red]Error:[/red] Command templates not found")
+            console.print(f"[yellow]Debug:[/yellow] Searched for templates in:")
+            console.print(f"  - Package installation directory")
+            console.print(f"  - Relative to CLI source: {Path(__file__).parent.parent.parent / 'templates' / 'commands'}")
+            console.print(f"  - Current working directory: {Path.cwd() / 'templates' / 'commands'}")
+        return
     
     # Create the agent-specific directory
     agent_dir = project_path / agent_config['dir']
     agent_dir.mkdir(parents=True, exist_ok=True)
-    
+
     if tracker:
         tracker.add(f"agent-{agent}", f"Generate {agent} commands")
         tracker.start(f"agent-{agent}", f"Creating {agent_config['dir']} directory")
+    else:
+        console.print(f"[cyan]Creating agent directory:[/cyan] {agent_config['dir']}")
+        console.print(f"[cyan]Template directory found:[/cyan] {templates_commands_dir}")
     
     # Process each command template
     command_files = list(templates_commands_dir.glob('*.md'))
@@ -466,13 +498,18 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
                 replaced_content = re.sub(r'(/?)scripts/', r'.blueprint/scripts/', replaced_content)
                 replaced_content = re.sub(r'(/?)templates/', r'.blueprint/templates/', replaced_content)
                 
-                # Create the output file
-                output_filename = f"blueprintkit.{cmd_file.stem}.{agent_config['ext']}"
+                # Create the output file - use just the command name for slash command recognition
+                output_filename = f"{cmd_file.stem}.{agent_config['ext']}"
                 output_path = agent_dir / output_filename
                 
                 # For TOML files, wrap content in proper TOML structure
                 if agent_config['ext'] == 'toml':
-                    toml_content = f'description = """{description}"""\n\nprompt = """{replaced_content}"""'
+                    toml_content = f'''description = """{description}"""
+
+prompt = """
+{replaced_content}
+"""
+'''
                     output_path.write_text(toml_content, encoding='utf-8')
                 else:
                     output_path.write_text(replaced_content, encoding='utf-8')
@@ -487,6 +524,8 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
         tracker.complete(f"agent-{agent}", f"Created {len(command_files)} commands for {agent}")
     else:
         console.print(f"[green]Created {len(command_files)} command files for {agent} agent in {agent_config['dir']}[/green]")
+        console.print(f"[cyan]Debug:[/cyan] Agent directory: {agent_dir}")
+        console.print(f"[cyan]Debug:[/cyan] Files created: {list(agent_dir.glob('*'))}")
 
 
 def init(
@@ -673,9 +712,12 @@ def init(
             download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
 
             # Generate agent-specific command files for the selected AI assistant
+            console.print(f"[cyan]Debug:[/cyan] About to generate agent commands for {selected_ai}")
             generate_agent_commands_in_project(project_path, selected_ai, tracker=tracker)
+            console.print(f"[green]Debug:[/green] Agent command generation completed for {selected_ai}")
 
             ensure_executable_scripts(project_path, tracker=tracker)
+            console.print(f"[cyan]Debug:[/cyan] Executable scripts step completed")
 
             if not no_git:
                 tracker.start("git")
@@ -768,13 +810,13 @@ def init(
 
     steps_lines.append(f"{step_num}. Start using slash commands with your AI agent:")
 
-    steps_lines.append("   2.1 [cyan]/blueprintkit.constitution[/] - Establish project principles")
-    steps_lines.append("   2.2 [cyan]/blueprintkit.specify[/] - Create baseline specification")
-    steps_lines.append("   2.3 [cyan]/blueprintkit.goal[/] - Define measurable goals")
-    steps_lines.append("   2.4 [cyan]/blueprintkit.blueprint[/] - Create architectural blueprints")
-    steps_lines.append("   2.5 [cyan]/blueprintkit.plan[/] - Create implementation plan")
-    steps_lines.append("   2.6 [cyan]/blueprintkit.tasks[/] - Generate actionable tasks")
-    steps_lines.append("   2.7 [cyan]/blueprintkit.implement[/] - Execute implementation")
+    steps_lines.append("   2.1 [cyan]/constitution[/] - Establish project principles")
+    steps_lines.append("   2.2 [cyan]/specify[/] - Create baseline specification")
+    steps_lines.append("   2.3 [cyan]/goal[/] - Define measurable goals")
+    steps_lines.append("   2.4 [cyan]/blueprint[/] - Create architectural blueprints")
+    steps_lines.append("   2.5 [cyan]/plan[/] - Create implementation plan")
+    steps_lines.append("   2.6 [cyan]/tasks[/] - Generate actionable tasks")
+    steps_lines.append("   2.7 [cyan]/implement[/] - Execute implementation")
 
     steps_lines.append("\n[cyan]Note: These slash commands are available in your project after initialization[/cyan]")
     steps_lines.append("[cyan]and are recognized by supported AI agents when working in the project directory.[/cyan]")
@@ -786,9 +828,9 @@ def init(
     enhancement_lines = [
         "Optional commands that you can use for your specs [bright_black](improve quality & confidence)[/bright_black]",
         "",
-        f"○ [cyan]/blueprintkit.clarify[/] [bright_black](optional)[/bright_black] - Ask structured questions to de-risk ambiguous areas before planning (run before [cyan]/blueprintkit.plan[/] if used)",
-        f"○ [cyan]/blueprintkit.analyze[/] [bright_black](optional)[/bright_black] - Cross-artifact consistency & alignment report (after [cyan]/blueprintkit.tasks[/], before [cyan]/blueprintkit.implement[/])",
-        f"○ [cyan]/blueprintkit.checklist[/] [bright_black](optional)[/bright_black] - Generate quality checklists to validate requirements completeness, clarity, and consistency (after [cyan]/blueprintkit.plan[/])"
+        f"○ [cyan]/clarify[/] [bright_black](optional)[/bright_black] - Ask structured questions to de-risk ambiguous areas before planning (run before [cyan]/plan[/] if used)",
+        f"○ [cyan]/analyze[/] [bright_black](optional)[/bright_black] - Cross-artifact consistency & alignment report (after [cyan]/tasks[/], before [cyan]/implement[/])",
+        f"○ [cyan]/checklist[/] [bright_black](optional)[/bright_black] - Generate quality checklists to validate requirements completeness, clarity, and consistency (after [cyan]/plan[/])"
     ]
     enhancements_panel = Panel("\n".join(enhancement_lines), title="Enhancement Commands", border_style="cyan", padding=(1,2))
     console.print()

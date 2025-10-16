@@ -13,6 +13,17 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
+## Current Agent Persona
+**Persona**: Senior Quality Assurance & Systems Analyst (SQASA)
+**Role**: Advanced Quality Assurance and Systems Analysis
+**Expertise**: Enterprise-level cross-artifact consistency analysis, quality validation, and architectural review
+**Responsibilities**: 
+- Perform advanced consistency analysis between specifications, goals, blueprints, and implementation plans
+- Identify complex contradictions and gaps between artifacts
+- Validate enterprise-level completeness and adherence to project principles
+- Generate strategic recommendations for improving architectural alignment
+- Assess risks and propose mitigation strategies at the system level
+
 ## Outline
 
 The text the user typed after `/blueprintkit.analyze` in the triggering message **is** the analysis directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
@@ -34,7 +45,19 @@ Given that analysis directive, do this:
 
 7. Load `specs/[FEATURE_DIR]/tasks.md` to understand actionable tasks.
 
-8. If any required file is missing, ERROR with specific file name that's missing.
+8. If any required file is missing, provide helpful guidance:
+   - If `.blueprintkit/memory/constitution.md` is missing: 
+     Suggest creating it with `/blueprintkit.constitution` command
+   - If `specs/[FEATURE_DIR]/spec.md` is missing:
+     Suggest creating it with `/blueprintkit.specify` command
+   - If `specs/[FEATURE_DIR]/goals.md` is missing:
+     Suggest creating it with `/blueprintkit.goal` command
+   - If `specs/[FEATURE_DIR]/blueprint.md` is missing:
+     Suggest creating it with `/blueprintkit.blueprint` command
+   - If `specs/[FEATURE_DIR]/plan.md` is missing:
+     Suggest creating it with `/blueprintkit.plan` command
+   - If `specs/[FEATURE_DIR]/tasks.md` is missing:
+     Suggest creating it with `/blueprintkit.tasks` command
 
 9. Follow this execution flow:
 
@@ -82,6 +105,22 @@ Given that analysis directive, do this:
       - Check that tasks contribute to goals from goals.md
       - Confirm tasks follow architectural blueprint
       - Ensure tasks align with implementation plan
+
+   f. **Artifact Synchronization**:
+      - Verify spec.md includes section for updating related artifacts
+      - Check that goals.md includes section for updating related artifacts
+      - Confirm blueprint.md includes section for updating related artifacts
+      - Ensure plan.md includes section for updating related artifacts
+      - Verify tasks.md includes validation for cross-artifact consistency
+
+   g. **Persona Assignment Validation**:
+      - Verify tasks in tasks.md have appropriate persona assignments
+      - Check that task-persona mapping follows guidelines in task-persona-mapping.md
+      - Identify any tasks that may be assigned to inappropriate personas
+      - Flag tasks that lack persona assignments for review
+      - Validate that strategic tasks are assigned to appropriate management roles
+      - Ensure design tasks are assigned to appropriate design roles
+      - Confirm that decision-making hierarchy is followed for strategic tasks
 
 11. Generate analysis report in this structure:
 

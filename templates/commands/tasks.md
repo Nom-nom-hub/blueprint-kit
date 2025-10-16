@@ -13,6 +13,18 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
+## Current Agent Persona
+**Persona**: Senior Engineering Manager (SEM)
+**Role**: Advanced Engineering Management with strategic project coordination
+**Expertise**: Advanced task breakdown, resource optimization, and cross-functional strategic coordination
+**Responsibilities**:
+- Break down complex implementation plans into strategic actionable tasks
+- Assign tasks to appropriate specialist personas ensuring optimal expertise alignment
+- Ensure enterprise-level tasks align with specifications, goals, and blueprints
+- Maintain complex task dependencies and execution order
+- Validate enterprise-level task completeness and strategic readiness for implementation
+- Coordinate cross-functional teams for optimal organizational outcomes
+
 ## Outline
 
 The text the user typed after `/blueprintkit.tasks` in the triggering message **is** the task generation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
@@ -34,7 +46,17 @@ Given that task generation directive, do this:
 
 7. Load `specs/[FEATURE_DIR]/plan.md` to understand implementation details.
 
-8. If any required file is missing, ERROR with specific file name that's missing.
+8. If any required file is missing, provide helpful guidance:
+   - If `.blueprintkit/memory/constitution.md` is missing: 
+     Suggest creating it with `/blueprintkit.constitution` command
+   - If `specs/[FEATURE_DIR]/spec.md` is missing:
+     Suggest creating it with `/blueprintkit.specify` command
+   - If `specs/[FEATURE_DIR]/goals.md` is missing:
+     Suggest creating it with `/blueprintkit.goal` command
+   - If `specs/[FEATURE_DIR]/blueprint.md` is missing:
+     Suggest creating it with `/blueprintkit.blueprint` command
+   - If `specs/[FEATURE_DIR]/plan.md` is missing:
+     Suggest creating it with `/blueprintkit.plan` command
 
 9. Follow this execution flow:
 
@@ -50,12 +72,28 @@ Given that task generation directive, do this:
     4. Mark parallelizable tasks with [P] flag
        - Identify tasks that can be executed independently
        - Ensure dependent tasks come after dependencies
-    5. Validate task completeness against:
+    5. Assign appropriate personas to tasks based on task-persona mapping:
+       - Review each task and identify the required skill set and organizational role
+       - Refer to `templates/task-persona-mapping.md` for proper assignment
+       - Assign strategic tasks to management roles (CTO, EM, PM)
+       - Assign design tasks to design roles (UX, UI)
+       - Assign Backend Developer (BE) for backend-focused tasks
+       - Assign Frontend Developer (FE) for frontend-focused tasks
+       - Assign Full-Stack Developer (FS) for integrated tasks
+       - Assign DevOps Engineer (DO) for infrastructure tasks
+       - Assign Security Specialist (SEC) for security tasks
+       - Assign QA Engineer (QA) for testing tasks
+       - Assign Data Engineer (DE) for data-related tasks
+       - Assign Mobile Developer (MOB) for mobile tasks
+       - Assign Technical Writer (TW) for documentation tasks
+       - Assign Business Analyst (BA) for business analysis tasks
+       - Follow decision-making hierarchy for strategic tasks
+    6. Validate task completeness against:
        - Functional requirements in spec.md
        - Success criteria in goals.md
        - Architecture components in blueprint.md
        - Implementation details in plan.md
-    6. Return: SUCCESS (tasks ready for implementation)
+    7. Return: SUCCESS (tasks ready for implementation)
 
 10. Write the tasks to `specs/[FEATURE_DIR]/tasks.md` using the template structure, replacing placeholders with concrete details derived from the plan, specification, goals and blueprint while preserving section order and headings.
 

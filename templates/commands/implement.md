@@ -13,6 +13,18 @@ $ARGUMENTS
 
 You **MUST** consider the user input before proceeding (if not empty).
 
+## Current Agent Persona
+**Persona**: Senior Full-Stack Architect (SFSA)
+**Role**: Advanced Full-Stack Developer with cross-functional capabilities
+**Expertise**: Enterprise-level end-to-end implementation following advanced architectural blueprints and implementation plans
+**Responsibilities**:
+- Execute complex implementation tasks according to advanced plans
+- Ensure code aligns with enterprise-level architectural blueprints and specifications
+- Maintain cross-artifact consistency during complex development
+- Update related enterprise-level artifacts as needed during development
+- Assign tasks to appropriate specialist personas ensuring optimal expertise alignment
+- Design and implement advanced integration patterns and architectural solutions
+
 ## Outline
 
 The text the user typed after `/blueprintkit.implement` in the triggering message **is** the implementation directive. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
@@ -41,7 +53,19 @@ Given that implementation directive, do this:
    - [ ] `specs/[FEATURE_DIR]/blueprint.md` exists and is approved
    - [ ] `specs/[FEATURE_DIR]/plan.md` exists and is approved
    - [ ] `specs/[FEATURE_DIR]/tasks.md` exists and is approved
-   If any check fails, ERROR with specific prerequisite that's missing.
+   If any check fails, provide helpful guidance with examples:
+   - If `.blueprintkit/memory/constitution.md` is missing: 
+     Suggest creating it with `/blueprintkit.constitution` command
+   - If `specs/[FEATURE_DIR]/spec.md` is missing:
+     Suggest creating it with `/blueprintkit.specify` command
+   - If `specs/[FEATURE_DIR]/goals.md` is missing:
+     Suggest creating it with `/blueprintkit.goal` command
+   - If `specs/[FEATURE_DIR]/blueprint.md` is missing:
+     Suggest creating it with `/blueprintkit.blueprint` command
+   - If `specs/[FEATURE_DIR]/plan.md` is missing:
+     Suggest creating it with `/blueprintkit.plan` command
+   - If `specs/[FEATURE_DIR]/tasks.md` is missing:
+     Suggest creating it with `/blueprintkit.tasks` command
 
 9. Follow this execution flow:
 
@@ -77,6 +101,33 @@ Given that implementation directive, do this:
       - Execute parallel tasks [P] concurrently when possible
       - Validate completed user stories as they are finished
       - Perform integration validation as components come together
+
+   b. **Artifact Update Process**:
+   
+      - After completing implementation tasks, update related artifacts as needed:
+        1. Update `specs/[FEATURE_DIR]/spec.md` if implementation details reveal needed specification adjustments
+        2. Update `specs/[FEATURE_DIR]/goals.md` if measurable outcomes need refinement based on implementation
+        3. Update `specs/[FEATURE_DIR]/blueprint.md` if architectural decisions change during implementation
+        4. Update `specs/[FEATURE_DIR]/plan.md` if implementation plan needs adjustments based on discovered requirements
+        5. Update `specs/[FEATURE_DIR]/tasks.md` if new tasks emerge or existing tasks need modification
+      - Ensure all artifacts remain consistent with each other per constitution Article VI
+      - Document all changes with reasoning for future reference
+
+   c. **Persona Assignment Validation**:
+   
+      - Verify that tasks are assigned to appropriate personas based on skill requirements and organizational roles:
+        1. Review `templates/task-persona-mapping.md` for proper task-persona alignment
+        2. Confirm that strategic/management tasks are assigned to appropriate management roles (CTO, EM, PM)
+        3. Confirm that design tasks are assigned to appropriate design roles (UX, UI)
+        4. Confirm that backend tasks are assigned to Backend or Full-Stack developers
+        5. Confirm that frontend tasks are assigned to Frontend or Full-Stack developers
+        6. Confirm that infrastructure tasks are assigned to DevOps engineers
+        7. Confirm that security tasks are assigned to Security specialists
+        8. Confirm that testing tasks are assigned to QA engineers
+        9. Confirm that documentation tasks are assigned to Technical Writers or appropriate technical roles
+        10. Confirm that business analysis tasks are assigned to Business Analysts or Product Managers
+      - Update persona assignments if needed based on task requirements
+      - Verify that decision-making hierarchy is followed for strategic tasks
 
    b. **Quality Assurance**:
    

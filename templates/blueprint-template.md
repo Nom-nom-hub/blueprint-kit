@@ -52,6 +52,17 @@
 - [Potential risks with this architecture]
 - [How these risks will be mitigated]
 
+## Artifact Synchronization
+### Keeping Related Artifacts Updated
+- [ ] Ensure `spec.md` reflects any architectural constraints that affect requirements
+- [ ] Update `goals.md` if architecture affects measurable outcomes or success metrics
+- [ ] Align with `plan.md` to ensure implementation approach matches architectural blueprint
+- [ ] Coordinate with `tasks.md` to ensure tasks reflect architectural components
+
+### Architecture Evolution Tracking
+- [How will architectural decisions made during implementation be captured?]
+- [Process for updating blueprint if architecture changes during development]
+
 ## Review Checklist
 - [ ] Architecture addresses the feature requirements
 - [ ] Technology choices are appropriate for the requirements
@@ -61,3 +72,5 @@
 - [ ] Deployment approach is feasible
 - [ ] Quality attributes are defined
 - [ ] Risks are identified and mitigated
+- [ ] Process defined for keeping related artifacts synchronized
+- [ ] Mechanism included for updating blueprint based on implementation feedback

@@ -27,6 +27,17 @@
 ## Validation Approach
 - [How will we verify that success criteria have been met?]
 
+## Goal Evolution Tracking
+### Keeping Related Artifacts Updated
+- [ ] Update `spec.md` if measurable outcomes require specification changes
+- [ ] Coordinate with `blueprint.md` to ensure architecture supports updated goals
+- [ ] Align with `plan.md` to ensure implementation approach matches updated goals
+- [ ] Update `tasks.md` when success criteria change
+
+### Goal Feedback Loop
+- [How will progress toward goals affect specifications or architecture?]
+- [Process for refining goals based on implementation learnings]
+
 ## Review Checklist
 - [ ] Goal is specific and clearly defined
 - [ ] Success criteria are measurable and achievable
@@ -35,3 +46,5 @@
 - [ ] Success indicators are defined
 - [ ] Validation approach is clear
 - [ ] Stakeholders are identified
+- [ ] Process defined for keeping related artifacts synchronized
+- [ ] Mechanism included for updating goals based on implementation feedback

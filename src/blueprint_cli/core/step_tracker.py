@@ -60,15 +60,15 @@ class StepTracker:
 
             status = step["status"]
             if status == "done":
-                symbol = "[green]●[/green]"
+                symbol = "[green]+[/green]"
             elif status == "pending":
-                symbol = "[green dim]○[/green dim]"
+                symbol = "[green dim]-[/green dim]"
             elif status == "running":
-                symbol = "[cyan]○[/cyan]"
+                symbol = "[cyan]-[/cyan]"
             elif status == "error":
-                symbol = "[red]●[/red]"
+                symbol = "[red]X[/red]"
             elif status == "skipped":
-                symbol = "[yellow]○[/yellow]"
+                symbol = "[yellow]-[/yellow]"
             else:
                 symbol = " "
 
