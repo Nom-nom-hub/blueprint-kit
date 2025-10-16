@@ -11,7 +11,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      id-token: write  # Required for Trusted Publisher OIDC
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,8 +42,8 @@ jobs:
           export PATH="$HOME/.cargo/bin:$PATH"
           # Build the package
           uv build
-          # Publish to PyPI using Trusted Publisher OIDC
-          uv publish
+          # Publish to PyPI using API key
+          uv publish --token ${{ secrets.PYPI_API_TOKEN }}
       - name: Generate release notes
         if: steps.check_release.outputs.exists == 'false'
         id: release_notes
