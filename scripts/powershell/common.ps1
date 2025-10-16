@@ -73,7 +73,7 @@ function Validate-RequiredFiles {
 function Get-FeatureDir {
     # First, try to get from BLUEPRINT_FEATURE environment variable
     if ($env:BLUEPRINT_FEATURE) {
-        return ".blueprintkit\specs\$($env:BLUEPRINT_FEATURE)"
+        return ".blueprint\specs\$($env:BLUEPRINT_FEATURE)"
     }
 
     # Otherwise, try to get from current git branch name
@@ -90,13 +90,13 @@ function Get-FeatureDir {
         
         # Check if branch name starts with the expected pattern (e.g., "001-", "002-")
         if ($branchName -match '^[0-9]{3,}-') {
-            return ".blueprintkit\specs\$branchName"
+            return ".blueprint\specs\$branchName"
         }
     }
 
     # If we can't determine the feature from git branch, look for the most recent spec directory
-    if (Test-Path ".blueprintkit\specs" -PathType Container) {
-        $dirs = Get-ChildItem -Path ".blueprintkit\specs" -Directory -ErrorAction SilentlyContinue | Sort-Object {$_.Name} -Descending
+    if (Test-Path ".blueprint\specs" -PathType Container) {
+        $dirs = Get-ChildItem -Path ".blueprint\specs" -Directory -ErrorAction SilentlyContinue | Sort-Object {$_.Name} -Descending
         if ($dirs) {
             foreach ($dir in $dirs) {
                 return $dir.FullName
@@ -184,11 +184,11 @@ function Set-FeatureBranch {
 
 # Function to load constitution file if it exists
 function Get-Constitution {
-    if (Test-Path ".blueprintkit\memory\constitution.md" -PathType Leaf) {
-        Write-Host "Loaded constitution from .blueprintkit\memory\constitution.md"
+    if (Test-Path ".blueprint\memory\constitution.md" -PathType Leaf) {
+        Write-Host "Loaded constitution from .blueprint\memory\constitution.md"
         return $true
     } else {
-        Write-Host "No constitution file found at .blueprintkit\memory\constitution.md"
+        Write-Host "No constitution file found at .blueprint\memory\constitution.md"
         return $false
     }
 }

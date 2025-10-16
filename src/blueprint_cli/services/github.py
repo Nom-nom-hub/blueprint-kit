@@ -1,4 +1,4 @@
-"""GitHub service for the Blueprint CLI."""
+"""GitHub service for the Blueprint-Kit CLI."""
 
 import httpx
 import ssl

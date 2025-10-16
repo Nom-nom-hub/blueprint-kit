@@ -11,7 +11,7 @@
 # ///
 
 """
-Blueprint CLI - Setup tool for Blueprint projects
+Blueprint Kit CLI - Setup tool for Blueprint-Kit projects
 
 Usage:
     uvx blueprint-cli.py init <project-name>
@@ -48,7 +48,7 @@ class BannerGroup(TyperGroup):
 # Create the main Typer application
 app = typer.Typer(
     name="blueprint",
-    help="Setup tool for Blueprint blueprint-driven development projects",
+    help="Setup tool for Blueprint-Kit blueprint-driven development projects",
     add_completion=False,
     invoke_without_command=True,
     cls=BannerGroup,

@@ -22,7 +22,7 @@ EOF
 get_feature_dir() {
     # First, try to get from SPECIFY_FEATURE environment variable
     if [[ -n "${BLUEPRINT_FEATURE:-}" ]]; then
-        echo ".blueprintkit/specs/${BLUEPRINT_FEATURE}"
+        echo ".blueprint/specs/${BLUEPRINT_FEATURE}"
         return
     fi
 
@@ -33,14 +33,14 @@ get_feature_dir() {
         
         # Check if branch name starts with the expected pattern (e.g., "001-", "002-")
         if [[ $branch_name =~ ^[0-9]{3,}- ]]; then
-            echo ".blueprintkit/specs/$branch_name"
+            echo ".blueprint/specs/$branch_name"
             return
         fi
     fi
 
     # If we can't determine the feature from git branch, look for the most recent spec directory
-    if [[ -d ".blueprintkit/specs" ]]; then
-        for dir in $(ls -1d .blueprintkit/specs/* 2>/dev/null | sort -r); do
+    if [[ -d ".blueprint/specs" ]]; then
+        for dir in $(ls -1d .blueprint/specs/* 2>/dev/null | sort -r); do
             if [[ -d "$dir" ]]; then
                 echo "$dir"
                 return

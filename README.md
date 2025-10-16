@@ -84,58 +84,58 @@ uvx --from git+https://github.com/nom-nom-hub/blueprint-kit.git blueprint init <
 
 ### 2. Establish project principles
 
-Use the **`/blueprintkit.constitution`** command to create your project's governing principles and development guidelines that will guide all subsequent development.
+Use the **`/bluprint.constitution`** command to create your project's governing principles and development guidelines that will guide all subsequent development.
 
 ```bash
-/blueprintkit.constitution Create principles focused on code quality, testing standards, user experience consistency, performance requirements, and architectural integrity
+/bluprint.constitution Create principles focused on code quality, testing standards, user experience consistency, performance requirements, and architectural integrity
 ```
 
 ### 3. Create the specification
 
-Use the **`/blueprintkit.specify`** command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
+Use the **`/bluprint.specify`** command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
 
 ```bash
-/blueprintkit.specify Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
+/bluprint.specify Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
 ```
 
 ### 4. Define measurable goals
 
-Use the **`/blueprintkit.goal`** command to define measurable outcomes that the development should achieve.
+Use the **`/bluprint.goal`** command to define measurable outcomes that the development should achieve.
 
 ```bash
-/blueprintkit.goal Define measurable goals: 99.9% uptime, <100ms page load, 10K concurrent users, 95% test coverage
+/bluprint.goal Define measurable goals: 99.9% uptime, <100ms page load, 10K concurrent users, 95% test coverage
 ```
 
 ### 5. Create architectural blueprint
 
-Use the **`/blueprintkit.blueprint`** command to generate architectural patterns and system design.
+Use the **`/bluprint.blueprint`** command to generate architectural patterns and system design.
 
 ```bash
-/blueprintkit.blueprint Create architectural blueprint: microservices with API gateway, service mesh, event-driven architecture, and containerized deployment
+/bluprint.blueprint Create architectural blueprint: microservices with API gateway, service mesh, event-driven architecture, and containerized deployment
 ```
 
 ### 6. Create a technical implementation plan
 
-Use the **`/blueprintkit.plan`** command to provide your tech stack and architecture choices.
+Use the **`/bluprint.plan`** command to provide your tech stack and architecture choices.
 
 ```bash
-/blueprintkit.plan The application uses React with TypeScript for frontend, Node.js with Express for API, and PostgreSQL for data storage. Use Docker for containerization and Kubernetes for orchestration.
+/bluprint.plan The application uses React with TypeScript for frontend, Node.js with Express for API, and PostgreSQL for data storage. Use Docker for containerization and Kubernetes for orchestration.
 ```
 
 ### 7. Break down into tasks
 
-Use **`/blueprintkit.tasks`** to create an actionable task list from your implementation plan.
+Use **`/bluprint.tasks`** to create an actionable task list from your implementation plan.
 
 ```bash
-/blueprintkit.tasks
+/bluprint.tasks
 ```
 
 ### 8. Execute implementation
 
-Use **`/blueprintkit.implement`** to execute all tasks and build your feature according to the plan.
+Use **`/bluprint.implement`** to execute all tasks and build your feature according to the plan.
 
 ```bash
-/blueprintkit.implement
+/bluprint.implement
 ```
 
 For detailed step-by-step instructions, see our [comprehensive guide](./blueprint-driven.md).
@@ -231,13 +231,13 @@ Essential commands for the Blueprint-Driven Development workflow:
 
 | Command                  | Description                                                           |
 |--------------------------|-----------------------------------------------------------------------|
-| `/blueprintkit.constitution`  | Create or update project governing principles and development guidelines |
-| `/blueprintkit.specify`       | Define what you want to build (requirements and user stories)        |
-| `/blueprintkit.goal`          | Define measurable goals and success metrics                         |
-| `/blueprintkit.blueprint`     | Create architectural blueprints and system design                   |
-| `/blueprintkit.plan`          | Create technical implementation plans with your chosen tech stack     |
-| `/blueprintkit.tasks`         | Generate actionable task lists for implementation                     |
-| `/blueprintkit.implement`     | Execute all tasks to build the feature according to the plan         |
+| `/bluprint.constitution`  | Create or update project governing principles and development guidelines |
+| `/bluprint.specify`       | Define what you want to build (requirements and user stories)        |
+| `/bluprint.goal`          | Define measurable goals and success metrics                         |
+| `/bluprint.blueprint`     | Create architectural blueprints and system design                   |
+| `/bluprint.plan`          | Create technical implementation plans with your chosen tech stack     |
+| `/bluprint.tasks`         | Generate actionable task lists for implementation                     |
+| `/bluprint.implement`     | Execute all tasks to build the feature according to the plan         |
 
 #### Optional Commands
 
@@ -245,15 +245,15 @@ Additional commands for enhanced quality and validation:
 
 | Command              | Description                                                           |
 |----------------------|-----------------------------------------------------------------------|
-| `/blueprintkit.clarify`   | Clarify underspecified areas (recommended before `/blueprintkit.plan`; formerly `/quizme`) |
-| `/blueprintkit.analyze`   | Cross-artifact consistency & coverage analysis (run after `/blueprintkit.tasks`, before `/blueprintkit.implement`) |
-| `/blueprintkit.checklist` | Generate custom quality checklists that validate requirements completeness, clarity, and consistency (like "unit tests for English") |
+| `/bluprint.clarify`   | Clarify underspecified areas (recommended before `/bluprint.plan`; formerly `/quizme`) |
+| `/bluprint.analyze`   | Cross-artifact consistency & coverage analysis (run after `/bluprint.tasks`, before `/bluprint.implement`) |
+| `/bluprint.checklist` | Generate custom quality checklists that validate requirements completeness, clarity, and consistency (like "unit tests for English") |
 
 ### Environment Variables
 
 | Variable         | Description                                                                                    |
 |------------------|------------------------------------------------------------------------------------------------|
-| `BLUEPRINT_FEATURE` | Override feature detection for non-Git repositories. Set to the feature directory name (e.g., `001-photo-albums`) to work on a specific feature when not using Git branches.<br/>**Must be set in the context of the agent you're working with prior to using `/blueprintkit.plan` or follow-up commands. |
+| `BLUEPRINT_FEATURE` | Override feature detection for non-Git repositories. Set to the feature directory name (e.g., `001-photo-albums`) to work on a specific feature when not using Git branches.<br/>**Must be set in the context of the agent you're working with prior to using `/bluprint.plan` or follow-up commands. |
 
 ## 📚 Core Philosophy
 
@@ -363,19 +363,19 @@ blueprint init <project_name> --ai claude --ignore-agent-tools
 
 Go to the project folder and run your AI agent. In our example, we're using `claude`.
 
-You will know that things are configured correctly if you see the `/blueprintkit.constitution`, `/blueprintkit.specify`, `/blueprintkit.goal`, `/blueprintkit.blueprint`, `/blueprintkit.plan`, `/blueprintkit.tasks`, and `/blueprintkit.implement` commands available.
+You will know that things are configured correctly if you see the `/bluprint.constitution`, `/bluprint.specify`, `/bluprint.goal`, `/bluprint.blueprint`, `/bluprint.plan`, `/bluprint.tasks`, and `/bluprint.implement` commands available.
 
-The first step should be establishing your project's governing principles using the `/blueprintkit.constitution` command. This helps ensure consistent decision-making throughout all subsequent development phases:
+The first step should be establishing your project's governing principles using the `/bluprint.constitution` command. This helps ensure consistent decision-making throughout all subsequent development phases:
 
 ```text
-/blueprintkit.constitution Create principles focused on code quality, testing standards, user experience consistency, performance requirements, and architectural integrity. Include governance for how these principles should guide technical decisions and implementation choices.
+/bluprint.constitution Create principles focused on code quality, testing standards, user experience consistency, performance requirements, and architectural integrity. Include governance for how these principles should guide technical decisions and implementation choices.
 ```
 
-This step creates or updates the `.blueprintkit/memory/constitution.md` file with your project's foundational guidelines that the AI agent will reference during specification, goal-setting, blueprint creation, planning, and implementation phases.
+This step creates or updates the `.blueprint/memory/constitution.md` file with your project's foundational guidelines that the AI agent will reference during specification, goal-setting, blueprint creation, planning, and implementation phases.
 
 ### **STEP 2:** Create project specifications
 
-With your project principles established, you can now create the functional specifications. Use the `/blueprintkit.specify` command and then provide the concrete requirements for the project you want to develop.
+With your project principles established, you can now create the functional specifications. Use the `/bluprint.specify` command and then provide the concrete requirements for the project you want to develop.
 
 > [!IMPORTANT]
 > Be as explicit as possible about _what_ you are trying to build and _why_. **Do not focus on the tech stack at this point**.
@@ -410,7 +410,7 @@ The produced specification should contain a set of user stories and functional r
 At this stage, your project folder contents should resemble the following:
 
 ```text
-└── .blueprintkit
+└── .blueprint
     ├── memory
     │    └── constitution.md
     ├── scripts
@@ -435,12 +435,12 @@ With the baseline specification created, you can go ahead and clarify any of the
 You should run the structured clarification workflow **before** creating a technical plan to reduce rework downstream.
 
 Preferred order:
-1. Use `/blueprintkit.clarify` (structured) – sequential, coverage-based questioning that records answers in a Clarifications section.
+1. Use `/bluprint.clarify` (structured) – sequential, coverage-based questioning that records answers in a Clarifications section.
 2. Optionally follow up with ad-hoc free-form refinement if something still feels vague.
 
 If you intentionally want to skip clarification (e.g., spike or exploratory prototype), explicitly state that so the agent doesn't block on missing clarifications.
 
-Example free-form refinement prompt (after `/blueprintkit.clarify` if still needed):
+Example free-form refinement prompt (after `/bluprint.clarify` if still needed):
 
 ```text
 For each sample project or project that you create there should be a variable number of tasks between 5 and 15
@@ -458,10 +458,10 @@ It's important to use the interaction with your AI agent as an opportunity to cl
 
 ### **STEP 4:** Define measurable goals
 
-With the specification in place, you can now define clear, measurable goals that the development should achieve. Use the `/blueprintkit.goal` command with specific, measurable outcomes:
+With the specification in place, you can now define clear, measurable goals that the development should achieve. Use the `/bluprint.goal` command with specific, measurable outcomes:
 
 ```text
-/blueprintkit.goal Define the measurable goals for Taskify: 99.9% uptime, <100ms page load times, support 10K concurrent users, achieve 95% test coverage, maintain 90% user satisfaction scores.
+/bluprint.goal Define the measurable goals for Taskify: 99.9% uptime, <100ms page load times, support 10K concurrent users, achieve 95% test coverage, maintain 90% user satisfaction scores.
 ```
 
 The output of this step will enhance your project directory with goal definitions:
@@ -490,10 +490,10 @@ The output of this step will enhance your project directory with goal definition
 
 ### **STEP 5:** Generate architectural blueprints
 
-With goals defined, create the architectural blueprints using `/blueprintkit.blueprint` that will guide the system design:
+With goals defined, create the architectural blueprints using `/bluprint.blueprint` that will guide the system design:
 
 ```text
-/blueprintkit.blueprint Create architectural blueprints for Taskify: microservices architecture with API gateway, service mesh for communication, event-driven patterns for task updates, containerized deployment with Docker and Kubernetes, database per service pattern with PostgreSQL for user data and Redis for sessions.
+/bluprint.blueprint Create architectural blueprints for Taskify: microservices architecture with API gateway, service mesh for communication, event-driven patterns for task updates, containerized deployment with Docker and Kubernetes, database per service pattern with PostgreSQL for user data and Redis for sessions.
 ```
 
 This step adds architectural blueprints to your project structure:
@@ -514,7 +514,7 @@ This step adds architectural blueprints to your project structure:
 
 ### **STEP 6:** Generate a plan
 
-You can now be specific about the tech stack and other technical requirements. You can use the `/blueprintkit.plan` command that is built into the project template with a prompt like this:
+You can now be specific about the tech stack and other technical requirements. You can use the `/bluprint.plan` command that is built into the project template with a prompt like this:
 
 ```text
 We are going to generate this using .NET Aspire, using Postgres as the database. The frontend should use
@@ -588,12 +588,12 @@ You can also ask your AI agent (if you have the [GitHub CLI](https://docs.github
 >[!NOTE]
 >Before you have the agent implement it, it's also worth prompting your AI agent to cross-check the details to see if there are any over-engineered pieces (remember - it can be over-eager). If over-engineered components or decisions exist, you can ask your AI agent to resolve them. Ensure that your AI agent follows the [constitution](base/memory/constitution.md) as the foundational piece that it must adhere to when establishing the plan.
 
-### **STEP 8:** Generate task breakdown with /blueprintkit.tasks
+### **STEP 8:** Generate task breakdown with /bluprint.tasks
 
-With the implementation plan, goals, and blueprints validated, you can now break down the plan into specific, actionable tasks that can be executed in the correct order. Use the `/blueprintkit.tasks` command to automatically generate a detailed task breakdown from your implementation plan:
+With the implementation plan, goals, and blueprints validated, you can now break down the plan into specific, actionable tasks that can be executed in the correct order. Use the `/bluprint.tasks` command to automatically generate a detailed task breakdown from your implementation plan:
 
 ```text
-/blueprintkit.tasks
+/bluprint.tasks
 ```
 
 This step creates a `tasks.md` file in your feature specification directory that contains:
@@ -605,17 +605,17 @@ This step creates a `tasks.md` file in your feature specification directory that
 - **Test-driven development structure** - If tests are requested, test tasks are included and ordered to be written before implementation
 - **Checkpoint validation** - Each user story phase includes checkpoints to validate independent functionality
 
-The generated tasks.md provides a clear roadmap for the `/blueprintkit.implement` command, ensuring systematic implementation that maintains code quality and allows for incremental delivery of user stories.
+The generated tasks.md provides a clear roadmap for the `/bluprint.implement` command, ensuring systematic implementation that maintains code quality and allows for incremental delivery of user stories.
 
 ### **STEP 9:** Implementation
 
-Once ready, use the `/blueprintkit.implement` command to execute your implementation plan:
+Once ready, use the `/bluprint.implement` command to execute your implementation plan:
 
 ```text
-/blueprintkit.implement
+/bluprint.implement
 ```
 
-The `/blueprintkit.implement` command will:
+The `/bluprint.implement` command will:
 - Validate that all prerequisites are in place (constitution, spec, goals, blueprint, plan, and tasks)
 - Parse the task breakdown from `tasks.md`
 - Execute tasks in the correct order, respecting dependencies and parallel execution markers

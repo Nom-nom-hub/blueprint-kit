@@ -26,4 +26,4 @@ BANNER = """
 ===============================================================================
 """
 
-TAGLINE = "Blueprint Kit - Blueprint-Driven Development Toolkit"
+TAGLINE = "Blueprint-Kit - Blueprint-Driven Development Toolkit"

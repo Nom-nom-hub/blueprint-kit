@@ -62,9 +62,9 @@ uvx --from git+https://github.com/nom-nom-hub/blueprint-kit.git blueprint init <
 ## Verification
 
 After initialization, you should see the following commands available in your AI agent:
-- `/blueprintkit.blueprint` - Create blueprints
-- `/blueprintkit.plan` - Generate implementation plans  
-- `/blueprintkit.tasks` - Break down into actionable tasks
+- `/bluprint.blueprint` - Create blueprints
+- `/bluprint.plan` - Generate implementation plans  
+- `/bluprint.tasks` - Break down into actionable tasks
 
 The `.blueprint/scripts` directory will contain both `.sh` and `.ps1` scripts.
 

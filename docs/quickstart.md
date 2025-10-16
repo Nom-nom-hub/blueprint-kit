@@ -22,29 +22,29 @@ uvx --from git+https://github.com/nom-nom-hub/blueprint-kit.git blueprint init <
 
 ### 2. Create the Blueprint
 
-Use the `/blueprintkit.blueprint` command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
+Use the `/bluprint.blueprint` command to describe what you want to build. Focus on the **what** and **why**, not the tech stack.
 
 ```bash
-/blueprintkit.blueprint Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
+/bluprint.blueprint Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
 ```
 
 ### 3. Create a Technical Implementation Plan
 
-Use the `/blueprintkit.plan` command to provide your tech stack and architecture choices.
+Use the `/bluprint.plan` command to provide your tech stack and architecture choices.
 
 ```bash
-/blueprintkit.plan The application uses Vite with minimal number of libraries. Use vanilla HTML, CSS, and JavaScript as much as possible. Images are not uploaded anywhere and metadata is stored in a local SQLite database.
+/bluprint.plan The application uses Vite with minimal number of libraries. Use vanilla HTML, CSS, and JavaScript as much as possible. Images are not uploaded anywhere and metadata is stored in a local SQLite database.
 ```
 
 ### 4. Break Down and Implement
 
-Use `/blueprintkit.tasks` to create an actionable task list, then ask your agent to implement the feature.
+Use `/bluprint.tasks` to create an actionable task list, then ask your agent to implement the feature.
 
 ## Detailed Example: Building Taskify
 
 Here's a complete example of building a team productivity platform:
 
-### Step 1: Define Requirements with `/blueprintkit.blueprint`
+### Step 1: Define Requirements with `/bluprint.blueprint`
 
 ```text
 Develop Taskify, a team productivity platform. It should allow users to create projects, add team members,
@@ -81,7 +81,7 @@ Also validate the blueprint checklist:
 Read the review and acceptance checklist, and check off each item in the checklist if the feature blueprint meets the criteria. Leave it empty if it does not.
 ```
 
-### Step 3: Generate Technical Plan with `/blueprintkit.plan`
+### Step 3: Generate Technical Plan with `/bluprint.plan`
 
 Be specific about your tech stack and technical requirements:
 

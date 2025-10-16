@@ -1,4 +1,4 @@
-"""Git service for the Blueprint CLI."""
+"""Git service for the Blueprint-Kit CLI."""
 
 import subprocess
 import shutil
@@ -82,7 +82,7 @@ def init_git_repo(project_path: Path, quiet: bool = False) -> Tuple[bool, str | 
             console.print("[cyan]Initializing git repository...[/cyan]")
         subprocess.run(["git", "init"], check=True, capture_output=True, text=True)
         subprocess.run(["git", "add", "."], check=True, capture_output=True, text=True)
-        subprocess.run(["git", "commit", "-m", "Initial commit from Blueprint template"], check=True, capture_output=True, text=True)
+        subprocess.run(["git", "commit", "-m", "Initial commit from Blueprint-Kit template"], check=True, capture_output=True, text=True)
         if not quiet:
             from rich.console import Console
             console = Console()

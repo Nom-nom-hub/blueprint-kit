@@ -46,7 +46,7 @@ Write-Host ""
 Write-Host "Directory structure:" -ForegroundColor Yellow
 
 # Define required directories
-$requiredDirs = @(".blueprintkit\memory", ".blueprintkit\scripts", ".blueprintkit\templates")
+$requiredDirs = @(".blueprint\memory", ".blueprint\scripts", ".blueprint\templates")
 
 foreach ($dir in $requiredDirs) {
     if (Test-Path $dir -PathType Container) {
@@ -67,14 +67,14 @@ if (Test-Path "specs" -PathType Container) {
 
 Write-Host ""
 # Check for configuration files
-$configFiles = @(".blueprintkit\memory\constitution.md")
+$configFiles = @(".blueprint\memory\constitution.md")
 
 Write-Host "Configuration files:" -ForegroundColor Yellow
 foreach ($file in $configFiles) {
     if (Test-Path $file -PathType Leaf) {
         Write-Host "  ✓ $file" -ForegroundColor Green
     } else {
-        Write-Host "  ○ $file - NOT FOUND (will be created with /blueprintkit.constitution)" -ForegroundColor Gray
+        Write-Host "  ○ $file - NOT FOUND (will be created with /blueprint.constitution)" -ForegroundColor Gray
     }
 }
 

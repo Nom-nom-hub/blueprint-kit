@@ -90,7 +90,7 @@ The key is treating specifications, goals, and blueprints as the source of truth
 
 The BDD methodology is significantly enhanced through powerful commands that automate the specification + goal + blueprint → planning → tasking workflow:
 
-### The `/blueprintkit.specify` Command
+### The `/bluprint.specify` Command
 
 This command transforms a simple feature description (the user-prompt) into a complete, structured specification with automatic repository management:
 
@@ -99,7 +99,7 @@ This command transforms a simple feature description (the user-prompt) into a co
 3. **Template-Based Generation**: Copies and customizes the feature specification template with your requirements
 4. **Directory Structure**: Creates the proper `specs/[branch-name]/` structure for all related documents
 
-### The `/blueprintkit.goal` Command
+### The `/bluprint.goal` Command
 
 This command creates measurable goals that drive the development process:
 
@@ -108,7 +108,7 @@ This command creates measurable goals that drive the development process:
 3. **Goal Alignment**: Ensures goals align with specifications and business objectives
 4. **Goal Tracking**: Sets up mechanisms to track goal progress throughout development
 
-### The `/blueprintkit.blueprint` Command
+### The `/bluprint.blueprint` Command
 
 This command generates architectural blueprints that guide implementation:
 
@@ -117,7 +117,7 @@ This command generates architectural blueprints that guide implementation:
 3. **Pattern Application**: Applies architectural patterns and constraints
 4. **Template Creation**: Produces blueprint templates that guide code generation
 
-### The `/blueprintkit.plan` Command
+### The `/bluprint.plan` Command
 
 Once specifications, goals, and blueprints exist, this command creates a comprehensive implementation plan:
 
@@ -129,7 +129,7 @@ Once specifications, goals, and blueprints exist, this command creates a compreh
 6. **Detailed Documentation**: Generates supporting documents for data models, API contracts, and test scenarios
 7. **Quickstart Validation**: Produces a quickstart guide capturing key validation scenarios
 
-### The `/blueprintkit.tasks` Command
+### The `/bluprint.tasks` Command
 
 After a plan is created, this command analyzes the plan and related design documents to generate an executable task list:
 
@@ -158,7 +158,7 @@ Total: ~14 hours of documentation work
 
 ```bash
 # Step 1: Create the feature specification (5 minutes)
-/blueprintkit.specify Real-time chat system with message history and user presence
+/bluprint.specify Real-time chat system with message history and user presence
 
 # This automatically:
 # - Creates branch "003-chat-system"
@@ -166,16 +166,16 @@ Total: ~14 hours of documentation work
 # - Populates it with structured requirements
 
 # Step 2: Define measurable goals (5 minutes)
-/blueprintkit.goal Chat system with 99.9% uptime, <100ms message delivery, 10K concurrent users
+/bluprint.goal Chat system with 99.9% uptime, <100ms message delivery, 10K concurrent users
 
 # Step 3: Generate architectural blueprint (5 minutes)
-/blueprintkit.blueprint Microservice architecture with WebSocket gateway, message queue, and user presence service
+/bluprint.blueprint Microservice architecture with WebSocket gateway, message queue, and user presence service
 
 # Step 4: Generate implementation plan (5 minutes)
-/blueprintkit.plan WebSocket for real-time messaging, PostgreSQL for history, Redis for presence
+/bluprint.plan WebSocket for real-time messaging, PostgreSQL for history, Redis for presence
 
 # Step 5: Generate executable tasks (5 minutes)
-/blueprintkit.tasks
+/bluprint.tasks
 
 # This automatically creates:
 # - specs/003-chat-system/spec.md (Feature specifications)

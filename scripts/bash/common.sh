@@ -64,7 +64,7 @@ validate_required_files() {
 get_feature_dir() {
     # First, try to get from BLUEPRINT_FEATURE environment variable
     if [[ -n "${BLUEPRINT_FEATURE:-}" ]]; then
-        echo ".blueprintkit/specs/${BLUEPRINT_FEATURE}"
+        echo ".blueprint/specs/${BLUEPRINT_FEATURE}"
         return 0
     fi
 
@@ -75,14 +75,14 @@ get_feature_dir() {
         
         # Check if branch name starts with the expected pattern (e.g., "001-", "002-")
         if [[ $branch_name =~ ^[0-9]{3,}- ]]; then
-            echo ".blueprintkit/specs/$branch_name"
+            echo ".blueprint/specs/$branch_name"
             return 0
         fi
     fi
 
     # If we can't determine the feature from git branch, look for the most recent spec directory
-    if [[ -d ".blueprintkit/specs" ]]; then
-        for dir in $(ls -1d .blueprintkit/specs/* 2>/dev/null | sort -r); do
+    if [[ -d ".blueprint/specs" ]]; then
+        for dir in $(ls -1d .blueprint/specs/* 2>/dev/null | sort -r); do
             if [[ -d "$dir" ]]; then
                 echo "$dir"
                 return 0
@@ -151,9 +151,9 @@ checkout_feature_branch() {
 
 # Function to load constitution file if it exists
 load_constitution() {
-    if [[ -f ".blueprintkit/memory/constitution.md" ]]; then
-        echo "Loaded constitution from .blueprintkit/memory/constitution.md"
+    if [[ -f ".blueprint/memory/constitution.md" ]]; then
+        echo "Loaded constitution from .blueprint/memory/constitution.md"
     else
-        echo "No constitution file found at .blueprintkit/memory/constitution.md"
+        echo "No constitution file found at .blueprint/memory/constitution.md"
     fi
 }

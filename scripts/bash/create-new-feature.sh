@@ -71,8 +71,8 @@ if [[ -z "$feature_desc" ]]; then
     exit 1
 fi
 
-# Create .blueprintkit/specs directory if it doesn't exist
-mkdir -p .blueprintkit/specs
+# Create .blueprint/specs directory if it doesn't exist
+mkdir -p .blueprint/specs
 
 # Get feature number
 feature_num=$(get_feature_number)
@@ -87,7 +87,7 @@ if [[ -z "$branch_name" ]]; then
 fi
 
 # Create the feature directory
-feature_dir=".blueprintkit/specs/$branch_name"
+feature_dir=".blueprint/specs/$branch_name"
 mkdir -p "$feature_dir"
 
 # Create spec file

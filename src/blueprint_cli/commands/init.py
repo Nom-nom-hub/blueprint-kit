@@ -1,4 +1,4 @@
-"""Init command implementation for the Blueprint CLI."""
+"""Init command implementation for the Blueprint-Kit CLI."""
 
 import os
 import subprocess
@@ -318,10 +318,10 @@ def download_and_extract_template(project_path: Path, ai_assistant: str, script_
 
 
 def ensure_executable_scripts(project_path: Path, tracker: StepTracker | None = None) -> None:
-    """Ensure POSIX .sh scripts under .blueprintkit/scripts (recursively) have execute bits (no-op on Windows)."""
+    """Ensure POSIX .sh scripts under .blueprint/scripts (recursively) have execute bits (no-op on Windows)."""
     if os.name == "nt":
         return  # Windows: skip silently
-    scripts_root = project_path / ".blueprintkit" / "scripts"
+    scripts_root = project_path / ".blueprint" / "scripts"
     if not scripts_root.is_dir():
         return
     failures: list[str] = []
@@ -662,7 +662,7 @@ def init(
     github_token: str = typer.Option(None, "--github-token", help="GitHub token to use for API requests (or set GH_TOKEN or GITHUB_TOKEN environment variable)"),
 ):
     """
-    Initialize a new Blueprint project from the latest template.
+    Initialize a new Blueprint-Kit project from the latest template.
     
     This command will:
     1. Check that required tools are installed (git is optional)
@@ -732,7 +732,7 @@ def init(
     current_dir = Path.cwd()
 
     setup_lines = [
-        "[cyan]Blueprint Project Setup[/cyan]",
+        "[cyan]Blueprint-Kit Project Setup[/cyan]",
         "",
         f"{'Project':<15} [green]{project_path.name}[/green]",
         f"{'Working Path':<15} [dim]{current_dir}[/dim]",
@@ -797,7 +797,7 @@ def init(
     console.print(f"[cyan]Selected AI assistant:[/cyan] {selected_ai}")
     console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
 
-    tracker = StepTracker("Initialize Blueprint Project")
+    tracker = StepTracker("Initialize Blueprint-Kit Project")
 
     sys._specify_tracker_active = True
 

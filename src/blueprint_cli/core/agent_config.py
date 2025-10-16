@@ -1,4 +1,4 @@
-"""Agent configurations for the Blueprint CLI."""
+"""Agent configurations for the Blueprint-Kit CLI."""
 
 # Agent configuration with name, folder, install URL, and CLI tool requirement
 AGENT_CONFIG = {

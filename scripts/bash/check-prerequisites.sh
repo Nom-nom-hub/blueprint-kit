@@ -42,7 +42,7 @@ echo
 echo "Directory structure:"
 
 # Define required directories
-required_dirs=(".blueprintkit/memory" ".blueprintkit/scripts" ".blueprintkit/templates")
+required_dirs=(".blueprint/memory" ".blueprint/scripts" ".blueprint/templates")
 
 for dir in "${required_dirs[@]}"; do
     if [[ -d "$dir" ]]; then
@@ -63,14 +63,14 @@ fi
 
 echo
 # Check for configuration files
-config_files=(".blueprintkit/memory/constitution.md")
+config_files=(".blueprint/memory/constitution.md")
 
 echo "Configuration files:"
 for file in "${config_files[@]}"; do
     if [[ -f "$file" ]]; then
         echo "  ✓ $file"
     else
-        echo "  ○ $file - NOT FOUND (will be created with /blueprintkit.constitution)"
+        echo "  ○ $file - NOT FOUND (will be created with /blueprint.constitution)"
     fi
 done
 

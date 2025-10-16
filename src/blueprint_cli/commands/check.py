@@ -1,4 +1,4 @@
-"""Check command implementation for the Blueprint CLI."""
+"""Check command implementation for the Blueprint-Kit CLI."""
 
 import typer
 from rich.console import Console
@@ -63,7 +63,7 @@ def check():
 
     console.print(tracker.render())
 
-    console.print("\n[bold green]Blueprint CLI is ready to use![/bold green]")
+    console.print("\n[bold green]Blueprint-Kit CLI is ready to use![/bold green]")
 
     if not git_ok:
         console.print("[dim]Tip: Install git for repository management[/dim]")

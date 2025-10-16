@@ -1,4 +1,4 @@
-"""General utility functions for the Blueprint CLI."""
+"""General utility functions for the Blueprint-Kit CLI."""
 
 import os
 from pathlib import Path

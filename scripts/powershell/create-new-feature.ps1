@@ -14,7 +14,7 @@ param(
 
 # Function to create unique feature number
 function Get-FeatureNumber {
-    $basePath = ".blueprintkit\specs"
+    $basePath = ".blueprint\specs"
 
     if (Test-Path $basePath -PathType Container) {
         # Find the highest numbered directory and add 1
@@ -51,9 +51,9 @@ if ([string]::IsNullOrEmpty($FeatureDescription)) {
     exit 1
 }
 
-# Create .blueprintkit/specs directory if it doesn't exist
-if (!(Test-Path ".blueprintkit\specs" -PathType Container)) {
-    New-Item -ItemType Directory -Path ".blueprintkit\specs" -Force | Out-Null
+# Create .blueprint/specs directory if it doesn't exist
+if (!(Test-Path ".blueprint\specs" -PathType Container)) {
+    New-Item -ItemType Directory -Path ".blueprint\specs" -Force | Out-Null
 }
 
 # Get feature number
