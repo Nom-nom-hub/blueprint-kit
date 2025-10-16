@@ -506,11 +506,14 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
                 if agent_config['ext'] == 'toml':
                     # Convert any backslashes to forward slashes to ensure
                     # AI agents can properly recognize and work with TOML files
-                    toml_content = f'description = "{description.replace("\\", "/")}"\n\nprompt = """\n{replaced_content.replace("\\", "/")}\n"""'
+                    desc_escaped = description.replace('\\\\', '/')
+                    content_escaped = replaced_content.replace('\\\\', '/')
+                    toml_content = f'description = "{desc_escaped}"\n\nprompt = """\n{content_escaped}\n"""'
                     output_path.write_text(toml_content, encoding='utf-8')
                 else:
                     # Also fix backslashes in regular files for consistency
-                    output_path.write_text(replaced_content.replace('\\\\', '/'), encoding='utf-8')
+                    content_escaped = replaced_content.replace('\\\\', '/')
+                    output_path.write_text(content_escaped, encoding='utf-8')
         
         except Exception as e:
             if tracker:
