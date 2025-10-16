@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail # Corrected: Removed space before pipefail
+set -euo pipefail
 
 # create-release-packages.sh
 # Build Blueprint Kit template release archives for each supported AI assistant and script type.
@@ -85,7 +85,6 @@ generate_commands() {
 
     case $ext in
       toml)
-        # Replace any backslashes with forward slashes, then wrap in proper TOML quoting
         clean_body=$(printf '%s\n' "$body" | sed 's/\\/\//g')
         {
           echo "description = \"$description\""
@@ -95,10 +94,7 @@ generate_commands() {
           echo "\"\"\""
         } > "$output_dir/blueprintkit.$name.$ext"
         ;;
-      md)
-        echo "$body" > "$output_dir/blueprintkit.$name.$ext"
-        ;;
-      prompt.md)
+      md | prompt.md)
         echo "$body" > "$output_dir/blueprintkit.$name.$ext"
         ;;
     esac
@@ -199,15 +195,19 @@ ALL_AGENTS=(claude gemini copilot cursor-agent qwen opencode windsurf codex kilo
 ALL_SCRIPTS=(sh ps)
 
 norm_list() {
-  tr ',\n' '  ' | awk '{for(i=1;i<=NF;i++){if(!seen[$i]++){printf((out?" ":"") $i)}}}END{printf("\n")}'
+  tr ',\n' ' ' | awk '{for(i=1;i<=NF;i++){if(!seen[$i]++){printf((out?" ":"") $i)}}}END{printf("\n")}'
 }
 
 validate_subset() {
-  local type=$1; shift; local -n allowed=$1; shift; local items=("$@")
+  local type=$1; shift
+  local -n allowed=$1; shift
+  local items=("$@")
   local ok=1
   for it in "${items[@]}"; do
     local found=0
-    for a in "${allowed[@]}"; do [[ $it == "$a" ]] && { found=1; break; }; done
+    for a in "${allowed[@]}"; do
+      [[ $it == "$a" ]] && { found=1; break; }
+    done
     if [[ $found -eq 0 ]]; then
       echo "Error: unknown $type '$it' (allowed: ${allowed[*]})" >&2
       ok=0
