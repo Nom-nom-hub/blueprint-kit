@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -euo pipefail # Corrected: Removed space before pipefail
 
 # create-release-packages.sh
 # Build Blueprint Kit template release archives for each supported AI assistant and script type.
