@@ -528,6 +528,116 @@ prompt = """
         console.print(f"[cyan]Debug:[/cyan] Files created: {list(agent_dir.glob('*'))}")
 
 
+def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepTracker = None):
+    """
+    Create an agent-specific MD file in the project root based on agent-file-template.md
+    
+    Args:
+        project_path: Path to the project directory
+        agent: The selected AI agent
+        tracker: Optional StepTracker to update with progress
+    """
+    import importlib.resources
+    import traceback
+    from pathlib import Path
+    
+    try:
+        # Get the agent file template
+        templates_root_dir = None
+
+        # Method 1: Try importlib.resources (for installed packages)
+        try:
+            # Use importlib.resources.files to get the templates directory
+            templates_pkg = importlib.resources.files('blueprint_cli').parent
+            templates_root_dir = templates_pkg / "templates"
+            if templates_root_dir.exists():
+                print(f"DEBUG: Found templates using importlib.resources.files at {templates_root_dir}")
+            else:
+                print(f"DEBUG: Templates path from importlib.resources.files does not exist: {templates_root_dir}")
+                templates_root_dir = None
+        except Exception as e:
+            print(f"DEBUG: Error using importlib.resources.files: {e}")
+            templates_root_dir = None
+
+        # Method 2: Try relative to current file location
+        if templates_root_dir is None:
+            cli_dir = Path(__file__).parent.parent
+            potential_dir = cli_dir / "templates"
+            if potential_dir.exists():
+                templates_root_dir = potential_dir
+                print(f"DEBUG: Found templates relative to file location at {templates_root_dir}")
+            else:
+                print(f"DEBUG: Templates path from file location does not exist: {potential_dir}")
+
+        # Method 3: Try absolute path from current working directory
+        if templates_root_dir is None:
+            potential_dir = Path.cwd() / "templates"
+            if potential_dir.exists():
+                templates_root_dir = potential_dir
+                print(f"DEBUG: Found templates in current working directory at {templates_root_dir}")
+            else:
+                print(f"DEBUG: Templates path from current working directory does not exist: {potential_dir}")
+
+        if templates_root_dir is None or not templates_root_dir.exists():
+            error_msg = f"Templates not found (searched in multiple locations)"
+            print(f"DEBUG: {error_msg}")
+            if tracker:
+                tracker.error(f"agent-md-{agent}", error_msg)
+            return
+
+        # Read the agent template
+        agent_template_path = templates_root_dir / "agent-file-template.md"
+        if not agent_template_path.exists():
+            error_msg = f"Agent template not found: {agent_template_path}"
+            print(f"DEBUG: {error_msg}")
+            if tracker:
+                tracker.error(f"agent-md-{agent}", error_msg)
+            return
+
+        print(f"DEBUG: Reading template from {agent_template_path}")
+        template_content = agent_template_path.read_text(encoding='utf-8')
+        print(f"DEBUG: Template content length: {len(template_content)}")
+
+        # Create agent-specific filename based on agent name
+        # Map agent names to appropriate file names
+        agent_name_mapping = {
+            'qwen': 'QWEN.md',
+            'kilocode': 'KILO.md',
+            'claude': 'CLAUDE.md',
+            'gemini': 'GEMINI.md',
+            'copilot': 'COPILOT.md',
+            'cursor-agent': 'CURSOR.md',
+            'opencode': 'OPENCODE.md',
+            'codex': 'CODEX.md',
+            'windsurf': 'WINDSURF.md',
+            'auggie': 'AUGGIE.md',
+            'roo': 'ROO.md',
+            'codebuddy': 'CODEBUDDY.md',
+            'q': 'Q.md',
+        }
+
+        # Use the mapping or default to a generic format based on agent name
+        filename = agent_name_mapping.get(agent, f"{agent.upper()}.md")
+        print(f"DEBUG: Creating file {filename} for agent {agent}")
+
+        # Create the agent-specific MD file in the project root
+        output_path = project_path / filename
+        print(f"DEBUG: Writing file to {output_path}")
+        output_path.write_text(template_content, encoding='utf-8')
+        print(f"DEBUG: Successfully wrote file {output_path}")
+
+        success_msg = f"Created {filename} with agent-specific configuration in project root"
+        if tracker:
+            tracker.add(f"agent-md-{agent}", f"Create {filename} file")
+            tracker.complete(f"agent-md-{agent}", f"Created {filename} in project root")
+
+    except Exception as e:
+        error_msg = f"Error: {str(e)}\nTraceback: {traceback.format_exc()}"
+        print(f"DEBUG: {error_msg}")
+        if tracker:
+            tracker.error(f"agent-md-{agent}", error_msg)
+
+
 def init(
     project_name: str = typer.Argument(None, help="Name for your new project directory (optional if using --here, or use '.' for current directory)"),
     ai_assistant: str = typer.Option(None, "--ai", help="AI assistant to use: claude, gemini, copilot, cursor-agent, qwen, opencode, codex, windsurf, kilocode, auggie, codebuddy, or q"),
@@ -713,8 +823,25 @@ def init(
 
             # Generate agent-specific command files for the selected AI assistant
             console.print(f"[cyan]Debug:[/cyan] About to generate agent commands for {selected_ai}")
-            generate_agent_commands_in_project(project_path, selected_ai, tracker=tracker)
-            console.print(f"[green]Debug:[/green] Agent command generation completed for {selected_ai}")
+            try:
+                generate_agent_commands_in_project(project_path, selected_ai, tracker=tracker)
+                console.print(f"[green]Debug:[/green] Agent command generation completed for {selected_ai}")
+            except Exception as e:
+                print(f"ERROR in generate_agent_commands_in_project: {e}")
+                import traceback
+                traceback.print_exc()
+                raise  # Re-raise to maintain original behavior
+
+            # Create agent-specific MD file for the selected AI assistant
+            print(f"DEBUG: About to create agent-specific MD file for {selected_ai}")
+            try:
+                create_agent_specific_md_file(project_path, selected_ai, tracker=tracker)
+                print(f"DEBUG: Agent-specific MD file creation completed for {selected_ai}")
+            except Exception as e:
+                print(f"ERROR in create_agent_specific_md_file: {e}")
+                import traceback
+                traceback.print_exc()
+                raise  # Re-raise to maintain original behavior
 
             ensure_executable_scripts(project_path, tracker=tracker)
             console.print(f"[cyan]Debug:[/cyan] Executable scripts step completed")

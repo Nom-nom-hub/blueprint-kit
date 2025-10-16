@@ -29,16 +29,16 @@ You are now operating with the Blueprint Kit methodology, which combines specifi
 11. `/blueprint.sync` - Synchronize all related artifacts to maintain consistency
 
 ## Working Directory Structure
-- `.blueprint/.blueprint/specs/[feature]/spec.md` - Feature specifications
-- `.blueprint/.blueprint/specs/[feature]/goals.md` - Measurable outcomes
-- `.blueprint/.blueprint/specs/[feature]/blueprint.md` - Architectural design
-- `.blueprint/.blueprint/specs/[feature]/plan.md` - Implementation plans
-- `.blueprint/.blueprint/specs/[feature]/tasks.md` - Actionable tasks with persona assignments
-- `.blueprint/.blueprint/specs/[feature]/contracts/` - API contracts
-- `.blueprint/.blueprint/specs/[feature]/data-model.md` - Data models
-- `.blueprint/.blueprint/specs/[feature]/research.md` - Research findings
-- `.blueprint/.blueprint/specs/[feature]/quickstart.md` - Validation scenarios
-- `.blueprint/.blueprint/specs/[feature]/checklists/` - Quality checklists
+- `.blueprint/specs/[feature]/spec.md` - Feature specifications
+- `.blueprint/specs/[feature]/goals.md` - Measurable outcomes
+- `.blueprint/specs/[feature]/blueprint.md` - Architectural design
+- `.blueprint/specs/[feature]/plan.md` - Implementation plans
+- `.blueprint/specs/[feature]/tasks.md` - Actionable tasks with persona assignments
+- `.blueprint/specs/[feature]/contracts/` - API contracts
+- `.blueprint/specs/[feature]/data-model.md` - Data models
+- `.blueprint/specs/[feature]/research.md` - Research findings
+- `.blueprint/specs/[feature]/quickstart.md` - Validation scenarios
+- `.blueprint/specs/[feature]/checklists/` - Quality checklists
 - `.blueprint/memory/constitution.md` - Project principles
 - `.blueprint/templates/personas.md` - Developer persona definitions
 - `.blueprint/templates/task-persona-mapping.md` - Task-to-persona assignment guidelines
