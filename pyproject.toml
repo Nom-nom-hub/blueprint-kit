@@ -1,5 +1,5 @@
 [project]
-name = "blueprint-cli"
+name = "blueprint-kit"
 version = "1.0.51"
 description = "Blueprint CLI, part of Blueprint Kit. A tool to bootstrap your projects for Blueprint-Driven Development (BDD)."
 requires-python = ">=3.10"
@@ -22,3 +22,18 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/blueprint_cli"]
 include = ["templates/**/*"]
+
+[project.urls]
+Homepage = "https://github.com/nom-nom-hub/blueprint-kit"
+Repository = "https://github.com/nom-nom-hub/blueprint-kit"
+Documentation = "https://github.com/nom-nom-hub/blueprint-kit"
+
+[[project.authors]]
+name = "Teck"
+email = "teckmillion17@gmail.com"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/templates",
+]
