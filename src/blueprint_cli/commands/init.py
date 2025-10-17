@@ -38,33 +38,40 @@ console = Console()
 
 def get_key():
     """Get a single keypress in a cross-platform way using readchar."""
-    key = readchar.readkey()
+    try:
+        key = readchar.readkey()
 
-    if key == readchar.key.UP or key == readchar.key.CTRL_P:
-        return 'up'
-    if key == readchar.key.DOWN or key == readchar.key.CTRL_N:
-        return 'down'
+        if key == readchar.key.UP or key == readchar.key.CTRL_P:
+            return 'up'
+        if key == readchar.key.DOWN or key == readchar.key.CTRL_N:
+            return 'down'
 
-    if key == readchar.key.ENTER:
-        return 'enter'
+        if key == readchar.key.ENTER:
+            return 'enter'
 
-    if key == readchar.key.ESC:
-        return 'escape'
+        if key == readchar.key.ESC:
+            return 'escape'
 
-    if key == readchar.key.CTRL_C:
-        raise KeyboardInterrupt
+        if key == readchar.key.CTRL_C:
+            raise KeyboardInterrupt
 
-    return key
+        return key
+    except Exception as key_error:
+        # If readchar fails, try to get input differently
+        console.print(f"[red]Error reading key input: {key_error}[/red]")
+        console.print("[yellow]Please ensure you're running in a proper terminal environment[/yellow]")
+        raise typer.Exit(1)
 
 def select_with_arrows(options: dict, prompt_text: str = "Select an option", default_key: str = None) -> str:
     """
     Interactive selection using arrow keys with Rich Live display.
-    
+    Includes fallback mechanisms for when running in different environments.
+
     Args:
         options: Dict with keys as option keys and values as descriptions
         prompt_text: Text to show above the options
         default_key: Default option key to start with
-        
+
     Returns:
         Selected option key
     """
@@ -102,26 +109,73 @@ def select_with_arrows(options: dict, prompt_text: str = "Select an option", def
 
     def run_selection_loop():
         nonlocal selected_key, selected_index
-        with Live(create_selection_panel(), console=console, transient=True, auto_refresh=False) as live:
-            while True:
-                try:
-                    key = get_key()
-                    if key == 'up':
-                        selected_index = (selected_index - 1) % len(option_keys)
-                    elif key == 'down':
-                        selected_index = (selected_index + 1) % len(option_keys)
-                    elif key == 'enter':
-                        selected_key = option_keys[selected_index]
-                        break
-                    elif key == 'escape':
+
+        # Try Rich Live display first (interactive mode)
+        try:
+            with Live(create_selection_panel(), console=console, transient=True, auto_refresh=False) as live:
+                while True:
+                    try:
+                        key = get_key()
+                        if key == 'up':
+                            selected_index = (selected_index - 1) % len(option_keys)
+                        elif key == 'down':
+                            selected_index = (selected_index + 1) % len(option_keys)
+                        elif key == 'enter':
+                            selected_key = option_keys[selected_index]
+                            break
+                        elif key == 'escape':
+                            console.print("\n[yellow]Selection cancelled[/yellow]")
+                            raise typer.Exit(1)
+
+                        live.update(create_selection_panel(), refresh=True)
+
+                    except KeyboardInterrupt:
+                        console.print("\n[yellow]Selection cancelled[/yellow]")
+                        raise typer.Exit(1)
+        except Exception as live_error:
+            # Fallback to simple text-based selection if Live display fails
+            console.print("[yellow]Interactive mode not available, using fallback selection...[/yellow]")
+            console.print(f"\n[bold]{prompt_text}[/bold]")
+            console.print("[dim]Available options:[/dim]")
+
+            for i, key in enumerate(option_keys):
+                marker = "▶ " if i == selected_index else "  "
+                console.print(f"{marker}[cyan]{key}[/cyan] - {options[key]}")
+
+            console.print("\n[dim]Enter the option key (or first letter) and press Enter:[/dim]")
+
+            try:
+                while True:
+                    try:
+                        user_input = input("> ").strip().lower()
+                        if not user_input:
+                            continue
+
+                        # Try exact match first
+                        if user_input in option_keys:
+                            selected_key = user_input
+                            break
+
+                        # Try partial match (first letter or substring)
+                        for key in option_keys:
+                            if key.startswith(user_input) or user_input in key.lower():
+                                selected_key = key
+                                break
+
+                        if selected_key:
+                            break
+
+                        console.print(f"[red]Invalid option: {user_input}[/red]")
+                        console.print("[dim]Please try again[/dim]")
+
+                    except (EOFError, KeyboardInterrupt):
                         console.print("\n[yellow]Selection cancelled[/yellow]")
                         raise typer.Exit(1)
 
-                    live.update(create_selection_panel(), refresh=True)
-
-                except KeyboardInterrupt:
-                    console.print("\n[yellow]Selection cancelled[/yellow]")
-                    raise typer.Exit(1)
+            except Exception as input_error:
+                console.print(f"[red]Error during selection: {input_error}[/red]")
+                console.print("[yellow]Falling back to first option[/yellow]")
+                selected_key = option_keys[0] if option_keys else None
 
     run_selection_loop()
 
@@ -317,6 +371,75 @@ def download_and_extract_template(project_path: Path, ai_assistant: str, script_
     return project_path
 
 
+def create_vscode_settings(project_path: Path, tracker: StepTracker | None = None) -> None:
+    """Create VS Code settings for enhanced Blueprint Kit workflow."""
+    vscode_dir = project_path / ".vscode"
+    vscode_dir.mkdir(exist_ok=True)
+
+    settings_path = vscode_dir / "settings.json"
+
+    # Get the VS Code settings template path using reliable path resolution
+    script_dir = Path(__file__).parent  # src/blueprint_cli/commands/
+    blueprint_cli_dir = script_dir.parent  # src/blueprint_cli/
+    src_dir = blueprint_cli_dir.parent  # src/
+    blueprint_kit_root = src_dir.parent  # blueprint-kit root
+
+    template_path = blueprint_kit_root / "templates" / "vscode-settings.json"
+
+    # If that doesn't exist, try alternative locations
+    if not template_path.exists():
+        template_path = script_dir / "templates" / "vscode-settings.json"
+
+    if not template_path.exists():
+        template_path = blueprint_cli_dir / "templates" / "vscode-settings.json"
+
+    try:
+        import json
+        if template_path.exists():
+            # Read settings from template file
+            with open(template_path, 'r', encoding='utf-8') as f:
+                vscode_settings = json.load(f)
+
+            with open(settings_path, 'w', encoding='utf-8') as f:
+                json.dump(vscode_settings, f, indent=4)
+
+            if tracker:
+                tracker.add("vscode-settings", "Create VS Code settings")
+                tracker.complete("vscode-settings", "Enhanced Blueprint Kit workflow")
+            else:
+                console.print(f"[cyan]Created VS Code settings:[/cyan] {settings_path}")
+        else:
+            # Fallback to hardcoded settings if template not found
+            vscode_settings = {
+                "chat.promptFilesRecommendations": {
+                    "speckit.constitution": True,
+                    "speckit.specify": True,
+                    "speckit.plan": True,
+                    "speckit.tasks": True,
+                    "speckit.implement": True
+                },
+                "chat.tools.terminal.autoApprove": {
+                    ".blueprint/scripts/bash/": True,
+                    ".blueprint/scripts/powershell/": True
+                }
+            }
+
+            with open(settings_path, 'w', encoding='utf-8') as f:
+                json.dump(vscode_settings, f, indent=4)
+
+            if tracker:
+                tracker.add("vscode-settings", "Create VS Code settings")
+                tracker.complete("vscode-settings", "Enhanced Blueprint Kit workflow (fallback)")
+            else:
+                console.print(f"[cyan]Created VS Code settings (fallback):[/cyan] {settings_path}")
+
+    except Exception as e:
+        if tracker:
+            tracker.error("vscode-settings", f"Failed to create VS Code settings: {e}")
+        else:
+            console.print(f"[yellow]Warning: Could not create VS Code settings:[/yellow] {e}")
+
+
 def ensure_executable_scripts(project_path: Path, tracker: StepTracker | None = None) -> None:
     """Ensure POSIX .sh scripts under .blueprint/scripts (recursively) have execute bits (no-op on Windows)."""
     if os.name == "nt":
@@ -401,8 +524,55 @@ def generate_agent_commands_in_project(project_path: Path, agent: str, tracker: 
     
     agent_config = agents[agent]
     
-    # Get the template command files - use current working directory as primary method
-    templates_commands_dir = Path.cwd() / "templates" / "commands"
+    # Get the template command files using reliable path resolution
+    # Try multiple methods to find the blueprint-kit root directory
+
+    templates_commands_dir = None
+
+    # Method 1: Try to find relative to the installed package location
+    try:
+        # When installed as package, __file__ points to the installed location
+        current_file = Path(__file__)
+        # Go up from src/blueprint_cli/commands/init.py to find blueprint-kit root
+        # This should work for both development and installed scenarios
+        for _ in range(10):  # Prevent infinite loop
+            current_file = current_file.parent
+            if current_file.name == "blueprint-kit" or current_file.parent.name == "blueprint-kit":
+                blueprint_kit_root = current_file if current_file.name == "blueprint-kit" else current_file.parent
+                templates_commands_dir = blueprint_kit_root / "templates" / "commands"
+                if templates_commands_dir.exists():
+                    break
+                templates_commands_dir = None
+    except Exception:
+        pass
+
+    # Method 2: Try importlib.resources (works when installed as package)
+    if templates_commands_dir is None:
+        try:
+            if sys.version_info >= (3, 9):
+                from importlib.resources import files
+                templates_commands_dir = files('blueprint_cli').joinpath('templates', 'commands')
+            else:
+                import importlib_resources
+                templates_commands_dir = importlib_resources.files('blueprint_cli') / 'templates' / 'commands'
+        except (ImportError, Exception):
+            pass
+
+    # Method 3: Fallback to development path
+    if templates_commands_dir is None:
+        try:
+            # Assume we're in development mode
+            script_dir = Path(__file__).parent  # src/blueprint_cli/commands/
+            blueprint_cli_dir = script_dir.parent  # src/blueprint_cli/
+            src_dir = blueprint_cli_dir.parent  # src/
+            blueprint_kit_root = src_dir.parent  # blueprint-kit root
+            templates_commands_dir = blueprint_kit_root / "templates" / "commands"
+        except Exception:
+            pass
+
+    # Convert to Path object for compatibility if needed
+    if templates_commands_dir is not None and not isinstance(templates_commands_dir, Path):
+        templates_commands_dir = Path(templates_commands_dir)
 
     if not templates_commands_dir.exists():
         if tracker:
@@ -518,51 +688,48 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
     try:
         # Try multiple methods to find the template file
         
-        # Method 1: Look in the current working directory (where templates should be after extraction during init)
-        templates_root_dir = Path.cwd() / "templates"
-        agent_template_path = templates_root_dir / "agent-file-template.md"
+        # Get the agent template file path using reliable path resolution
+        # Use the same reliable method that works for the command templates
+
+        script_dir = Path(__file__).parent  # src/blueprint_cli/commands/
+        blueprint_cli_dir = script_dir.parent  # src/blueprint_cli/
+        src_dir = blueprint_cli_dir.parent  # src/
+        blueprint_kit_root = src_dir.parent  # blueprint-kit root
+
+        agent_template_path = blueprint_kit_root / "templates" / "agent-file-template.md"
+
+        # If that doesn't exist, try alternative locations
+        if not agent_template_path.exists():
+            agent_template_path = script_dir / "templates" / "agent-file-template.md"
+
+        if not agent_template_path.exists():
+            agent_template_path = blueprint_cli_dir / "templates" / "agent-file-template.md"
         
-        # Check if the template exists in the current working directory templates
-        if agent_template_path.exists():
+        # Check if the template exists and read it
+        if agent_template_path and agent_template_path.exists():
             template_content = agent_template_path.read_text(encoding='utf-8')
             console.print(f"[green]Debug:[/green] Found template at: {agent_template_path}")
         else:
-            # Method 2: Use importlib.resources to access the template from the package
-            # This works when the package is installed with templates included as package data
-            try:
-                # Try to use importlib.resources to access the template from our package
-                if sys.version_info >= (3, 9):
-                    # Python 3.9+ has files() method
-                    from importlib.resources import files
-                    template_path_obj = files('blueprint_cli').joinpath('templates', 'agent-file-template.md')
-                    with template_path_obj.open('r', encoding='utf-8') as f:
-                        template_content = f.read()
-                    console.print(f"[green]Debug:[/green] Found template using importlib.resources.files")
-                else:
-                    # For older Python versions, use read_text
-                    try:
-                        template_content = importlib.resources.read_text('blueprint_cli.templates', 'agent-file-template.md')
-                        console.print(f"[green]Debug:[/green] Found template using importlib.resources.read_text")
-                    except:
-                        # If the package resource is not found, try to find the template relative to this file
-                        current_file_dir = Path(__file__).parent.parent  # Should be src/blueprint_cli
-                        template_path_pkg = current_file_dir / "templates" / "agent-file-template.md"
-                        
-                        if template_path_pkg.exists():
-                            template_content = template_path_pkg.read_text(encoding='utf-8')
-                            console.print(f"[green]Debug:[/green] Found template in package relative path: {template_path_pkg}")
-                        else:
-                            # Final fallback - show what we're looking for and return with error
-                            error_msg = f"Agent template not found in any location: {agent_template_path}, package resources, or relative path {template_path_pkg}"
-                            if tracker:
-                                tracker.error(f"agent-md-{agent}", error_msg)
-                            else:
-                                console.print(f"[red]Error:[/red] {error_msg}")
-                            return
-            except Exception as inner_e:
-                console.print(f"[yellow]Debug:[/yellow] Could not use importlib.resources method: {inner_e}")
-                # Fallback to error
-                error_msg = f"Agent template not found: {agent_template_path}"
+            # If primary method didn't work, try fallback methods
+            script_dir = Path(__file__).parent  # src/blueprint_cli/commands/
+            blueprint_cli_dir = script_dir.parent  # src/blueprint_cli/
+            src_dir = blueprint_cli_dir.parent  # src/
+            blueprint_kit_root = src_dir.parent  # blueprint-kit root
+
+            fallback_template_path = blueprint_kit_root / "templates" / "agent-file-template.md"
+
+            # If that doesn't exist, try alternative locations
+            if not fallback_template_path.exists():
+                fallback_template_path = script_dir / "templates" / "agent-file-template.md"
+
+            if not fallback_template_path.exists():
+                fallback_template_path = blueprint_cli_dir / "templates" / "agent-file-template.md"
+
+            if fallback_template_path and fallback_template_path.exists():
+                template_content = fallback_template_path.read_text(encoding='utf-8')
+                console.print(f"[green]Debug:[/green] Found template using fallback method: {fallback_template_path}")
+            else:
+                error_msg = f"Agent template not found in any location"
                 if tracker:
                     tracker.error(f"agent-md-{agent}", error_msg)
                 else:
@@ -720,11 +887,17 @@ def init(
     else:
         # Create options dict for selection (agent_key: display_name)
         ai_choices = {key: config["name"] for key, config in AGENT_CONFIG.items()}
-        selected_ai = select_with_arrows(
-            ai_choices, 
-            "Choose your AI assistant:", 
-            "copilot"
-        )
+
+        try:
+            selected_ai = select_with_arrows(
+                ai_choices,
+                "Choose your AI assistant:",
+                "copilot"
+            )
+        except Exception as selection_error:
+            console.print(f"[red]Error during AI assistant selection: {selection_error}[/red]")
+            console.print("[yellow]Falling back to default AI assistant: copilot[/yellow]")
+            selected_ai = "copilot"
 
     if not ignore_agent_tools:
         agent_config = AGENT_CONFIG.get(selected_ai)
@@ -753,7 +926,12 @@ def init(
         default_script = "ps" if os.name == "nt" else "sh"
 
         if sys.stdin.isatty():
-            selected_script = select_with_arrows(SCRIPT_TYPE_CHOICES, "Choose script type (or press Enter)", default_script)
+            try:
+                selected_script = select_with_arrows(SCRIPT_TYPE_CHOICES, "Choose script type (or press Enter)", default_script)
+            except Exception as script_selection_error:
+                console.print(f"[red]Error during script type selection: {script_selection_error}[/red]")
+                console.print(f"[yellow]Falling back to default script type: {default_script}[/yellow]")
+                selected_script = default_script
         else:
             selected_script = default_script
 
@@ -776,6 +954,7 @@ def init(
         ("extract", "Extract template"),
         ("zip-list", "Archive contents"),
         ("extracted-summary", "Extraction summary"),
+        ("vscode-settings", "Create VS Code settings"),
         ("chmod", "Ensure scripts executable"),
         ("cleanup", "Cleanup"),
         ("git", "Initialize git repository"),
@@ -808,6 +987,9 @@ def init(
 
             # Create agent-specific MD file for the selected AI assistant
             create_agent_specific_md_file(project_path, selected_ai, tracker=tracker)
+
+            # Create VS Code settings for enhanced workflow
+            create_vscode_settings(project_path, tracker=tracker)
 
             ensure_executable_scripts(project_path, tracker=tracker)
             console.print(f"[cyan]Debug:[/cyan] Executable scripts step completed")
