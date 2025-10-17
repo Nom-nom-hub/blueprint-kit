@@ -512,31 +512,55 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
     """
     import importlib.resources
     import traceback
+    import sys
     from pathlib import Path
     
     try:
-        # Get the agent file template - use current working directory
+        # Try multiple methods to find the template file
+        
+        # Method 1: Look in the current working directory (where templates should be after extraction)
         templates_root_dir = Path.cwd() / "templates"
-
-        if not templates_root_dir.exists():
-            error_msg = f"Templates not found at {templates_root_dir}"
-            if tracker:
-                tracker.error(f"agent-md-{agent}", error_msg)
-            else:
-                console.print(f"[red]Error:[/red] {error_msg}")
-            return
-
-        # Read the agent template
         agent_template_path = templates_root_dir / "agent-file-template.md"
-        if not agent_template_path.exists():
-            error_msg = f"Agent template not found: {agent_template_path}"
-            if tracker:
-                tracker.error(f"agent-md-{agent}", error_msg)
-            else:
-                console.print(f"[red]Error:[/red] {error_msg}")
-            return
-
-        template_content = agent_template_path.read_text(encoding='utf-8')
+        
+        # Check if the template exists in the current working directory templates
+        if agent_template_path.exists():
+            template_content = agent_template_path.read_text(encoding='utf-8')
+            console.print(f"[green]Debug:[/green] Found template at: {agent_template_path}")
+        else:
+            # Method 2: Use importlib.resources to access the template from package
+            try:
+                # Try to read the template file from the blueprint_cli package
+                import blueprint_cli
+                package_dir = Path(blueprint_cli.__file__).parent
+                template_path_in_package = package_dir / "templates" / "agent-file-template.md"
+                
+                if template_path_in_package.exists():
+                    template_content = template_path_in_package.read_text(encoding='utf-8')
+                    console.print(f"[green]Debug:[/green] Found template in package: {template_path_in_package}")
+                else:
+                    # Method 3: Look relative to the script location
+                    script_dir = Path(__file__).parent.parent
+                    template_path_relative = script_dir / "templates" / "agent-file-template.md"
+                    
+                    if template_path_relative.exists():
+                        template_content = template_path_relative.read_text(encoding='utf-8')
+                        console.print(f"[green]Debug:[/green] Found template relative to script: {template_path_relative}")
+                    else:
+                        error_msg = f"Agent template not found in any location: {agent_template_path}, {template_path_in_package}, {template_path_relative}"
+                        if tracker:
+                            tracker.error(f"agent-md-{agent}", error_msg)
+                        else:
+                            console.print(f"[red]Error:[/red] {error_msg}")
+                        return
+            except Exception as inner_e:
+                console.print(f"[yellow]Debug:[/yellow] Could not use importlib.resources method: {inner_e}")
+                # Fallback to error
+                error_msg = f"Agent template not found: {agent_template_path}"
+                if tracker:
+                    tracker.error(f"agent-md-{agent}", error_msg)
+                else:
+                    console.print(f"[red]Error:[/red] {error_msg}")
+                return
 
         # Create agent-specific filename based on agent name
         # Map agent names to appropriate file names
@@ -567,6 +591,8 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
         if tracker:
             tracker.add(f"agent-md-{agent}", f"Create {filename} file")
             tracker.complete(f"agent-md-{agent}", f"Created {filename} in project root")
+        
+        console.print(f"[green]Debug:[/green] Successfully created {filename} in {project_path}")
 
     except Exception as e:
         error_msg = f"Error creating agent-specific MD file: {str(e)}"
@@ -574,6 +600,8 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
             tracker.error(f"agent-md-{agent}", error_msg)
         else:
             console.print(f"[red]Error:[/red] {error_msg}")
+        import traceback
+        traceback.print_exc()  # Print the full traceback for debugging
         raise  # Re-raise to ensure the error is properly handled by the main init function
 
 
