@@ -518,7 +518,7 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
     try:
         # Try multiple methods to find the template file
         
-        # Method 1: Look in the current working directory (where templates should be after extraction)
+        # Method 1: Look in the current working directory (where templates should be after extraction during init)
         templates_root_dir = Path.cwd() / "templates"
         agent_template_path = templates_root_dir / "agent-file-template.md"
         
@@ -528,45 +528,37 @@ def create_agent_specific_md_file(project_path: Path, agent: str, tracker: StepT
             console.print(f"[green]Debug:[/green] Found template at: {agent_template_path}")
         else:
             # Method 2: Use importlib.resources to access the template from the package
+            # This works when the package is installed with templates included as package data
             try:
                 # Try to use importlib.resources to access the template from our package
                 if sys.version_info >= (3, 9):
                     # Python 3.9+ has files() method
                     from importlib.resources import files
-                    template_path = files('blueprint_cli').joinpath('templates', 'agent-file-template.md')
-                    with template_path.open('r', encoding='utf-8') as f:
+                    template_path_obj = files('blueprint_cli').joinpath('templates', 'agent-file-template.md')
+                    with template_path_obj.open('r', encoding='utf-8') as f:
                         template_content = f.read()
                     console.print(f"[green]Debug:[/green] Found template using importlib.resources.files")
                 else:
-                    # For older Python versions
-                    import blueprint_cli
-                    package_dir = Path(blueprint_cli.__file__).parent
-                    template_path_in_package = package_dir / "templates" / "agent-file-template.md"
-                    
-                    if template_path_in_package.exists():
-                        template_content = template_path_in_package.read_text(encoding='utf-8')
-                        console.print(f"[green]Debug:[/green] Found template in package: {template_path_in_package}")
-                    else:
-                        # Try to use the importlib.resources.read_text method
-                        try:
-                            template_content = importlib.resources.read_text('blueprint_cli.templates', 'agent-file-template')
-                            console.print(f"[green]Debug:[/green] Found template using importlib.resources.read_text")
-                        except:
-                            # Method 3: Look relative to the script location
-                            script_dir = Path(__file__).parent.parent
-                            templates_dir = script_dir / "templates"
-                            template_path_relative = templates_dir / "agent-file-template.md"
-                            
-                            if template_path_relative.exists():
-                                template_content = template_path_relative.read_text(encoding='utf-8')
-                                console.print(f"[green]Debug:[/green] Found template relative to script: {template_path_relative}")
+                    # For older Python versions, use read_text
+                    try:
+                        template_content = importlib.resources.read_text('blueprint_cli.templates', 'agent-file-template.md')
+                        console.print(f"[green]Debug:[/green] Found template using importlib.resources.read_text")
+                    except:
+                        # If the package resource is not found, try to find the template relative to this file
+                        current_file_dir = Path(__file__).parent.parent  # Should be src/blueprint_cli
+                        template_path_pkg = current_file_dir / "templates" / "agent-file-template.md"
+                        
+                        if template_path_pkg.exists():
+                            template_content = template_path_pkg.read_text(encoding='utf-8')
+                            console.print(f"[green]Debug:[/green] Found template in package relative path: {template_path_pkg}")
+                        else:
+                            # Final fallback - show what we're looking for and return with error
+                            error_msg = f"Agent template not found in any location: {agent_template_path}, package resources, or relative path {template_path_pkg}"
+                            if tracker:
+                                tracker.error(f"agent-md-{agent}", error_msg)
                             else:
-                                error_msg = f"Agent template not found in any location: {agent_template_path}, {template_path_in_package}, {template_path_relative}"
-                                if tracker:
-                                    tracker.error(f"agent-md-{agent}", error_msg)
-                                else:
-                                    console.print(f"[red]Error:[/red] {error_msg}")
-                                return
+                                console.print(f"[red]Error:[/red] {error_msg}")
+                            return
             except Exception as inner_e:
                 console.print(f"[yellow]Debug:[/yellow] Could not use importlib.resources method: {inner_e}")
                 # Fallback to error

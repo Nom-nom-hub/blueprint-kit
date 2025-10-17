@@ -17,30 +17,30 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
-        id: get_tag
+      - name: Get tag and previous tag
+        id: get_tags
         run: |
-          chmod +x .github/workflows/scripts/get-next-version.sh
-          .github/workflows/scripts/get-next-version.sh
+          chmod +x .github/workflows/scripts/get-current-and-previous-tags.sh
+          .github/workflows/scripts/get-current-and-previous-tags.sh
       - name: Check if release already exists
         id: check_release
         run: |
           chmod +x .github/workflows/scripts/check-release-exists.sh
-          .github/workflows/scripts/check-release-exists.sh ${{ steps.get_tag.outputs.new_version }}
+          .github/workflows/scripts/check-release-exists.sh ${{ steps.get_tags.outputs.current_tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create release package variants
         if: steps.check_release.outputs.exists == 'false'
         run: |
           chmod +x .github/workflows/scripts/create-release-packages.sh
-          .github/workflows/scripts/create-release-packages.sh ${{ steps.get_tag.outputs.new_version }}
+          .github/workflows/scripts/create-release-packages.sh ${{ steps.get_tags.outputs.current_tag }}
       - name: Build and publish to PyPI
         if: steps.check_release.outputs.exists == 'false'
         run: |
           # Install uv
           curl -LsSf https://astral.sh/uv/install.sh | sh
           export PATH="$HOME/.cargo/bin:$PATH"
-          # Build the package
+          # Build the package - the version should already match the tag
           uv build
           # Publish to PyPI using API key
           uv publish --token ${{ secrets.PYPI_API_TOKEN }}
@@ -49,16 +49,11 @@ jobs:
         id: release_notes
         run: |
           chmod +x .github/workflows/scripts/generate-release-notes.sh
-          .github/workflows/scripts/generate-release-notes.sh ${{ steps.get_tag.outputs.new_version }} ${{ steps.get_tag.outputs.latest_tag }}
+          .github/workflows/scripts/generate-release-notes.sh ${{ steps.get_tags.outputs.current_tag }} ${{ steps.get_tags.outputs.previous_tag }}
       - name: Create GitHub Release
         if: steps.check_release.outputs.exists == 'false'
         run: |
           chmod +x .github/workflows/scripts/create-github-release.sh
-          .github/workflows/scripts/create-github-release.sh ${{ steps.get_tag.outputs.new_version }}
+          .github/workflows/scripts/create-github-release.sh ${{ steps.get_tags.outputs.current_tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update version in pyproject.toml (for release artifacts only)
-        if: steps.check_release.outputs.exists == 'false'
-        run: |
-          chmod +x .github/workflows/scripts/update-version.sh
-          .github/workflows/scripts/update-version.sh ${{ steps.get_tag.outputs.new_version }}
